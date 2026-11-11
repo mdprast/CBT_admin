@@ -114,21 +114,21 @@
         </div>
     </div>
 
-    <!-- Modal Sukses Generate Soal -->
+    <!-- Modal Sukses Generate / Revisi Soal -->
     <div id="modalSuksesGen" class="fixed inset-0 bg-black bg-opacity-75 hidden flex items-center justify-center z-[100]">
         <div class="bg-white p-6 rounded-xl w-full max-w-md shadow-2xl text-center relative">
             <div class="text-green-500 mb-2">
                 <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </div>
-            <h2 class="text-xl font-black text-gray-800 mb-2">Ujian Berhasil Dibuat!</h2>
-            <p class="text-sm text-gray-600 mb-4 text-left">File paket ujian tunggal (berakhiran <b>.enc</b>) telah terunduh ke perangkat Anda.</p>
+            <h2 id="judulModalSuksesGen" class="text-xl font-black text-gray-800 mb-2">Ujian Berhasil Dibuat!</h2>
+            <p id="subModalSuksesGen" class="text-sm text-gray-600 mb-4 text-left">File paket ujian tunggal (berakhiran <b>.enc</b>) telah terunduh ke perangkat Anda.</p>
             
             <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-left mb-5 shadow-inner">
                 <h3 class="font-bold text-blue-800 mb-2 text-sm">💡 Panduan Distribusi (Sistem Cloud Sync):</h3>
                 <ol class="list-decimal ml-5 space-y-2 text-sm text-blue-900">
-                    <li>Unggah file <b>.enc</b> yang baru saja terunduh ke akun <b>Google Drive</b> Anda.</li>
+                    <li>Unggah file <b>.enc</b> terbaru yang baru saja terunduh ke akun <b>Google Drive</b> Anda.</li>
                     <li>Ubah hak akses tautan file tersebut menjadi <b>"Siapa saja yang memiliki link"</b> (<i>Anyone with the link</i>).</li>
-                    <li>Salin tautan tersebut, lalu tempel (<i>paste</i>) ke kolom <b>Link Google Drive</b> pada Kartu Ujian di Beranda. Siswa kini bisa mengunduh soal secara otomatis hanya dengan memasukkan Kode Sinkronisasi (Token)!</li>
+                    <li>Salin tautan terbaru tersebut, lalu tempel (<i>paste</i>) menggantikan link lama pada kolom <b>Link Google Drive</b> di Kartu Ujian Beranda, kemudian klik <b>Simpan Link</b>.</li>
                 </ol>
                 <div class="mt-4 p-3 bg-red-50 border-l-4 border-red-500 rounded text-xs text-red-800 leading-relaxed">
                     <b>Saran & Uji Coba:</b> Sebelum ujian sesungguhnya dimulai, sangat disarankan bagi Guru untuk melakukan uji coba mandiri di aplikasi CBT Siswa. Masukkan Kode Sinkronisasi (Token) dan PIN Pengawas untuk memastikan fitur Sinkronisasi berjalan lancar, halaman soal terbuka dengan sempurna, dan kunci jawaban telah sesuai.
@@ -180,7 +180,7 @@
                     <div class="bg-gradient-to-br from-blue-600 to-indigo-800 shadow rounded-lg p-6 text-white flex flex-col justify-center items-center text-center">
                         <p class="text-lg font-semibold opacity-80">Sisa Kredit Anda</p>
                         <h1 id="profKredit" class="text-6xl font-black my-2">0</h1>
-                        <p class="text-xs opacity-70 mb-3">1 Kredit = 1 File Ujian (.enc)</p>
+                        <p class="text-xs opacity-70 mb-3">1 Kredit = 1 File Ujian / Revisi (.enc)</p>
                         
                         <a href="https://wa.me/6285189603539?text=Halo%20Admin%20Examify%20PDF,%20saya%20ingin%20menambah%20kredit%20ujian." target="_blank" class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-bold text-xs px-3 py-2 rounded-full shadow transition duration-150">
                             <img src="https://www.svgrepo.com/show/475692/whatsapp-color.svg" class="w-4 h-4 mr-1.5" alt="WA"> Hubungi Admin (+Kredit)
@@ -213,13 +213,34 @@
                     </div>
                 </div>
 
+                <!-- BANNER KHUSUS SAAT MODE EDIT / REVISI AKTIF -->
+                <div id="bannerEditMode" class="hidden bg-amber-50 border-l-4 border-amber-500 p-4 mb-6 rounded-lg shadow-sm">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                        <div>
+                            <h3 class="font-black text-amber-900 text-sm uppercase tracking-wide flex items-center">
+                                ✏️ MODE EDIT / REVISI UJIAN AKTIF (-1 KREDIT SAAT DISIMPAN)
+                            </h3>
+                            <p id="infoLimitasiEdit" class="text-xs text-amber-800 mt-1 leading-relaxed">
+                                Anda sedang mengedit ujian yang sudah dibuat. Setelah klik <b>Simpan Revisi & Unduh File</b>, unggah file <b>.enc</b> baru ke Google Drive dan ganti link lama pada Kartu Ujian di Beranda.
+                                <br><b>Catatan Limitasi Media:</b> File fisik PDF dan Gambar tidak disimpan di database server. Untuk ujian PDF, silakan pilih ulang file PDF Anda. Untuk ujian Native CBT yang memiliki gambar, silakan unggah/crop ulang gambarnya (atau gunakan tombol pemulihan otomatis di samping jika Anda masih menyimpan file <code>.enc</code> lama).
+                            </p>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <label class="inline-flex items-center bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-3 py-2 rounded-lg shadow cursor-pointer transition">
+                                ⚡ Pulihkan Gambar/PDF dari File .enc Lama
+                                <input type="file" id="inputPulihkanEnc" accept=".enc" class="hidden" onchange="pulihkanMediaDariEncLama(event)">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="flex flex-col lg:flex-row gap-6">
                     
                     <!-- KOLOM KIRI: FORM & KUNCI JAWABAN / PENYUSUN SOAL -->
                     <div class="w-full lg:w-1/2 space-y-6">
                         <!-- Identitas Ujian -->
                         <div class="bg-white shadow rounded-lg p-6 border-l-4 border-yellow-500">
-                            <h3 class="text-lg font-bold mb-4 border-b pb-2">1. Identitas Ujian Baru</h3>
+                            <h3 class="text-lg font-bold mb-4 border-b pb-2" id="judulFormIdentitas">1. Identitas Ujian Baru</h3>
                             <div class="grid grid-cols-2 gap-4">
                                 <div><label class="block text-sm font-medium">Nama Ujian (Bebas)</label><input type="text" id="genNama" placeholder="Misal: PTS Genap" class="mt-1 w-full p-2 border rounded font-bold"></div>
                                 <div><label class="block text-sm font-medium">Mata Pelajaran</label><input type="text" id="genMapel" placeholder="Misal: Matematika" class="mt-1 w-full p-2 border rounded"></div>
@@ -242,7 +263,7 @@
 
                                 <!-- Input Khusus Mode PDF -->
                                 <div id="boxInputPdf" class="col-span-2">
-                                    <label class="block text-sm font-medium mt-2">Pilih File PDF Soal <span class="text-red-500 font-bold">*Wajib</span></label>
+                                    <label class="block text-sm font-medium mt-2" id="labelPilihPdf">Pilih File PDF Soal <span class="text-red-500 font-bold">*Wajib</span></label>
                                     <input type="file" id="genPdf" accept="application/pdf" class="mt-1 w-full p-2 border rounded bg-gray-50 text-sm">
                                 </div>
 
@@ -350,7 +371,14 @@
                             <!-- WADAH KARTU SOAL INTERAKTIF (MODE NATIVE CBT) -->
                             <div id="wadahKartuCBT" class="hidden space-y-4 max-h-[65vh] overflow-y-auto pr-1"></div>
 
-                            <button onclick="prosesBuatUjian()" id="btnGenerate" class="mt-6 w-full bg-blue-600 text-white p-4 rounded-lg font-bold text-lg hover:bg-blue-700 shadow">Buat File Ujian (-1 Kredit)</button>
+                            <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                                <button type="button" onclick="cekValidasiLengkap(true)" class="sm:w-1/3 bg-emerald-50 border-2 border-emerald-500 text-emerald-800 p-4 rounded-lg font-bold text-sm hover:bg-emerald-100 transition shadow-sm">
+                                    ✓ Cek Validasi Soal
+                                </button>
+                                <button onclick="prosesBuatUjian()" id="btnGenerate" class="flex-1 bg-blue-600 text-white p-4 rounded-lg font-bold text-lg hover:bg-blue-700 shadow">
+                                    Buat File Ujian (-1 Kredit)
+                                </button>
+                            </div>
                             <p id="genStatus" class="text-center mt-3 font-semibold text-red-500"></p>
                         </div>
                     </div>
@@ -494,31 +522,31 @@
                             <p class="mb-2">Anda dapat memilih **Mode Soal PDF** (mengunggah dokumen PDF) atau **Mode Native CBT** (menyusun soal interaktif satu per satu ala Google Form lengkap dengan gambar WebP, Wacana Soal Beranak, Acak Soal, dan Impor Excel).</p>
                             <p class="mb-2">Agar sistem dapat mengoreksi otomatis dengan akurat 100%, ikuti panduan pengisian kunci berikut berdasarkan tipe soal:</p>
                             <ul class="list-disc ml-6 space-y-2 bg-blue-50 p-4 rounded border border-blue-200">
-                                <li><b>Pilihan Ganda Biasa & Benar/Salah (1 Pernyataan):</b> Cukup klik opsi yang benar pada tombol yang disediakan.</li>
-                                <li><b>B/S Kompleks (2 s.d 5 Pernyataan - Model TKA/AKM):</b> Klik kunci <code>B</code> atau <code>S</code> pada setiap baris pernyataan secara berurutan. Siswa wajib menjawab seluruh pernyataan dengan urutan yang tepat.</li>
+                                <li><b>Pilihan Ganda Biasa:</b> Cukup klik opsi yang benar pada tombol yang disediakan.</li>
+                                <li><b>Benar/Salah (1 Pernyataan) & B/S Kompleks (2 s.d 5 Pernyataan - Model TKA/AKM):</b> Pada Mode Native CBT, ketikkan teks pernyataan pada baris yang tersedia lalu klik kunci <code>B</code> (Benar) atau <code>S</code> (Salah) di sampingnya. Di layar siswa akan tampil tabel pernyataan dengan kolom Benar dan Salah di sampingnya.</li>
                                 <li><b>Pilihan Ganda Kompleks:</b> Klik 2 atau lebih opsi jawaban yang benar.</li>
-                                <li><b>Menjodohkan:</b> Ketikkan pasangan angka dan huruf. Anda boleh memisahkannya dengan koma atau spasi (Misal: <code>1A, 2B, 3C</code> atau <code>1A 2B 3C</code>). Sistem kami secara cerdas akan membersihkan dan mengurutkannya secara otomatis menjadi format <code>1A2B3C</code>.</li>
+                                <li><b>Menjodohkan:</b> Pada Mode Native CBT, isi pernyataan di kolom kiri (1 s.d 5) dan pilihan jawaban di kolom kanan (A s.d E) sesuai kebutuhan (misal 3 pernyataan kiri dan 4 opsi kanan). Pilih kunci pasangan melalui dropdown yang tersedia atau ketikkan pasangan seperti <code>1A, 2B, 3C</code>. Sistem akan otomatis merapikannya menjadi format <code>1A2B3C</code>.</li>
                                 <li><b>Isian Singkat:</b> Ketik <b>jawaban pasti (Sama Persis/Exact Match)</b> tanpa embel-embel satuan. Misal jika jawaban adalah 50 cm, maka tulis kuncinya: <code>50</code>. Berikan instruksi di naskah ujian agar siswa cukup menjawab angkanya saja tanpa mengetik satuan.</li>
                                 <li><b>Uraian:</b> Kosongkan saja. Sistem <b>TIDAK</b> menilai soal uraian secara otomatis. Anda wajib mengunduh rekap file Excel di akhir ujian untuk membaca hasil uraian dan memberi nilai manual.</li>
                             </ul>
                         </div>
 
                         <div>
-                            <h3 class="text-xl font-bold text-blue-700 mb-2">2. Keamanan Anti-Hacker (Enkripsi Lapis Ganda)</h3>
-                            <p class="mb-2">Aplikasi ini dilengkapi <b>Sistem Enkripsi 2 Lapis</b>, sehingga siswa tidak dapat membuka soal sebelum waktunya.</p>
+                            <h3 class="text-xl font-bold text-blue-700 mb-2">2. Fitur Edit / Revisi Ujian & Limitasi Media</h3>
                             <ul class="list-disc ml-6 space-y-2">
-                                <li><b>Gembok Pertama (Kode Sinkronisasi / Token):</b> Berikan kode ini kapan saja (misal H-1). Kode ini digunakan siswa untuk menyinkronkan (mengunduh) paket file dari Cloud ke HP mereka.</li>
-                                <li><b>Gembok Kedua (PIN Pengawas):</b> PIN ini HANYA boleh diucapkan secara lisan/ditulis di papan tulis oleh Pengawas ruangan <b>tepat saat bel ujian berbunyi</b>. Hanya dengan PIN inilah file soal terbuka dan ujian dimulai.</li>
+                                <li>Jika terdapat kesalahan kunci jawaban, nomor halaman PDF, atau teks soal, klik tombol <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs font-bold">✏️ Edit</span> pada Kartu Ujian di Beranda.</li>
+                                <li>Setiap penyimpanan revisi ujian akan mengunduh file <b>.enc</b> baru dan memotong <b>1 Kredit</b>.</li>
+                                <li>Unggah file <b>.enc</b> hasil revisi tersebut ke Google Drive Anda, salin link barunya, lalu tempelkan menggantikan link lama pada Kartu Ujian di Beranda.</li>
+                                <li><b>Catatan Gambar & PDF saat Edit:</b> Karena server hanya menyimpan teks soal dan kunci, saat mengedit ujian PDF Anda wajib memilih ulang file PDF-nya. Untuk ujian Native CBT yang memiliki gambar, Anda dapat melakukan <i>crop</i> ulang gambar atau menekan tombol <b>⚡ Pulihkan Gambar/PDF dari File .enc Lama</b> jika file <code>.enc</code> sebelumnya masih tersimpan di perangkat Anda.</li>
                             </ul>
                         </div>
 
                         <div>
-                            <h3 class="text-xl font-bold text-blue-700 mb-2">3. Tahap Pembuatan Soal & Kunci Jawaban</h3>
+                            <h3 class="text-xl font-bold text-blue-700 mb-2">3. Keamanan Anti-Hacker (Enkripsi Lapis Ganda)</h3>
+                            <p class="mb-2">Aplikasi ini dilengkapi <b>Sistem Enkripsi 2 Lapis</b>, sehingga siswa tidak dapat membuka soal sebelum waktunya.</p>
                             <ul class="list-disc ml-6 space-y-2">
-                                <li>Klik tombol <span class="bg-green-500 text-white px-2 py-1 rounded text-xs font-bold">+ Buat Ujian Baru</span> di Beranda, lalu pilih tab <b>Mode Soal PDF</b> atau <b>Mode Native CBT</b>.</li>
-                                <li>Isi identitas ujian, termasuk <b>Kode Sinkronisasi (Token)</b> dan <b>PIN Pengawas</b>.</li>
-                                <li>Pada Mode Native CBT, Anda bisa menambahkan gambar yang otomatis dipotong (<i>crop</i>) dan dikompresi menjadi format <b>WebP</b> super ringan, atau mengimpor soal sekaligus menggunakan <b>Template Excel</b>.</li>
-                                <li>Klik Buat File Ujian. Aplikasi akan membungkus seluruh soal dan gambar menjadi <b>satu file tunggal (.enc)</b> yang langsung terunduh ke perangkat Anda.</li>
+                                <li><b>Gembok Pertama (Kode Sinkronisasi / Token):</b> Berikan kode ini kapan saja (misal H-1). Kode ini digunakan siswa untuk menyinkronkan (mengunduh) paket file dari Cloud ke HP mereka.</li>
+                                <li><b>Gembok Kedua (PIN Pengawas):</b> PIN ini HANYA boleh diucapkan secara lisan/ditulis di papan tulis oleh Pengawas ruangan <b>tepat saat bel ujian berbunyi</b>. Hanya dengan PIN inilah file soal terbuka dan ujian dimulai.</li>
                             </ul>
                         </div>
 
@@ -575,20 +603,26 @@
         
         let modeTabelDetail = false;
 
-        // --- STATE TAMBAHAN UNTUK NATIVE CBT & CROPPER WEBP ---
+        // --- STATE TAMBAHAN UNTUK NATIVE CBT, CROPPER WEBP, & EDIT MODE ---
         let modeGenerator = 'PDF'; // 'PDF' atau 'CBT'
-        let daftarWacanaCBT = [];  // [{ id_wacana: 'W1', judul: '', teks_wacana: '', img_wacana: '' }]
+        let daftarWacanaCBT = [];  // [{ id_wacana: 'W1', teks_wacana: '', img_wacana: '' }]
         let daftarSoalCBT = [];    // Menyimpan objek soal interaktif CBT
         let mediaWebPStore = {};   // { 'soal_1.webp': { blob, dataUrl, sizeKB } }
         let previewIndexCBT = 0;
         let cropperInstance = null;
-        let currentCropTarget = null; // Menyimpan callback & nama file target gambar yang sedang di-crop
+        let currentCropTarget = null;
+
+        // State Mode Edit / Revisi Ujian
+        let isEditMode = false;
+        let editingUjianId = null;
+        let restoredPdfDataUrl = null; // Jika PDF dipulihkan dari file .enc lama
 
         // --- PDF PREVIEW LISTENER ---
         document.getElementById('genPdf').addEventListener('change', function(e) {
             const file = e.target.files[0];
             const viewer = document.getElementById('pdfViewer');
             const placeholder = document.getElementById('pdfPlaceholder');
+            restoredPdfDataUrl = null;
             
             if(file && file.type === 'application/pdf') {
                 const fileURL = URL.createObjectURL(file);
@@ -630,7 +664,7 @@
             if (isCBT) {
                 document.getElementById('panelPreviewCBT').classList.add('flex');
                 document.getElementById('judulBagianSoal').innerText = "2. Susun Butir Soal & Kunci (Native CBT)";
-                if (daftarSoalCBT.length === 0) tambahSoalCBT();
+                if (daftarSoalCBT.length === 0 && !isEditMode) tambahSoalCBT();
                 renderPreviewCBT();
             } else {
                 document.getElementById('panelPreviewCBT').classList.remove('flex');
@@ -734,7 +768,7 @@
             canvas.toBlob((blob) => {
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    const fileName = currentCropTarget.key + '.webp';
+                    const fileName = currentCropTarget.key.endsWith('.webp') ? currentCropTarget.key : (currentCropTarget.key + '.webp');
                     const sizeKB = Math.max(1, Math.round(blob.size / 1024));
                     mediaWebPStore[fileName] = {
                         blob: blob,
@@ -773,13 +807,13 @@
         // MANAJEMEN WACANA / TEKS BACAAN (SOAL BERANAK)
         // =========================================================================
         let counterWacana = 0;
-        function tambahWacanaCBT(kodeCustom, teksCustom) {
+        function tambahWacanaCBT(kodeCustom, teksCustom, imgCustom) {
             counterWacana++;
             const kode = kodeCustom || `W${counterWacana}`;
             daftarWacanaCBT.push({
                 id_wacana: kode,
                 teks_wacana: teksCustom || '',
-                img_wacana: ''
+                img_wacana: imgCustom || ''
             });
             renderWacanaCBT();
             renderDaftarKartuCBT();
@@ -791,7 +825,6 @@
             const imgKey = daftarWacanaCBT[index].img_wacana;
             if (imgKey && mediaWebPStore[imgKey]) delete mediaWebPStore[imgKey];
             daftarWacanaCBT.splice(index, 1);
-            // Lepaskan ikatan soal yang memakai wacana ini
             daftarSoalCBT.forEach(s => {
                 if (s.id_wacana === kodeHapus) s.id_wacana = '';
             });
@@ -810,12 +843,13 @@
             let html = '';
             daftarWacanaCBT.forEach((w, idx) => {
                 const imgData = w.img_wacana && mediaWebPStore[w.img_wacana] ? mediaWebPStore[w.img_wacana] : null;
+                const isMissingImg = w.img_wacana && !imgData;
                 html += `
                     <div class="border border-indigo-200 bg-indigo-50/50 rounded-lg p-3 space-y-2">
                         <div class="flex justify-between items-center">
                             <span class="bg-indigo-600 text-white text-xs font-black px-2.5 py-0.5 rounded">Kode Bacaan: ${w.id_wacana}</span>
                             <div class="flex items-center space-x-2">
-                                <button type="button" onclick="pilihGambarWacana(${idx})" class="bg-white border border-indigo-300 text-indigo-700 px-2 py-1 rounded text-xs font-bold hover:bg-indigo-100">📷 ${w.img_wacana ? 'Ganti Gambar' : 'Gambar Wacana'}</button>
+                                <button type="button" onclick="pilihGambarWacana(${idx})" class="bg-white border border-indigo-300 text-indigo-700 px-2 py-1 rounded text-xs font-bold hover:bg-indigo-100">📷 ${w.img_wacana ? 'Pilih Ulang Gambar' : 'Gambar Wacana'}</button>
                                 <button type="button" onclick="hapusWacanaCBT(${idx})" class="text-red-500 hover:bg-red-100 px-2 py-0.5 rounded text-xs font-bold">🗑️ Hapus</button>
                             </div>
                         </div>
@@ -827,6 +861,12 @@
                                     <p class="font-bold text-emerald-700">${w.img_wacana} (${imgData.sizeKB} KB)</p>
                                     <button type="button" onclick="hapusGambarMedia('${w.img_wacana}', () => { daftarWacanaCBT[${idx}].img_wacana = ''; renderWacanaCBT(); })" class="text-red-500 font-bold hover:underline mt-0.5">✕ Hapus Gambar</button>
                                 </div>
+                            </div>
+                        ` : ''}
+                        ${isMissingImg ? `
+                            <div class="flex items-center justify-between bg-amber-100 border border-amber-400 text-amber-900 p-2 rounded text-xs">
+                                <span>⚠️ Gambar <b>${w.img_wacana}</b> belum dimuat ulang di sesi Edit ini. Silakan klik "Pilih Ulang Gambar" atau lepas gambar.</span>
+                                <button type="button" onclick="daftarWacanaCBT[${idx}].img_wacana = ''; renderWacanaCBT(); renderPreviewCBT();" class="text-red-600 font-bold underline ml-2">Lepas Gambar</button>
                             </div>
                         ` : ''}
                     </div>
@@ -849,20 +889,49 @@
         let counterUidSoalCBT = 0;
         function buatObjekSoalCBTDefault(customData = {}) {
             counterUidSoalCBT++;
+            const defaultOpsi = [
+                { kode: 'A', teks: '', img: '' },
+                { kode: 'B', teks: '', img: '' },
+                { kode: 'C', teks: '', img: '' },
+                { kode: 'D', teks: '', img: '' },
+                { kode: 'E', teks: '', img: '' }
+            ];
+            let mergedOpsi = defaultOpsi;
+            if (Array.isArray(customData.opsi) && customData.opsi.length > 0) {
+                mergedOpsi = defaultOpsi.map((def, i) => {
+                    const found = customData.opsi[i] || {};
+                    return { kode: def.kode, teks: found.teks || '', img: found.img || '' };
+                });
+            }
+
+            const defaultTF = ['', '', '', '', ''];
+            let mergedTF = defaultTF;
+            if (Array.isArray(customData.pernyataan_tf)) {
+                mergedTF = defaultTF.map((_, i) => customData.pernyataan_tf[i] || '');
+            }
+
+            const defaultJodohKiri = ['', '', '', '', ''];
+            let mergedJodohKiri = defaultJodohKiri;
+            if (Array.isArray(customData.jodoh_kiri)) {
+                mergedJodohKiri = defaultJodohKiri.map((_, i) => customData.jodoh_kiri[i] || '');
+            }
+
+            const defaultJodohKanan = ['', '', '', '', ''];
+            let mergedJodohKanan = defaultJodohKanan;
+            if (Array.isArray(customData.jodoh_kanan)) {
+                mergedJodohKanan = defaultJodohKanan.map((_, i) => customData.jodoh_kanan[i] || '');
+            }
+
             return {
                 uid: counterUidSoalCBT,
                 type: customData.type || 'pg_4',
                 id_wacana: customData.id_wacana || '',
                 teks_soal: customData.teks_soal || '',
                 img_soal: customData.img_soal || '',
-                opsi: customData.opsi || [
-                    { kode: 'A', teks: '', img: '' },
-                    { kode: 'B', teks: '', img: '' },
-                    { kode: 'C', teks: '', img: '' },
-                    { kode: 'D', teks: '', img: '' },
-                    { kode: 'E', teks: '', img: '' }
-                ],
-                pernyataan_tf: customData.pernyataan_tf || ['', '', '', '', ''],
+                opsi: mergedOpsi,
+                pernyataan_tf: mergedTF,
+                jodoh_kiri: mergedJodohKiri,
+                jodoh_kanan: mergedJodohKanan,
                 kunci: customData.kunci || '',
                 bobot: customData.bobot !== undefined ? customData.bobot : defaultPoinBenar,
                 bobot_salah: customData.bobot_salah !== undefined ? customData.bobot_salah : defaultPoinSalah
@@ -927,6 +996,34 @@
             renderPreviewCBT();
         }
 
+        // Helper interaktif untuk memilih pasangan kunci Menjodohkan per nomor kiri
+        function pilihPasanganJodohCBT(idx, nomorKiri, hurufKanan) {
+            const s = daftarSoalCBT[idx];
+            let bersih = (s.kunci || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+            let pairs = bersih.match(/\d+[A-Z]/g) || [];
+            let mapPasangan = {};
+            pairs.forEach(p => {
+                const num = parseInt(p.match(/\d+/)[0]);
+                const chr = p.match(/[A-Z]/)[0];
+                mapPasangan[num] = chr;
+            });
+
+            if (!hurufKanan) {
+                delete mapPasangan[nomorKiri];
+            } else {
+                mapPasangan[nomorKiri] = hurufKanan;
+            }
+
+            const hasilArr = Object.keys(mapPasangan)
+                .map(k => parseInt(k))
+                .sort((a, b) => a - b)
+                .map(k => `${k}${mapPasangan[k]}`);
+
+            s.kunci = hasilArr.join(', ');
+            renderDaftarKartuCBT();
+            renderPreviewCBT();
+        }
+
         function pilihGambarSoalCBT(idx) {
             const uid = daftarSoalCBT[idx].uid;
             pilihDanCropGambar(`soal_${uid}`, (fileName) => {
@@ -954,13 +1051,14 @@
             let html = '';
             daftarSoalCBT.forEach((s, idx) => {
                 const imgSoalData = s.img_soal && mediaWebPStore[s.img_soal] ? mediaWebPStore[s.img_soal] : null;
+                const isMissingImgSoal = s.img_soal && !imgSoalData;
                 let opsiWacanaHtml = `<option value="">-- Tanpa Bacaan (Berdiri Sendiri) --</option>`;
                 daftarWacanaCBT.forEach(w => {
                     opsiWacanaHtml += `<option value="${w.id_wacana}" ${s.id_wacana === w.id_wacana ? 'selected' : ''}>📚 Ikat ke Bacaan ${w.id_wacana}</option>`;
                 });
 
                 html += `
-                <div class="border-2 ${previewIndexCBT === idx ? 'border-blue-500 bg-blue-50/20' : 'border-gray-200 bg-white'} rounded-xl p-4 shadow-sm transition" onclick="if(previewIndexCBT !== ${idx}) { previewIndexCBT = ${idx}; renderPreviewCBT(); }">
+                <div id="kartu_cbt_${idx}" class="border-2 ${previewIndexCBT === idx ? 'border-blue-500 bg-blue-50/20' : 'border-gray-200 bg-white'} rounded-xl p-4 shadow-sm transition" onclick="if(previewIndexCBT !== ${idx}) { previewIndexCBT = ${idx}; renderPreviewCBT(); }">
                     <!-- Header Kartu Soal -->
                     <div class="flex flex-wrap justify-between items-center gap-2 border-b pb-2 mb-3">
                         <div class="flex items-center space-x-2">
@@ -1002,10 +1100,10 @@
                     <!-- Teks Soal & Gambar Soal -->
                     <div class="space-y-2 mb-3">
                         <div class="flex justify-between items-center">
-                            <label class="text-xs font-bold text-gray-700">Pertanyaan Soal:</label>
-                            <button type="button" onclick="pilihGambarSoalCBT(${idx})" class="bg-blue-50 border border-blue-300 text-blue-700 px-2.5 py-1 rounded text-xs font-bold hover:bg-blue-100">📷 ${s.img_soal ? 'Ganti Gambar Soal' : 'Sisipkan Gambar Soal'}</button>
+                            <label class="text-xs font-bold text-gray-700">Pertanyaan / Pengantar Soal:</label>
+                            <button type="button" onclick="pilihGambarSoalCBT(${idx})" class="bg-blue-50 border border-blue-300 text-blue-700 px-2.5 py-1 rounded text-xs font-bold hover:bg-blue-100">📷 ${s.img_soal ? 'Pilih Ulang Gambar Soal' : 'Sisipkan Gambar Soal'}</button>
                         </div>
-                        <textarea rows="2" placeholder="Ketik pertanyaan soal nomor ${idx + 1} di sini..." class="w-full border rounded-lg p-2 text-sm" oninput="daftarSoalCBT[${idx}].teks_soal = this.value; renderPreviewCBT()">${s.teks_soal}</textarea>
+                        <textarea rows="2" placeholder="Ketik pertanyaan atau instruksi soal nomor ${idx + 1} di sini..." class="w-full border rounded-lg p-2 text-sm" oninput="daftarSoalCBT[${idx}].teks_soal = this.value; renderPreviewCBT()">${s.teks_soal}</textarea>
                         ${imgSoalData ? `
                             <div class="flex items-center space-x-3 bg-gray-50 p-2 rounded border">
                                 <img src="${imgSoalData.dataUrl}" class="h-16 rounded border object-contain bg-white">
@@ -1013,6 +1111,12 @@
                                     <p class="font-bold text-emerald-700">${s.img_soal} (${imgSoalData.sizeKB} KB)</p>
                                     <button type="button" onclick="hapusGambarMedia('${s.img_soal}', () => { daftarSoalCBT[${idx}].img_soal = ''; renderDaftarKartuCBT(); })" class="text-red-500 font-bold hover:underline">✕ Hapus Gambar Soal</button>
                                 </div>
+                            </div>
+                        ` : ''}
+                        ${isMissingImgSoal ? `
+                            <div class="flex items-center justify-between bg-amber-100 border border-amber-400 text-amber-900 p-2 rounded text-xs">
+                                <span>⚠️ Gambar soal (<b>${s.img_soal}</b>) perlu di-crop ulang atau dipulihkan dari file .enc lama.</span>
+                                <button type="button" onclick="daftarSoalCBT[${idx}].img_soal = ''; renderDaftarKartuCBT(); renderPreviewCBT();" class="text-red-600 font-bold underline ml-2">Tanpa Gambar</button>
                             </div>
                         ` : ''}
                     </div>
@@ -1034,7 +1138,7 @@
                 const count = parseInt(tipe.split('_').pop());
                 const kunciArr = s.kunci ? s.kunci.split(',') : [];
                 let html = `<div class="space-y-2 bg-gray-50 p-3 rounded-lg border">
-                    <p class="text-[11px] font-bold text-gray-600 mb-1">${isKompleks ? '☑️ Klik huruf di kiri untuk memilih Kunci Jawaban (Bisa lebih dari 1):' : '🔘 Klik huruf di kiri untuk memilih Kunci Jawaban Benar:'}</p>`;
+                    <p class="text-[11px] font-bold text-gray-600 mb-1">${isKompleks ? '☑️ Klik huruf di kiri untuk memilih Kunci Jawaban (Wajib pilih minimal 2 opsi benar):' : '🔘 Klik huruf di kiri untuk memilih Kunci Jawaban Benar:'}</p>`;
 
                 for (let i = 0; i < count; i++) {
                     const op = s.opsi[i];
@@ -1043,12 +1147,13 @@
                     const btnColor = isSelected ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300';
                     const clickHandler = isKompleks ? `toggleKunciKompleks_CBT(${idx}, '${op.kode}')` : `setKunciPG_CBT(${idx}, '${op.kode}')`;
                     const imgOpsiData = op.img && mediaWebPStore[op.img] ? mediaWebPStore[op.img] : null;
+                    const isMissingImgOpsi = op.img && !imgOpsiData;
 
                     html += `
                     <div class="space-y-1">
                         <div class="flex items-center space-x-2">
                             <button type="button" onclick="${clickHandler}" class="w-7 h-7 ${btnShape} border-2 font-black text-xs flex-shrink-0 ${btnColor}" title="Jadikan Kunci">${op.kode}</button>
-                            <input type="text" placeholder="Teks Opsi ${op.kode}..." value="${op.teks.replace(/"/g, '&quot;')}" class="flex-1 border rounded p-1.5 text-xs bg-white" oninput="daftarSoalCBT[${idx}].opsi[${i}].teks = this.value; renderPreviewCBT()">
+                            <input type="text" placeholder="Teks Opsi ${op.kode}..." value="${(op.teks || '').replace(/"/g, '&quot;')}" class="flex-1 border rounded p-1.5 text-xs bg-white" oninput="daftarSoalCBT[${idx}].opsi[${i}].teks = this.value; renderPreviewCBT()">
                             <button type="button" onclick="pilihGambarOpsiCBT(${idx}, ${i})" class="bg-white border text-gray-600 hover:text-blue-600 px-2 py-1 rounded text-xs font-bold" title="Gambar Opsi ${op.kode}">📷</button>
                         </div>
                         ${imgOpsiData ? `
@@ -1058,48 +1163,120 @@
                                 <button type="button" onclick="hapusGambarMedia('${op.img}', () => { daftarSoalCBT[${idx}].opsi[${i}].img = ''; renderDaftarKartuCBT(); })" class="text-red-500 text-[10px] font-bold">✕</button>
                             </div>
                         ` : ''}
+                        ${isMissingImgOpsi ? `
+                            <div class="ml-9 flex items-center space-x-2 bg-amber-100 border border-amber-400 text-amber-900 px-2 py-1 rounded text-[10px]">
+                                <span>⚠️ Gambar Opsi ${op.kode} (${op.img}) belum dimuat ulang.</span>
+                                <button type="button" onclick="daftarSoalCBT[${idx}].opsi[${i}].img = ''; renderDaftarKartuCBT(); renderPreviewCBT();" class="text-red-600 font-bold underline">Lepas</button>
+                            </div>
+                        ` : ''}
                     </div>`;
                 }
                 html += `</div>`;
                 return html;
             }
 
-            // 2. BENAR / SALAH (1 PERNYATAAN)
-            if (tipe === 'tf') {
-                return `
-                <div class="bg-gray-50 p-3 rounded-lg border flex items-center space-x-3">
-                    <span class="text-xs font-bold text-gray-700">Pilih Kunci Jawaban:</span>
-                    <button type="button" onclick="setKunciPG_CBT(${idx}, 'B')" class="px-4 py-1.5 rounded font-bold text-xs border ${s.kunci === 'B' ? 'bg-green-600 text-white' : 'bg-white text-green-700'}">BENAR (B)</button>
-                    <button type="button" onclick="setKunciPG_CBT(${idx}, 'S')" class="px-4 py-1.5 rounded font-bold text-xs border ${s.kunci === 'S' ? 'bg-red-600 text-white' : 'bg-white text-red-700'}">SALAH (S)</button>
-                </div>`;
-            }
-
-            // 3. BENAR / SALAH KOMPLEKS (2 s.d 5 PERNYATAAN)
-            if (tipe.startsWith('tf_kompleks_')) {
-                const count = parseInt(tipe.split('_')[2]);
+            // 2. BENAR / SALAH (1 PERNYATAAN) & B/S KOMPLEKS (2 s.d 5 PERNYATAAN)
+            if (tipe === 'tf' || tipe.startsWith('tf_kompleks_')) {
+                const count = (tipe === 'tf') ? 1 : parseInt(tipe.split('_')[2]);
                 const kunciArr = s.kunci ? s.kunci.split(',') : [];
                 let html = `<div class="space-y-2 bg-gray-50 p-3 rounded-lg border">
-                    <p class="text-[11px] font-bold text-gray-600">Ketik teks tiap pernyataan dan klik kunci <b>B</b> atau <b>S</b>:</p>`;
+                    <div class="flex justify-between items-center text-[11px] font-bold text-gray-600 border-b pb-1">
+                        <span>📋 Daftar Pernyataan (${count} Pernyataan)</span>
+                        <span>Kunci (Benar / Salah)</span>
+                    </div>`;
                 for (let i = 0; i < count; i++) {
-                    const kVal = kunciArr[i] || '';
+                    const kVal = (tipe === 'tf') ? s.kunci : (kunciArr[i] || '');
+                    const clickB = (tipe === 'tf') ? `setKunciPG_CBT(${idx}, 'B')` : `setKunciTFKompleks_CBT(${idx}, ${i}, ${count}, 'B')`;
+                    const clickS = (tipe === 'tf') ? `setKunciPG_CBT(${idx}, 'S')` : `setKunciTFKompleks_CBT(${idx}, ${i}, ${count}, 'S')`;
+
                     html += `
                     <div class="flex items-center space-x-2">
                         <span class="text-xs font-bold text-gray-500 w-6">#${i + 1}</span>
-                        <input type="text" placeholder="Teks pernyataan ke-${i + 1}..." value="${(s.pernyataan_tf[i] || '').replace(/"/g, '&quot;')}" class="flex-1 border rounded p-1.5 text-xs bg-white" oninput="daftarSoalCBT[${idx}].pernyataan_tf[${i}] = this.value; renderPreviewCBT()">
-                        <button type="button" onclick="setKunciTFKompleks_CBT(${idx}, ${i}, ${count}, 'B')" class="px-2.5 py-1 rounded text-xs font-bold border ${kVal === 'B' ? 'bg-blue-600 text-white' : 'bg-white text-green-700'}">B</button>
-                        <button type="button" onclick="setKunciTFKompleks_CBT(${idx}, ${i}, ${count}, 'S')" class="px-2.5 py-1 rounded text-xs font-bold border ${kVal === 'S' ? 'bg-blue-600 text-white' : 'bg-white text-red-700'}">S</button>
+                        <input type="text" placeholder="Ketik teks pernyataan ke-${i + 1} di sini..." value="${(s.pernyataan_tf[i] || '').replace(/"/g, '&quot;')}" class="flex-1 border rounded p-1.5 text-xs bg-white" oninput="daftarSoalCBT[${idx}].pernyataan_tf[${i}] = this.value; renderPreviewCBT()">
+                        <button type="button" onclick="${clickB}" class="px-3 py-1.5 rounded text-xs font-bold border transition ${kVal === 'B' ? 'bg-green-600 text-white border-green-700 shadow-sm' : 'bg-white text-green-700 hover:bg-green-50'}">Benar (B)</button>
+                        <button type="button" onclick="${clickS}" class="px-3 py-1.5 rounded text-xs font-bold border transition ${kVal === 'S' ? 'bg-red-600 text-white border-red-700 shadow-sm' : 'bg-white text-red-700 hover:bg-red-50'}">Salah (S)</button>
                     </div>`;
                 }
                 html += `</div>`;
                 return html;
             }
 
-            // 4. MENJODOHKAN & ISIAN SINGKAT
-            if (tipe === 'jodoh' || tipe === 'isian') {
+            // 3. MENJODOHKAN (5 INPUT PERNYATAAN KIRI & 5 INPUT PILIHAN KANAN + KUNCI PASANGAN)
+            if (tipe === 'jodoh') {
+                const hurufOpsi = ['A', 'B', 'C', 'D', 'E'];
+                let bersihKunci = (s.kunci || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+                let pairs = bersihKunci.match(/\d+[A-Z]/g) || [];
+                let mapPasangan = {};
+                pairs.forEach(p => {
+                    const num = parseInt(p.match(/\d+/)[0]);
+                    const chr = p.match(/[A-Z]/)[0];
+                    mapPasangan[num] = chr;
+                });
+
+                let html = `
+                <div class="bg-gray-50 p-3 rounded-lg border space-y-3">
+                    <p class="text-[11px] font-bold text-indigo-900 bg-indigo-50 p-2 rounded border border-indigo-200">
+                        💡 <b>Cara Penyusunan Menjodohkan:</b> Isi pernyataan di bagian kiri (1–5) dan pilihan jawaban di bagian kanan (A–E) sesuai kebutuhan (misal: isi 3 pernyataan kiri dan 4 opsi kanan, sisanya kosongkan). Lalu pilih atau ketik kunci pasangannya di bawah.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <!-- Kolom Kiri: 5 Input Pernyataan -->
+                        <div class="bg-white p-2.5 rounded border space-y-2">
+                            <p class="text-xs font-black text-blue-800 border-b pb-1">🟦 Bagian Kiri: Pernyataan (1 s.d 5)</p>`;
+                for (let i = 0; i < 5; i++) {
+                    html += `
+                            <div class="flex items-center space-x-1.5">
+                                <span class="w-6 h-6 rounded bg-blue-100 text-blue-800 font-black text-xs flex items-center justify-center flex-shrink-0">${i + 1}</span>
+                                <input type="text" placeholder="Pernyataan ${i + 1} (Kosongkan jika tidak dipakai)" value="${(s.jodoh_kiri[i] || '').replace(/"/g, '&quot;')}" class="flex-1 border rounded p-1.5 text-xs" oninput="daftarSoalCBT[${idx}].jodoh_kiri[${i}] = this.value; renderPreviewCBT()" onchange="renderDaftarKartuCBT()">
+                            </div>`;
+                }
+                html += `
+                        </div>
+                        <!-- Kolom Kanan: 5 Input Pilihan -->
+                        <div class="bg-white p-2.5 rounded border space-y-2">
+                            <p class="text-xs font-black text-emerald-800 border-b pb-1">🟩 Bagian Kanan: Pilihan Jawaban (A s.d E)</p>`;
+                for (let i = 0; i < 5; i++) {
+                    const h = hurufOpsi[i];
+                    html += `
+                            <div class="flex items-center space-x-1.5">
+                                <span class="w-6 h-6 rounded bg-emerald-100 text-emerald-800 font-black text-xs flex items-center justify-center flex-shrink-0">${h}</span>
+                                <input type="text" placeholder="Pilihan ${h} (Kosongkan jika tidak dipakai)" value="${(s.jodoh_kanan[i] || '').replace(/"/g, '&quot;')}" class="flex-1 border rounded p-1.5 text-xs" oninput="daftarSoalCBT[${idx}].jodoh_kanan[${i}] = this.value; renderPreviewCBT()" onchange="renderDaftarKartuCBT()">
+                            </div>`;
+                }
+                html += `
+                        </div>
+                    </div>
+
+                    <!-- Pemilih Kunci Pasangan Otomatis & Input Teks -->
+                    <div class="bg-white p-3 rounded border space-y-2">
+                        <label class="block text-xs font-bold text-gray-700">🔑 Kunci Pasangan Jawaban Menjodohkan:</label>
+                        <div class="flex flex-wrap gap-2">`;
+                for (let i = 0; i < 5; i++) {
+                    const num = i + 1;
+                    const teksKiri = (s.jodoh_kiri[i] || '').trim();
+                    const chosenChr = mapPasangan[num] || '';
+                    html += `
+                            <div class="flex items-center space-x-1 bg-gray-50 border rounded px-2 py-1 ${teksKiri ? 'border-blue-300' : 'opacity-60'}">
+                                <span class="text-xs font-black text-blue-800">${num} ➔</span>
+                                <select class="text-xs font-bold bg-transparent outline-none text-emerald-700" onchange="pilihPasanganJodohCBT(${idx}, ${num}, this.value)">
+                                    <option value="">--</option>
+                                    ${hurufOpsi.map((h, hIdx) => `<option value="${h}" ${chosenChr === h ? 'selected' : ''}>${h}${(s.jodoh_kanan[hIdx] || '').trim() ? '' : ' (Kosong)'}</option>`).join('')}
+                                </select>
+                            </div>`;
+                }
+                html += `
+                        </div>
+                        <input type="text" value="${(s.kunci || '').replace(/"/g, '&quot;')}" placeholder="Atau ketik manual: 1A, 2B, 3C" class="w-full border rounded p-2 text-xs font-black uppercase bg-blue-50/40 text-blue-900" oninput="daftarSoalCBT[${idx}].kunci = this.value.toUpperCase(); renderPreviewCBT()" onchange="renderDaftarKartuCBT()">
+                    </div>
+                </div>`;
+                return html;
+            }
+
+            // 4. ISIAN SINGKAT
+            if (tipe === 'isian') {
                 return `
                 <div class="bg-gray-50 p-3 rounded-lg border">
-                    <label class="block text-xs font-bold text-gray-700 mb-1">${tipe === 'jodoh' ? 'Kunci Pasangan Menjodohkan (Contoh: 1A, 2B, 3C):' : 'Kunci Jawaban Pasti / Exact Match (Tanpa Satuan):'}</label>
-                    <input type="text" value="${s.kunci.replace(/"/g, '&quot;')}" placeholder="${tipe === 'jodoh' ? 'Misal: 1A, 2B, 3C (Tuliskan daftar pasangan di kotak Pertanyaan Soal di atas)' : 'Ketik kunci jawaban singkat...'}" class="w-full border rounded p-2 text-xs font-bold uppercase bg-white" oninput="daftarSoalCBT[${idx}].kunci = this.value.trim().toUpperCase(); renderPreviewCBT()">
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Kunci Jawaban Pasti / Exact Match (Tanpa Satuan):</label>
+                    <input type="text" value="${(s.kunci || '').replace(/"/g, '&quot;')}" placeholder="Ketik kunci jawaban singkat..." class="w-full border rounded p-2 text-xs font-bold uppercase bg-white" oninput="daftarSoalCBT[${idx}].kunci = this.value.trim().toUpperCase(); renderPreviewCBT()">
                 </div>`;
             }
 
@@ -1113,6 +1290,7 @@
         function navigasiPreviewCBT(step) {
             if (daftarSoalCBT.length === 0) return;
             previewIndexCBT = Math.max(0, Math.min(daftarSoalCBT.length - 1, previewIndexCBT + step));
+            renderDaftarKartuCBT();
             renderPreviewCBT();
         }
 
@@ -1149,7 +1327,7 @@
                 </div>`;
             }
 
-            // Tampilkan Pertanyaan & Gambar Soal
+            // Tampilkan Pertanyaan & Gambar Soal di Atas
             const imgS = s.img_soal && mediaWebPStore[s.img_soal] ? mediaWebPStore[s.img_soal] : null;
             html += `
                 <div class="bg-white p-4 rounded-xl border shadow-sm space-y-3">
@@ -1158,7 +1336,7 @@
                 </div>
             `;
 
-            // Tampilkan Simulasi Opsi Jawaban
+            // Tampilkan Simulasi Opsi Jawaban sesuai Tipe Soal
             if (s.type.startsWith('pg_')) {
                 const isKompleks = s.type.includes('kompleks');
                 const count = parseInt(s.type.split('_').pop());
@@ -1180,19 +1358,81 @@
                     `;
                 }
                 html += `</div>`;
-            } else if (s.type.startsWith('tf_kompleks_')) {
-                const count = parseInt(s.type.split('_')[2]);
-                const kunciArr = s.kunci ? s.kunci.split(',') : [];
-                html += `<div class="bg-white rounded-lg border divide-y text-xs">`;
+            } 
+            // Preview Benar / Salah (1 Pernyataan & Kompleks): Soal di atas, Tabel Pernyataan di bawah dengan 2 kolom Benar & Salah di sampingnya
+            else if (s.type === 'tf' || s.type.startsWith('tf_kompleks_')) {
+                const count = (s.type === 'tf') ? 1 : parseInt(s.type.split('_')[2]);
+                const kunciArr = (s.type === 'tf') ? [s.kunci] : (s.kunci ? s.kunci.split(',') : []);
+
+                html += `
+                <div class="bg-white rounded-xl border overflow-hidden shadow-sm">
+                    <table class="min-w-full text-xs border-collapse">
+                        <thead class="bg-gray-100 border-b text-gray-700">
+                            <tr>
+                                <th class="p-2.5 border-r text-left">Pernyataan</th>
+                                <th class="p-2.5 border-r text-center w-20 text-green-700 font-extrabold">Benar</th>
+                                <th class="p-2.5 text-center w-20 text-red-600 font-extrabold">Salah</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y">`;
                 for (let i = 0; i < count; i++) {
+                    const kVal = kunciArr[i] || '';
+                    const isB = (kVal === 'B');
+                    const isS = (kVal === 'S');
                     html += `
-                        <div class="p-2.5 flex justify-between items-center">
-                            <span class="flex-1 pr-2">${i + 1}. ${s.pernyataan_tf[i] || '<i class="text-gray-400">Pernyataan...</i>'}</span>
-                            <span class="font-black px-2 py-0.5 rounded ${kunciArr[i] === 'B' ? 'bg-green-100 text-green-700' : (kunciArr[i] === 'S' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-400')}">Kunci: ${kunciArr[i] || '?'}</span>
-                        </div>
-                    `;
+                            <tr class="hover:bg-gray-50">
+                                <td class="p-3 border-r text-gray-800 leading-relaxed">
+                                    <span class="font-bold text-gray-500 mr-1">${count > 1 ? (i + 1) + '.' : ''}</span>
+                                    ${s.pernyataan_tf[i] || `<i class="text-gray-400">(Pernyataan ${i + 1} belum diisi...)</i>`}
+                                </td>
+                                <td class="p-2.5 border-r text-center ${isB ? 'bg-green-50' : ''}">
+                                    <div class="w-6 h-6 mx-auto rounded-full border-2 flex items-center justify-center font-black ${isB ? 'border-green-600 bg-green-600 text-white' : 'border-gray-300 bg-white text-transparent'}">✓</div>
+                                </td>
+                                <td class="p-2.5 text-center ${isS ? 'bg-red-50' : ''}">
+                                    <div class="w-6 h-6 mx-auto rounded-full border-2 flex items-center justify-center font-black ${isS ? 'border-red-600 bg-red-600 text-white' : 'border-gray-300 bg-white text-transparent'}">✓</div>
+                                </td>
+                            </tr>`;
                 }
-                html += `</div>`;
+                html += `
+                        </tbody>
+                    </table>
+                </div>`;
+            }
+            // Preview Menjodohkan: Tampilkan Kolom Pernyataan Kiri & Pilihan Kanan berdampingan + Kunci
+            else if (s.type === 'jodoh') {
+                const hurufOpsi = ['A', 'B', 'C', 'D', 'E'];
+                const kiriAktif = s.jodoh_kiri.map((t, i) => ({ no: i + 1, teks: (t || '').trim() })).filter(x => x.teks !== '');
+                const kananAktif = s.jodoh_kanan.map((t, i) => ({ kode: hurufOpsi[i], teks: (t || '').trim() })).filter(x => x.teks !== '');
+                const bersihKunci = (s.kunci || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+                const pairs = (bersihKunci.match(/\d+[A-Z]/g) || []).sort();
+
+                html += `
+                <div class="bg-white rounded-xl border p-3 shadow-sm space-y-3">
+                    <div class="grid grid-cols-2 gap-3 text-xs">
+                        <div class="space-y-1.5">
+                            <p class="font-black text-blue-800 border-b pb-1">Pernyataan (Kiri)</p>
+                            ${kiriAktif.length > 0 ? kiriAktif.map(k => `
+                                <div class="p-2 rounded border bg-blue-50/40 flex items-start space-x-2">
+                                    <span class="w-5 h-5 rounded bg-blue-600 text-white font-bold flex items-center justify-center flex-shrink-0 text-[11px]">${k.no}</span>
+                                    <span class="text-gray-800">${k.teks}</span>
+                                </div>
+                            `).join('') : '<p class="text-gray-400 italic">Belum ada pernyataan kiri.</p>'}
+                        </div>
+                        <div class="space-y-1.5">
+                            <p class="font-black text-emerald-800 border-b pb-1">Pilihan Pasangan (Kanan)</p>
+                            ${kananAktif.length > 0 ? kananAktif.map(k => `
+                                <div class="p-2 rounded border bg-emerald-50/40 flex items-start space-x-2">
+                                    <span class="w-5 h-5 rounded bg-emerald-600 text-white font-bold flex items-center justify-center flex-shrink-0 text-[11px]">${k.kode}</span>
+                                    <span class="text-gray-800">${k.teks}</span>
+                                </div>
+                            `).join('') : '<p class="text-gray-400 italic">Belum ada pilihan kanan.</p>'}
+                        </div>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 p-2.5 rounded-lg text-xs text-emerald-900 flex justify-between items-center">
+                        <span><b>Kunci Pasangan Tersimpan:</b> ${pairs.length > 0 ? pairs.join(' , ') : '<i class="text-red-500">Belum diatur</i>'}</span>
+                        <span class="text-[10px] bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded font-bold">Format Sistem: ${pairs.join('')}</span>
+                    </div>
+                </div>`;
             } else {
                 html += `
                     <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-lg text-xs text-emerald-900">
@@ -1203,11 +1443,15 @@
 
             layar.innerHTML = html;
 
-            // Render peta tombol nomor kecil di bawah preview
+            // Render peta tombol nomor kecil di bawah preview (Beri warna merah jika kunci belum lengkap)
             let petaHtml = '';
             daftarSoalCBT.forEach((item, idx) => {
                 const active = (idx === previewIndexCBT);
-                petaHtml += `<button type="button" onclick="previewIndexCBT = ${idx}; renderPreviewCBT()" class="w-7 h-7 rounded text-xs font-bold flex-shrink-0 ${active ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}">${idx + 1}</button>`;
+                const validItem = cekValidasiSatuSoalCBT(item, idx + 1);
+                let btnColor = active
+                    ? 'bg-blue-600 text-white ring-2 ring-blue-300'
+                    : (validItem.valid ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200' : 'bg-red-100 text-red-700 border border-red-300');
+                petaHtml += `<button type="button" title="${validItem.valid ? 'Soal #' + (idx+1) + ' Lengkap' : validItem.pesan}" onclick="previewIndexCBT = ${idx}; renderDaftarKartuCBT(); renderPreviewCBT()" class="w-7 h-7 rounded text-xs font-bold flex-shrink-0 ${btnColor}">${idx + 1}</button>`;
             });
             peta.innerHTML = petaHtml;
         }
@@ -1223,11 +1467,16 @@
                     "Teks_Wacana": "Bacalah paragraf berikut! Ekosistem hutan hujan tropis memiliki keanekaragaman hayati yang sangat tinggi.",
                     "Tipe_Soal": "pg_4",
                     "Teks_Soal": "Berdasarkan bacaan di atas, apa ciri utama hutan hujan tropis?",
-                    "Opsi_A": "Keanekaragaman hayati tinggi",
-                    "Opsi_B": "Curah hujan sangat rendah",
-                    "Opsi_C": "Didominasi padang pasir",
-                    "Opsi_D": "Hanya memiliki satu jenis pohon",
-                    "Opsi_E": "",
+                    "Opsi_A_Atau_Pernyataan_1": "Keanekaragaman hayati tinggi",
+                    "Opsi_B_Atau_Pernyataan_2": "Curah hujan sangat rendah",
+                    "Opsi_C_Atau_Pernyataan_3": "Didominasi padang pasir",
+                    "Opsi_D_Atau_Pernyataan_4": "Hanya memiliki satu jenis pohon",
+                    "Opsi_E_Atau_Pernyataan_5": "",
+                    "Jodoh_Kanan_A": "",
+                    "Jodoh_Kanan_B": "",
+                    "Jodoh_Kanan_C": "",
+                    "Jodoh_Kanan_D": "",
+                    "Jodoh_Kanan_E": "",
                     "Kunci_Jawaban": "A",
                     "Poin_Benar": 2,
                     "Poin_Salah": 0
@@ -1236,14 +1485,19 @@
                     "No": 2,
                     "Kode_Wacana": "W1",
                     "Teks_Wacana": "",
-                    "Tipe_Soal": "pg_kompleks_4",
-                    "Teks_Soal": "Manakah yang termasuk komponen biotik di dalam ekosistem hutan? (Pilih lebih dari satu)",
-                    "Opsi_A": "Pohon Jati",
-                    "Opsi_B": "Batu Kali",
-                    "Opsi_C": "Harimau Sumatera",
-                    "Opsi_D": "Udara",
-                    "Opsi_E": "",
-                    "Kunci_Jawaban": "A,C",
+                    "Tipe_Soal": "tf_kompleks_3",
+                    "Teks_Soal": "Tentukan Benar atau Salah untuk setiap pernyataan berikut!",
+                    "Opsi_A_Atau_Pernyataan_1": "Hutan hujan tropis berada di wilayah garis khatulistiwa.",
+                    "Opsi_B_Atau_Pernyataan_2": "Pohon kaktus adalah tanaman utama hutan hujan tropis.",
+                    "Opsi_C_Atau_Pernyataan_3": "Indonesia memiliki hutan hujan tropis yang luas.",
+                    "Opsi_D_Atau_Pernyataan_4": "",
+                    "Opsi_E_Atau_Pernyataan_5": "",
+                    "Jodoh_Kanan_A": "",
+                    "Jodoh_Kanan_B": "",
+                    "Jodoh_Kanan_C": "",
+                    "Jodoh_Kanan_D": "",
+                    "Jodoh_Kanan_E": "",
+                    "Kunci_Jawaban": "B,S,B",
                     "Poin_Benar": 3,
                     "Poin_Salah": 0
                 },
@@ -1251,16 +1505,21 @@
                     "No": 3,
                     "Kode_Wacana": "",
                     "Teks_Wacana": "",
-                    "Tipe_Soal": "isian",
-                    "Teks_Soal": "Berapakah hasil dari 25 dikali 4?",
-                    "Opsi_A": "",
-                    "Opsi_B": "",
-                    "Opsi_C": "",
-                    "Opsi_D": "",
-                    "Opsi_E": "",
-                    "Kunci_Jawaban": "100",
+                    "Tipe_Soal": "jodoh",
+                    "Teks_Soal": "Pasangkan nama negara di sebelah kiri dengan ibu kotanya di sebelah kanan!",
+                    "Opsi_A_Atau_Pernyataan_1": "Indonesia",
+                    "Opsi_B_Atau_Pernyataan_2": "Jepang",
+                    "Opsi_C_Atau_Pernyataan_3": "Mesir",
+                    "Opsi_D_Atau_Pernyataan_4": "",
+                    "Opsi_E_Atau_Pernyataan_5": "",
+                    "Jodoh_Kanan_A": "Tokyo",
+                    "Jodoh_Kanan_B": "Jakarta",
+                    "Jodoh_Kanan_C": "Kairo",
+                    "Jodoh_Kanan_D": "London",
+                    "Jodoh_Kanan_E": "",
+                    "Kunci_Jawaban": "1B, 2A, 3C",
                     "Poin_Benar": 5,
-                    "Poin_Salah": -1
+                    "Poin_Salah": 0
                 }
             ];
             const ws = XLSX.utils.json_to_sheet(contohData);
@@ -1284,9 +1543,7 @@
                     if (rows.length === 0) return alert("File Excel kosong!");
 
                     if (daftarSoalCBT.length > 0) {
-                        if (!confirm("Apakah Anda ingin mengganti soal yang sudah ada di layar dengan hasil impor Excel ini? (Klik Cancel jika ingin menambahkan di bawahnya)")) {
-                            // lanjut tambahkan di bawah
-                        } else {
+                        if (confirm("Apakah Anda ingin mengganti soal yang sudah ada di layar dengan hasil impor Excel ini? (Klik Cancel jika ingin menambahkan di bawahnya)")) {
                             daftarWacanaCBT = [];
                             daftarSoalCBT = [];
                         }
@@ -1305,20 +1562,28 @@
                         }
 
                         const tipe = String(r.Tipe_Soal || 'pg_4').trim().toLowerCase();
+                        const col1 = String(r.Opsi_A_Atau_Pernyataan_1 !== undefined ? r.Opsi_A_Atau_Pernyataan_1 : (r.Opsi_A || ''));
+                        const col2 = String(r.Opsi_B_Atau_Pernyataan_2 !== undefined ? r.Opsi_B_Atau_Pernyataan_2 : (r.Opsi_B || ''));
+                        const col3 = String(r.Opsi_C_Atau_Pernyataan_3 !== undefined ? r.Opsi_C_Atau_Pernyataan_3 : (r.Opsi_C || ''));
+                        const col4 = String(r.Opsi_D_Atau_Pernyataan_4 !== undefined ? r.Opsi_D_Atau_Pernyataan_4 : (r.Opsi_D || ''));
+                        const col5 = String(r.Opsi_E_Atau_Pernyataan_5 !== undefined ? r.Opsi_E_Atau_Pernyataan_5 : (r.Opsi_E || ''));
+
                         const opsiArr = [
-                            { kode: 'A', teks: String(r.Opsi_A || ''), img: '' },
-                            { kode: 'B', teks: String(r.Opsi_B || ''), img: '' },
-                            { kode: 'C', teks: String(r.Opsi_C || ''), img: '' },
-                            { kode: 'D', teks: String(r.Opsi_D || ''), img: '' },
-                            { kode: 'E', teks: String(r.Opsi_E || ''), img: '' }
+                            { kode: 'A', teks: col1, img: '' },
+                            { kode: 'B', teks: col2, img: '' },
+                            { kode: 'C', teks: col3, img: '' },
+                            { kode: 'D', teks: col4, img: '' },
+                            { kode: 'E', teks: col5, img: '' }
                         ];
 
-                        const pernyataanTF = [
-                            String(r.Opsi_A || ''),
-                            String(r.Opsi_B || ''),
-                            String(r.Opsi_C || ''),
-                            String(r.Opsi_D || ''),
-                            String(r.Opsi_E || '')
+                        const pernyataanTF = [col1, col2, col3, col4, col5];
+                        const jodohKiri = [col1, col2, col3, col4, col5];
+                        const jodohKanan = [
+                            String(r.Jodoh_Kanan_A || ''),
+                            String(r.Jodoh_Kanan_B || ''),
+                            String(r.Jodoh_Kanan_C || ''),
+                            String(r.Jodoh_Kanan_D || ''),
+                            String(r.Jodoh_Kanan_E || '')
                         ];
 
                         daftarSoalCBT.push(buatObjekSoalCBTDefault({
@@ -1327,6 +1592,8 @@
                             teks_soal: String(r.Teks_Soal || ''),
                             opsi: opsiArr,
                             pernyataan_tf: pernyataanTF,
+                            jodoh_kiri: jodohKiri,
+                            jodoh_kanan: jodohKanan,
                             kunci: String(r.Kunci_Jawaban || '').trim().toUpperCase(),
                             bobot: parseInt(r.Poin_Benar) || defaultPoinBenar,
                             bobot_salah: parseInt(r.Poin_Salah) || defaultPoinSalah
@@ -1521,10 +1788,11 @@
                             <p class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded font-bold border border-red-200 flex-1 text-center truncate" title="PIN Pengawas">🔒 PIN: ${u.pin || '-'}</p>
                         </div>
 
-                        <div class="flex space-x-2">
-                            <button onclick="lihatDetailDanNilai(${index})" class="flex-1 bg-blue-600 text-white text-xs px-2 py-2 rounded font-bold hover:bg-blue-700 shadow-sm transition">🏆 Nilai Siswa</button>
-                            <button onclick="bukaModalDetailSoal(${index})" class="bg-indigo-100 text-indigo-800 text-xs px-3 py-2 rounded font-bold hover:bg-indigo-200 shadow-sm transition">🔍 Soal</button>
-                            <button onclick="hapusUjian('${u.id}')" class="bg-red-100 text-red-700 text-xs px-3 py-2 rounded font-bold hover:bg-red-200 shadow-sm transition" title="Hapus Ujian Permanen">🗑️</button>
+                        <div class="flex space-x-1.5">
+                            <button onclick="lihatDetailDanNilai(${index})" class="flex-1 bg-blue-600 text-white text-xs px-2 py-2 rounded font-bold hover:bg-blue-700 shadow-sm transition">🏆 Nilai</button>
+                            <button onclick="bukaModalDetailSoal(${index})" class="bg-indigo-100 text-indigo-800 text-xs px-2.5 py-2 rounded font-bold hover:bg-indigo-200 shadow-sm transition" title="Lihat Kunci Jawaban">🔍 Kunci</button>
+                            <button onclick="bukaEditUjian(${index})" class="bg-amber-100 text-amber-800 border border-amber-300 text-xs px-2.5 py-2 rounded font-bold hover:bg-amber-200 shadow-sm transition" title="Edit / Revisi Soal & Kunci (-1 Kredit)">✏️ Edit</button>
+                            <button onclick="hapusUjian('${u.id}')" class="bg-red-100 text-red-700 text-xs px-2.5 py-2 rounded font-bold hover:bg-red-200 shadow-sm transition" title="Hapus Ujian Permanen">🗑️</button>
                         </div>
                     </div>
                 `;
@@ -1556,6 +1824,239 @@
                 tbody.appendChild(tr);
             });
             document.getElementById('modalDetailSoal').classList.remove('hidden');
+        }
+
+        // =========================================================================
+        // FITUR EDIT / REVISI UJIAN (MODE PDF & MODE NATIVE CBT)
+        // =========================================================================
+        function bukaEditUjian(index) {
+            const sisaKredit = parseInt(document.getElementById('profKredit').innerText) || 0;
+            if (sisaKredit <= 0) {
+                if (confirm("Kredit Anda telah habis! Menyimpan revisi ujian membutuhkan 1 Kredit. Apakah Anda ingin menghubungi Admin via WhatsApp untuk top-up kredit?")) {
+                    window.open("https://wa.me/6285189603539?text=Halo%20Admin%20Examify%20PDF,%20saya%20ingin%20top%20up%20kredit%20ujian.", "_blank");
+                }
+                return;
+            }
+
+            const u = daftarUjianCache[index];
+            if (!u || !Array.isArray(u.detail_soal)) {
+                return alert("Data detail soal tidak ditemukan pada ujian ini.");
+            }
+
+            resetFormGenerator();
+            isEditMode = true;
+            editingUjianId = u.id;
+
+            // Tampilkan Banner Edit & Ubah Teks Tombol
+            document.getElementById('bannerEditMode').classList.remove('hidden');
+            document.getElementById('judulFormIdentitas').innerText = `1. Edit Identitas Ujian (${u.nama_ujian})`;
+            document.getElementById('btnGenerate').innerText = "Simpan Revisi & Unduh File Baru (-1 Kredit)";
+
+            // Isi Identitas Ujian
+            document.getElementById('genNama').value = u.nama_ujian || '';
+            document.getElementById('genMapel').value = u.mapel || '';
+            document.getElementById('genToken').value = u.token || '';
+            document.getElementById('genPin').value = u.pin || '';
+            document.getElementById('genTanggal').value = u.tanggal ? u.tanggal.slice(0, 16) : '';
+            document.getElementById('genBatasWaktu').value = u.batas_waktu ? u.batas_waktu.slice(0, 16) : '';
+
+            const isModeCBT = (u.mode_ujian === 'CBT') || (u.detail_soal.length > 0 && u.detail_soal[0].teks_soal !== undefined);
+
+            setTabAktif(false, true, false, false);
+
+            if (!isModeCBT) {
+                // --- MUAT ULANG UJIAN MODE PDF ---
+                switchModeGenerator('PDF');
+                document.getElementById('labelPilihPdf').innerHTML = `Pilih Ulang File PDF Soal <span class="text-amber-600 font-bold">(Wajib dipilih ulang untuk membuat file .enc revisi)</span>`;
+                document.getElementById('soalTableBody').innerHTML = '';
+                jumlahSoal = 0;
+
+                u.detail_soal.forEach((item) => {
+                    tambahSoalDariEditPDF(item);
+                });
+                hitungTotalPoin();
+            } else {
+                // --- MUAT ULANG UJIAN MODE NATIVE CBT ---
+                daftarWacanaCBT = [];
+                daftarSoalCBT = [];
+                counterWacana = 0;
+                counterUidSoalCBT = 0;
+
+                // Rekonstruksi Wacana dan Pengaturan dari detail_soal
+                let adaGambarLama = false;
+                const mapWacana = {};
+
+                u.detail_soal.forEach((item) => {
+                    if (item.acak_soal !== undefined) document.getElementById('genAcakSoal').checked = !!item.acak_soal;
+                    if (item.acak_opsi !== undefined) document.getElementById('genAcakOpsi').checked = !!item.acak_opsi;
+                    if (item.waktu_ujian) document.getElementById('genWaktu').value = item.waktu_ujian;
+
+                    if (item.id_wacana && !mapWacana[item.id_wacana]) {
+                        mapWacana[item.id_wacana] = {
+                            id_wacana: item.id_wacana,
+                            teks_wacana: item.teks_wacana || '',
+                            img_wacana: item.img_wacana || ''
+                        };
+                        if (item.img_wacana) adaGambarLama = true;
+                    }
+                    if (item.img_soal) adaGambarLama = true;
+                    if (Array.isArray(item.opsi)) {
+                        item.opsi.forEach(op => { if (op.img) adaGambarLama = true; });
+                    }
+
+                    daftarSoalCBT.push(buatObjekSoalCBTDefault({
+                        type: item.type || 'pg_4',
+                        id_wacana: item.id_wacana || '',
+                        teks_soal: item.teks_soal || '',
+                        img_soal: item.img_soal || '',
+                        opsi: item.opsi || [],
+                        pernyataan_tf: item.pernyataan_tf || [],
+                        jodoh_kiri: item.jodoh_kiri || [],
+                        jodoh_kanan: item.jodoh_kanan || [],
+                        kunci: item.kunci || '',
+                        bobot: item.bobot !== undefined ? item.bobot : 1,
+                        bobot_salah: item.bobot_salah !== undefined ? item.bobot_salah : 0
+                    }));
+                });
+
+                daftarWacanaCBT = Object.values(mapWacana);
+                counterWacana = daftarWacanaCBT.length;
+                previewIndexCBT = 0;
+
+                switchModeGenerator('CBT');
+                renderWacanaCBT();
+                renderDaftarKartuCBT();
+                hitungTotalPoin();
+                renderPreviewCBT();
+
+                if (adaGambarLama) {
+                    alert("INFORMASI LIMITASI EDIT GAMBAR:\n\nUjian Native CBT ini memiliki gambar. Karena gambar fisik tidak disimpan di database server, Anda dapat:\n1. Memilih/crop ulang gambar pada soal yang bertanda kuning, ATAU\n2. Klik tombol '⚡ Pulihkan Gambar/PDF dari File .enc Lama' di bagian atas jika Anda masih menyimpan file .enc sebelumnya di perangkat Anda.");
+                }
+            }
+        }
+
+        // Fungsi untuk mengisi baris tabel PDF beserta status tombol kunci saat Edit
+        function tambahSoalDariEditPDF(soalData) {
+            tambahSoal();
+            const id = jumlahSoal;
+            const row = document.getElementById(`baris_soal_${id}`);
+            if (!row) return;
+
+            row.querySelector('.val-hal').value = soalData.page_number || 1;
+            row.querySelector('.val-tipe').value = soalData.type || 'pg_4';
+            row.querySelector('.val-bobot').value = soalData.bobot !== undefined ? soalData.bobot : 1;
+            row.querySelector('.val-bobot-salah').value = soalData.bobot_salah !== undefined ? soalData.bobot_salah : 0;
+
+            renderInputKunci(id);
+            const tipe = soalData.type || 'pg_4';
+            const kunci = soalData.kunci || '';
+            row.querySelector('.val-kunci-final').value = kunci;
+
+            if ((tipe.startsWith('pg_') && !tipe.includes('kompleks')) || tipe === 'tf') {
+                row.querySelectorAll(`.btn-opsi-${id}`).forEach(btn => {
+                    if (btn.innerText.trim() === kunci) {
+                        btn.classList.remove('bg-gray-100');
+                        btn.classList.add('bg-blue-500', 'text-white');
+                    }
+                });
+            } else if (tipe.startsWith('pg_kompleks_')) {
+                const kArr = kunci.split(',').map(s => s.trim());
+                row.querySelectorAll(`.btn-kompleks-${id}`).forEach(btn => {
+                    if (kArr.includes(btn.getAttribute('data-val'))) {
+                        btn.classList.add('bg-blue-500', 'text-white', 'active-ans');
+                    }
+                });
+            } else if (tipe.startsWith('tf_kompleks_')) {
+                const count = parseInt(tipe.split('_')[2]);
+                const kArr = kunci.split(',').map(s => s.trim());
+                for (let s = 1; s <= count; s++) {
+                    const targetVal = kArr[s - 1];
+                    row.querySelectorAll(`.btn-tfk-${id}-${s}`).forEach(btn => {
+                        if (btn.innerText.trim() === targetVal) {
+                            btn.classList.remove('bg-gray-100');
+                            btn.classList.add('bg-blue-600', 'text-white', 'active-tfk');
+                            btn.setAttribute('data-val', targetVal);
+                        }
+                    });
+                }
+            } else if (tipe === 'jodoh' || tipe === 'isian') {
+                const textInp = row.querySelector(`#wadah_kunci_${id} input[type="text"]`);
+                if (textInp) textInp.value = kunci;
+            }
+        }
+
+        // Fitur Pemulihan Otomatis Gambar WebP / PDF dari File .enc Lama saat Mode Edit
+        async function pulihkanMediaDariEncLama(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const token = document.getElementById('genToken').value.trim().toUpperCase();
+            const pin = document.getElementById('genPin').value.trim().toUpperCase();
+            if (!token || !pin) {
+                event.target.value = '';
+                return alert("Pastikan kolom Token dan PIN Pengawas terisi sesuai dengan file .enc lama tersebut!");
+            }
+
+            try {
+                // Coba buka sebagai arsip ZIP (Mode Native CBT)
+                const zip = await JSZip.loadAsync(file);
+                if (zip.file("naskah.enc")) {
+                    let countPulih = 0;
+                    const fileNames = Object.keys(zip.files);
+                    for (const fname of fileNames) {
+                        if (fname.endsWith('.webp')) {
+                            const blob = await zip.file(fname).async("blob");
+                            const dataUrl = await new Promise((res) => {
+                                const r = new FileReader();
+                                r.onloadend = () => res(r.result);
+                                r.readAsDataURL(blob);
+                            });
+                            mediaWebPStore[fname] = {
+                                blob: blob,
+                                dataUrl: dataUrl,
+                                sizeKB: Math.max(1, Math.round(blob.size / 1024))
+                            };
+                            countPulih++;
+                        }
+                    }
+                    updateBadgeMediaCount();
+                    renderWacanaCBT();
+                    renderDaftarKartuCBT();
+                    renderPreviewCBT();
+                    alert(`Berhasil memulihkan ${countPulih} gambar WebP dari file .enc lama!`);
+                    event.target.value = '';
+                    return;
+                }
+            } catch (_) {
+                // Bukan file ZIP, lanjutkan membaca sebagai teks terenkripsi Mode PDF
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const outerEncrypted = e.target.result;
+                    const outerBytes = CryptoJS.AES.decrypt(outerEncrypted, token);
+                    const outerJson = JSON.parse(outerBytes.toString(CryptoJS.enc.Utf8));
+                    const innerBytes = CryptoJS.AES.decrypt(outerJson.secure_data, pin);
+                    const innerJson = JSON.parse(innerBytes.toString(CryptoJS.enc.Utf8));
+
+                    if (innerJson.pdf) {
+                        restoredPdfDataUrl = innerJson.pdf;
+                        const viewer = document.getElementById('pdfViewer');
+                        const placeholder = document.getElementById('pdfPlaceholder');
+                        viewer.src = restoredPdfDataUrl;
+                        viewer.classList.remove('hidden');
+                        placeholder.classList.add('hidden');
+                        alert("Berhasil memulihkan dokumen PDF soal dari file .enc lama! Anda tidak perlu memilih ulang file PDF.");
+                    } else {
+                        alert("File .enc berhasil dibuka, namun tidak ditemukan lampiran PDF di dalamnya.");
+                    }
+                } catch (err) {
+                    alert("Gagal membuka file .enc lama. Pastikan Kode Token dan PIN Pengawas sama persis dengan saat file .enc tersebut dibuat.");
+                }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
         }
 
         function setTabAktif(tabSatu, tabDua, tabTiga, tabEmpat) {
@@ -1625,6 +2126,13 @@
         }
 
         function resetFormGenerator() {
+            isEditMode = false;
+            editingUjianId = null;
+            restoredPdfDataUrl = null;
+            document.getElementById('bannerEditMode').classList.add('hidden');
+            document.getElementById('judulFormIdentitas').innerText = "1. Identitas Ujian Baru";
+            document.getElementById('labelPilihPdf').innerHTML = `Pilih File PDF Soal <span class="text-red-500 font-bold">*Wajib</span>`;
+
             document.getElementById('genNama').value = '';
             document.getElementById('genMapel').value = '';
             document.getElementById('genToken').value = '';
@@ -1790,31 +2298,272 @@
 
         function updateTeks(id, input) { document.querySelector(`#baris_soal_${id} .val-kunci-final`).value = input.value.trim().toUpperCase(); }
 
+        // =========================================================================
+        // SISTEM VERIFIKASI & VALIDASI MENYELURUH (MODE PDF & MODE NATIVE CBT)
+        // =========================================================================
+        function cekValidasiSatuSoalCBT(s, noUrut) {
+            const tipe = s.type;
+            const adaSoalTeksAtauGambar = (s.teks_soal && s.teks_soal.trim() !== '') || (s.img_soal && s.img_soal !== '');
+            if (!adaSoalTeksAtauGambar) {
+                return { valid: false, pesan: `Soal Nomor ${noUrut}: Pertanyaan soal masih kosong!` };
+            }
+
+            // Cek jika ada gambar yang belum dimuat ulang saat Edit
+            if (s.img_soal && !mediaWebPStore[s.img_soal]) {
+                return { valid: false, pesan: `Soal Nomor ${noUrut}: Gambar soal (${s.img_soal}) belum di-crop ulang atau dilepas pada sesi Edit ini!` };
+            }
+
+            if (tipe.startsWith('pg_')) {
+                const isKompleks = tipe.includes('kompleks');
+                const count = parseInt(tipe.split('_').pop());
+                for (let i = 0; i < count; i++) {
+                    const op = s.opsi[i];
+                    const adaOpsi = (op.teks && op.teks.trim() !== '') || (op.img && op.img !== '');
+                    if (!adaOpsi) {
+                        return { valid: false, pesan: `Soal Nomor ${noUrut}: Opsi jawaban ${op.kode} masih kosong!` };
+                    }
+                    if (op.img && !mediaWebPStore[op.img]) {
+                        return { valid: false, pesan: `Soal Nomor ${noUrut}: Gambar Opsi ${op.kode} belum di-crop ulang atau dilepas!` };
+                    }
+                }
+                const kunciArr = (s.kunci || '').split(',').filter(Boolean);
+                if (kunciArr.length === 0) {
+                    return { valid: false, pesan: `Soal Nomor ${noUrut}: Kunci jawaban belum dipilih!` };
+                }
+                if (isKompleks && kunciArr.length < 2) {
+                    return { valid: false, pesan: `Soal Nomor ${noUrut} (PG Kompleks): Pilih minimal 2 kunci jawaban benar!` };
+                }
+            } else if (tipe === 'tf' || tipe.startsWith('tf_kompleks_')) {
+                const count = (tipe === 'tf') ? 1 : parseInt(tipe.split('_')[2]);
+                const kunciArr = (tipe === 'tf') ? [s.kunci] : (s.kunci ? s.kunci.split(',') : []);
+                for (let i = 0; i < count; i++) {
+                    if (!s.pernyataan_tf[i] || s.pernyataan_tf[i].trim() === '') {
+                        return { valid: false, pesan: `Soal Nomor ${noUrut}: Teks Pernyataan #${i + 1} pada soal Benar/Salah masih kosong!` };
+                    }
+                    if (kunciArr[i] !== 'B' && kunciArr[i] !== 'S') {
+                        return { valid: false, pesan: `Soal Nomor ${noUrut}: Kunci Benar/Salah pada Pernyataan #${i + 1} belum dipilih!` };
+                    }
+                }
+            } else if (tipe === 'jodoh') {
+                const hurufOpsi = ['A', 'B', 'C', 'D', 'E'];
+                const nomorKiriTerisi = [];
+                const hurufKananTerisi = [];
+                s.jodoh_kiri.forEach((t, i) => { if ((t || '').trim() !== '') nomorKiriTerisi.push(i + 1); });
+                s.jodoh_kanan.forEach((t, i) => { if ((t || '').trim() !== '') hurufKananTerisi.push(hurufOpsi[i]); });
+
+                if (nomorKiriTerisi.length < 2) {
+                    return { valid: false, pesan: `Soal Nomor ${noUrut} (Menjodohkan): Isi minimal 2 pernyataan di Bagian Kiri!` };
+                }
+                if (hurufKananTerisi.length < 2) {
+                    return { valid: false, pesan: `Soal Nomor ${noUrut} (Menjodohkan): Isi minimal 2 pilihan jawaban di Bagian Kanan!` };
+                }
+
+                const bersih = (s.kunci || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+                const pairs = bersih.match(/\d+[A-Z]/g) || [];
+                if (pairs.length < nomorKiriTerisi.length) {
+                    return { valid: false, pesan: `Soal Nomor ${noUrut} (Menjodohkan): Terdapat ${nomorKiriTerisi.length} pernyataan kiri, namun kunci pasangan yang diatur baru ${pairs.length}!` };
+                }
+                for (const p of pairs) {
+                    const num = parseInt(p.match(/\d+/)[0]);
+                    const chr = p.match(/[A-Z]/)[0];
+                    if (!nomorKiriTerisi.includes(num)) {
+                        return { valid: false, pesan: `Soal Nomor ${noUrut} (Menjodohkan): Kunci "${p}" merujuk pada Pernyataan Kiri #${num} yang masih kosong!` };
+                    }
+                    if (!hurufKananTerisi.includes(chr)) {
+                        return { valid: false, pesan: `Soal Nomor ${noUrut} (Menjodohkan): Kunci "${p}" merujuk pada Pilihan Kanan ${chr} yang masih kosong!` };
+                    }
+                }
+            } else if (tipe === 'isian') {
+                if (!s.kunci || s.kunci.trim() === '') {
+                    return { valid: false, pesan: `Soal Nomor ${noUrut} (Isian Singkat): Kunci jawaban masih kosong!` };
+                }
+            }
+
+            return { valid: true, pesan: 'OK' };
+        }
+
+        function cekValidasiLengkap(tampilkanAlertSukses = false) {
+            const namaUjian = document.getElementById('genNama').value.trim();
+            const mapel = document.getElementById('genMapel').value.trim();
+            const token = document.getElementById('genToken').value.trim().toUpperCase();
+            const pinUjian = document.getElementById('genPin').value.trim().toUpperCase();
+            const tgl = document.getElementById('genTanggal').value;
+
+            if (!namaUjian) { alert("Validasi Gagal: Nama Ujian wajib diisi!"); return false; }
+            if (!mapel) { alert("Validasi Gagal: Mata Pelajaran wajib diisi!"); return false; }
+            if (!token) { alert("Validasi Gagal: Kode Sinkronisasi (Token) wajib diisi!"); return false; }
+            if (!pinUjian) { alert("Validasi Gagal: PIN Pengawas (Mulai Ujian) wajib diisi!"); return false; }
+            if (!tgl) { alert("Validasi Gagal: Jadwal Mulai Ujian wajib diisi!"); return false; }
+
+            if (modeGenerator === 'PDF') {
+                const file = document.getElementById('genPdf').files[0];
+                if (!file && !restoredPdfDataUrl) {
+                    alert("Validasi Gagal: File PDF Soal belum dipilih!");
+                    return false;
+                }
+                const rows = document.querySelectorAll('#soalTableBody tr');
+                if (rows.length === 0) {
+                    alert("Validasi Gagal: Belum ada baris kunci jawaban yang ditambahkan!");
+                    return false;
+                }
+                for (let i = 0; i < rows.length; i++) {
+                    const row = rows[i];
+                    const noUrut = i + 1;
+                    const tipe = row.querySelector('.val-tipe').value;
+                    let kunci = tipe === 'uraian' ? '' : row.querySelector('.val-kunci-final').value;
+
+                    if (tipe === 'jodoh') {
+                        kunci = kunci.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                        let pairs = kunci.match(/\d+[A-Z]/g) || [];
+                        kunci = pairs.sort().join('');
+                    }
+                    if (tipe !== 'uraian' && (!kunci || kunci.trim() === '')) {
+                        alert(`Validasi Gagal pada Soal Nomor ${noUrut} (${tipe.replace(/_/g, ' ').toUpperCase()}):\nKunci jawaban belum diisi atau belum lengkap!`);
+                        row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        return false;
+                    }
+                    if (tipe.startsWith('pg_kompleks_') && kunci.split(',').filter(Boolean).length < 2) {
+                        alert(`Validasi Gagal pada Soal Nomor ${noUrut} (PG Kompleks):\nPilih minimal 2 opsi kunci jawaban yang benar!`);
+                        row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        return false;
+                    }
+                }
+            } else {
+                // Validasi Mode Native CBT
+                if (daftarSoalCBT.length === 0) {
+                    alert("Validasi Gagal: Belum ada butir soal Native CBT yang dibuat!");
+                    return false;
+                }
+                for (let wIdx = 0; wIdx < daftarWacanaCBT.length; wIdx++) {
+                    const w = daftarWacanaCBT[wIdx];
+                    if ((!w.teks_wacana || w.teks_wacana.trim() === '') && !w.img_wacana) {
+                        alert(`Validasi Gagal: Teks Bacaan / Wacana (${w.id_wacana}) masih kosong!`);
+                        return false;
+                    }
+                    if (w.img_wacana && !mediaWebPStore[w.img_wacana]) {
+                        alert(`Validasi Gagal: Gambar pada Wacana ${w.id_wacana} (${w.img_wacana}) belum di-crop ulang atau dilepas!`);
+                        return false;
+                    }
+                }
+                for (let i = 0; i < daftarSoalCBT.length; i++) {
+                    const hasil = cekValidasiSatuSoalCBT(daftarSoalCBT[i], i + 1);
+                    if (!hasil.valid) {
+                        previewIndexCBT = i;
+                        renderDaftarKartuCBT();
+                        renderPreviewCBT();
+                        const elKartu = document.getElementById(`kartu_cbt_${i}`);
+                        if (elKartu) elKartu.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        alert("Validasi Gagal!\n\n" + hasil.pesan);
+                        return false;
+                    }
+                }
+            }
+
+            if (tampilkanAlertSukses) {
+                alert("✅ Validasi Sukses! Seluruh identitas ujian, butir soal, pernyataan, dan kunci jawaban telah lengkap dan siap dibuat menjadi file .enc.");
+            }
+            return true;
+        }
+
+        // Helper untuk menyimpan ujian ke Supabase (Mendukung Buat Baru via RPC & Mode Edit/Revisi dengan potong 1 kredit)
+        async function simpanDataUjianKeDatabase(namaUjian, mapel, tgl, token, pinUjian, batasWaktu, arraySoal, modeUjianStr) {
+            if (!isEditMode) {
+                const { data: rpcResult, error: rpcError } = await supabaseClient.rpc('buat_ujian_baru', {
+                    p_id_guru: currentUser.id,
+                    p_nama_ujian: namaUjian,
+                    p_mapel: mapel,
+                    p_tanggal: tgl,
+                    p_token: token,
+                    p_pin: pinUjian,
+                    p_detail_soal: arraySoal
+                });
+
+                if (rpcError || rpcResult === false) {
+                    let pesanError = "Gagal membuat ujian!";
+                    if (rpcError) {
+                        if (rpcError.code === '23505' || (rpcError.message && rpcError.message.toLowerCase().includes("unique"))) {
+                            pesanError = `GAGAL: Kode Sinkronisasi / Token "${token}" sudah pernah digunakan! Silakan ganti dengan kombinasi huruf/angka lain.`;
+                        } else {
+                            pesanError = `Kesalahan Sistem/Server: ${rpcError.message}`;
+                        }
+                    } else if (rpcResult === false) {
+                        pesanError = "Gagal membuat ujian! Pastikan Saldo Kredit Anda masih mencukupi.";
+                    }
+                    alert(pesanError);
+                    return false;
+                }
+
+                if (batasWaktu) {
+                    await supabaseClient.from('daftar_ujian').update({ batas_waktu: batasWaktu }).eq('token', token);
+                }
+                return true;
+            } else {
+                // MODE EDIT / REVISI: Cek kredit guru, potong 1 kredit, lalu update baris daftar_ujian
+                const { data: profil, error: errProf } = await supabaseClient
+                    .from('profil_guru')
+                    .select('kredit')
+                    .eq('id', currentUser.id)
+                    .single();
+
+                if (errProf || !profil || profil.kredit <= 0) {
+                    alert("Gagal menyimpan revisi: Saldo Kredit Anda tidak mencukupi (Minimal 1 Kredit).");
+                    return false;
+                }
+
+                const payloadUpdate = {
+                    nama_ujian: namaUjian,
+                    mapel: mapel,
+                    tanggal: tgl,
+                    token: token,
+                    pin: pinUjian,
+                    batas_waktu: batasWaktu ? batasWaktu : null,
+                    detail_soal: arraySoal
+                };
+
+                const { error: errUpdUjian } = await supabaseClient
+                    .from('daftar_ujian')
+                    .update(payloadUpdate)
+                    .eq('id', editingUjianId);
+
+                if (errUpdUjian) {
+                    if (errUpdUjian.code === '23505' || (errUpdUjian.message && errUpdUjian.message.toLowerCase().includes("unique"))) {
+                        alert(`GAGAL: Kode Sinkronisasi / Token "${token}" sudah dipakai oleh ujian lain!`);
+                    } else {
+                        alert("Gagal memperbarui ujian di database: " + errUpdUjian.message);
+                    }
+                    return false;
+                }
+
+                // Kurangi 1 kredit atas revisi ujian
+                const sisaKreditBaru = Math.max(0, (parseInt(profil.kredit) || 1) - 1);
+                await supabaseClient
+                    .from('profil_guru')
+                    .update({ kredit: sisaKreditBaru })
+                    .eq('id', currentUser.id);
+
+                document.getElementById('profKredit').innerText = sisaKreditBaru;
+                return true;
+            }
+        }
+
         async function prosesBuatUjian() {
+            if (!cekValidasiLengkap(false)) return;
+
             const btn = document.getElementById('btnGenerate');
             const file = document.getElementById('genPdf').files[0];
             const token = document.getElementById('genToken').value.trim().toUpperCase().replace(/\s/g, '');
             const pinUjian = document.getElementById('genPin').value.trim().toUpperCase().replace(/\s/g, '');
             const tgl = document.getElementById('genTanggal').value;
             const waktu = parseInt(document.getElementById('genWaktu').value);
-            const mapel = document.getElementById('genMapel').value;
-            const namaUjian = document.getElementById('genNama').value;
+            const mapel = document.getElementById('genMapel').value.trim();
+            const namaUjian = document.getElementById('genNama').value.trim();
             const batasWaktu = document.getElementById('genBatasWaktu').value;
 
-            if (!namaUjian) return alert("Peringatan: Nama Ujian wajib diisi!");
-            if (!mapel) return alert("Peringatan: Mata Pelajaran wajib diisi!");
-            if (!token) return alert("Peringatan: Kode Sinkronisasi (Token) wajib diisi!");
-            if (!pinUjian) return alert("Peringatan: PIN Pengawas (Mulai Ujian) wajib diisi!");
-            if (!tgl) return alert("Peringatan: Jadwal Mulai Ujian wajib diisi!");
-
             // =====================================================================
-            // CABANG 1: MODE SOAL PDF (KODE ASLI 100% UTUH)
+            // CABANG 1: MODE SOAL PDF
             // =====================================================================
             if (modeGenerator === 'PDF') {
-                if (!file) return alert("Peringatan: File PDF Soal belum dipilih!");
-
                 const arraySoal = [];
-                let errorKunci = false;
 
                 document.querySelectorAll('#soalTableBody tr').forEach((row) => {
                     const tipe = row.querySelector('.val-tipe').value;
@@ -1829,8 +2578,6 @@
                     const bobot = parseInt(row.querySelector('.val-bobot').value) || 0; 
                     const bobot_salah = parseInt(row.querySelector('.val-bobot-salah').value) || 0; 
 
-                    if(tipe !== 'uraian' && kunci === '') errorKunci = true;
-
                     arraySoal.push({
                         page_number: parseInt(row.querySelector('.val-hal').value),
                         x_percent: 0.0, y_percent: 0.0, width_percent: 100.0, height_percent: 100.0, 
@@ -1838,45 +2585,22 @@
                     });
                 });
 
-                if(errorKunci) return alert("Ada Kunci Jawaban yang masih kosong atau belum lengkap (Pastikan seluruh pernyataan B/S Kompleks atau Jodohkan telah terisi)!");
-
                 btn.innerText = "Memproses Database & Enkripsi...";
                 btn.disabled = true;
                 document.getElementById('genPdf').disabled = true;
                 document.getElementById('btnTambahSoal').disabled = true;
 
-                const { data: rpcResult, error: rpcError } = await supabaseClient.rpc('buat_ujian_baru', {
-                    p_id_guru: currentUser.id,
-                    p_nama_ujian: namaUjian, p_mapel: mapel, p_tanggal: tgl, p_token: token, p_pin: pinUjian, p_detail_soal: arraySoal
-                });
-
-                if(rpcError || rpcResult === false) {
-                    let pesanError = "Gagal membuat ujian!";
-                    if (rpcError) {
-                        if (rpcError.code === '23505' || (rpcError.message && rpcError.message.toLowerCase().includes("unique"))) {
-                            pesanError = `GAGAL: Kode Sinkronisasi / Token "${token}" sudah pernah digunakan! Silakan ganti dengan kombinasi huruf/angka lain.`;
-                        } else {
-                            pesanError = `Kesalahan Sistem/Server: ${rpcError.message}`;
-                        }
-                    } else if (rpcResult === false) {
-                        pesanError = "Gagal membuat ujian! Pastikan Saldo Kredit Anda masih mencukupi.";
-                    }
-
-                    alert(pesanError);
-                    btn.innerText = "Buat File Ujian (-1 Kredit)";
+                const suksesDb = await simpanDataUjianKeDatabase(namaUjian, mapel, tgl, token, pinUjian, batasWaktu, arraySoal, 'PDF');
+                if (!suksesDb) {
+                    btn.innerText = isEditMode ? "Simpan Revisi & Unduh File Baru (-1 Kredit)" : "Buat File Ujian (-1 Kredit)";
                     btn.disabled = false;
                     document.getElementById('genPdf').disabled = false;
                     document.getElementById('btnTambahSoal').disabled = false;
                     return;
                 }
 
-                if (batasWaktu) {
-                    await supabaseClient.from('daftar_ujian').update({ batas_waktu: batasWaktu }).eq('token', token);
-                }
-
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const innerPayload = { pdf: e.target.result, soal: arraySoal };
+                const prosesEnkripsiPDF = (pdfDataUrl) => {
+                    const innerPayload = { pdf: pdfDataUrl, soal: arraySoal };
                     const encryptedInnerData = CryptoJS.AES.encrypt(JSON.stringify(innerPayload), pinUjian).toString();
                     const tampilSkor = document.getElementById('genTampilSkor').checked;
                     const outerPayload = { 
@@ -1897,23 +2621,30 @@
                     const namaUjianBersih = namaUjian.replace(/\s+/g, '_');
                     const namaMapelBersih = mapel.replace(/\s+/g, '_');
                     link.download = namaUjianBersih + "_" + namaMapelBersih + ".enc"; 
-                    
                     link.click();
                     
                     document.getElementById('genStatus').innerText = "";
+                    document.getElementById('judulModalSuksesGen').innerText = isEditMode ? "Revisi Ujian Berhasil Disimpan!" : "Ujian Berhasil Dibuat!";
                     document.getElementById('modalSuksesGen').classList.remove('hidden');
                 };
-                reader.readAsDataURL(file);
+
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) { prosesEnkripsiPDF(e.target.result); };
+                    reader.readAsDataURL(file);
+                } else if (restoredPdfDataUrl) {
+                    prosesEnkripsiPDF(restoredPdfDataUrl);
+                }
                 return;
             }
 
             // =====================================================================
             // CABANG 2: MODE NATIVE CBT (PENYUSUN SOAL INTERAKTIF + JSZIP SATU FILE)
             // =====================================================================
-            if (daftarSoalCBT.length === 0) return alert("Peringatan: Belum ada butir soal CBT yang dibuat!");
-
+            const acakSoal = document.getElementById('genAcakSoal').checked;
+            const acakOpsi = document.getElementById('genAcakOpsi').checked;
+            const tampilSkor = document.getElementById('genTampilSkor').checked;
             const arraySoalCBTFinal = [];
-            let errorKunciCBT = false;
 
             daftarSoalCBT.forEach((s, idx) => {
                 let kunci = s.type === 'uraian' ? '' : (s.kunci || '').trim();
@@ -1922,68 +2653,45 @@
                     let pairs = kunci.match(/\d+[A-Z]/g) || [];
                     kunci = pairs.sort().join('');
                 }
-                if (s.type.startsWith('tf_kompleks_')) {
-                    const totalStmt = parseInt(s.type.split('_')[2]);
-                    const parts = kunci.split(',').filter(Boolean);
-                    if (parts.length < totalStmt) kunci = '';
-                }
-                if (s.type !== 'uraian' && kunci === '') errorKunciCBT = true;
 
                 const countOpsi = s.type.startsWith('pg_') ? parseInt(s.type.split('_').pop()) : 0;
-                const countTF = s.type.startsWith('tf_kompleks_') ? parseInt(s.type.split('_')[2]) : 0;
+                const countTF = (s.type === 'tf') ? 1 : (s.type.startsWith('tf_kompleks_') ? parseInt(s.type.split('_')[2]) : 0);
+                const wacanaObj = s.id_wacana ? daftarWacanaCBT.find(w => w.id_wacana === s.id_wacana) : null;
 
                 arraySoalCBTFinal.push({
                     id_asli: idx + 1,
                     page_number: idx + 1,
                     id_wacana: s.id_wacana || '',
+                    teks_wacana: wacanaObj ? wacanaObj.teks_wacana : '',
+                    img_wacana: wacanaObj ? wacanaObj.img_wacana : '',
+                    acak_soal: acakSoal,
+                    acak_opsi: acakOpsi,
+                    waktu_ujian: waktu,
                     type: s.type,
                     teks_soal: s.teks_soal || '',
                     img_soal: s.img_soal || '',
                     opsi: countOpsi > 0 ? s.opsi.slice(0, countOpsi) : [],
                     pernyataan_tf: countTF > 0 ? s.pernyataan_tf.slice(0, countTF) : [],
+                    jodoh_kiri: s.type === 'jodoh' ? s.jodoh_kiri : [],
+                    jodoh_kanan: s.type === 'jodoh' ? s.jodoh_kanan : [],
                     kunci: kunci,
                     bobot: parseInt(s.bobot) || 0,
                     bobot_salah: parseInt(s.bobot_salah) || 0
                 });
             });
 
-            if (errorKunciCBT) return alert("Ada Kunci Jawaban pada soal CBT yang masih kosong atau belum lengkap!");
-
             btn.innerText = "Memproses Database & Membungkus Paket CBT...";
             btn.disabled = true;
 
-            const { data: rpcResult, error: rpcError } = await supabaseClient.rpc('buat_ujian_baru', {
-                p_id_guru: currentUser.id,
-                p_nama_ujian: namaUjian, p_mapel: mapel, p_tanggal: tgl, p_token: token, p_pin: pinUjian, p_detail_soal: arraySoalCBTFinal
-            });
-
-            if (rpcError || rpcResult === false) {
-                let pesanError = "Gagal membuat ujian!";
-                if (rpcError) {
-                    if (rpcError.code === '23505' || (rpcError.message && rpcError.message.toLowerCase().includes("unique"))) {
-                        pesanError = `GAGAL: Kode Sinkronisasi / Token "${token}" sudah pernah digunakan! Silakan ganti dengan kombinasi huruf/angka lain.`;
-                    } else {
-                        pesanError = `Kesalahan Sistem/Server: ${rpcError.message}`;
-                    }
-                } else if (rpcResult === false) {
-                    pesanError = "Gagal membuat ujian! Pastikan Saldo Kredit Anda masih mencukupi.";
-                }
-                alert(pesanError);
-                btn.innerText = "Buat File Ujian (-1 Kredit)";
+            const suksesDb = await simpanDataUjianKeDatabase(namaUjian, mapel, tgl, token, pinUjian, batasWaktu, arraySoalCBTFinal, 'CBT');
+            if (!suksesDb) {
+                btn.innerText = isEditMode ? "Simpan Revisi & Unduh File Baru (-1 Kredit)" : "Buat File Ujian (-1 Kredit)";
                 btn.disabled = false;
                 return;
             }
 
-            if (batasWaktu) {
-                await supabaseClient.from('daftar_ujian').update({ batas_waktu: batasWaktu }).eq('token', token);
-            }
-
             try {
-                const acakSoal = document.getElementById('genAcakSoal').checked;
-                const acakOpsi = document.getElementById('genAcakOpsi').checked;
-                const tampilSkor = document.getElementById('genTampilSkor').checked;
                 const usedMediaKeys = new Set();
-
                 daftarWacanaCBT.forEach(w => { if (w.img_wacana) usedMediaKeys.add(w.img_wacana); });
                 arraySoalCBTFinal.forEach(s => {
                     if (s.img_soal) usedMediaKeys.add(s.img_soal);
@@ -2035,10 +2743,11 @@
                 link.click();
 
                 document.getElementById('genStatus').innerText = "";
+                document.getElementById('judulModalSuksesGen').innerText = isEditMode ? "Revisi Ujian Berhasil Disimpan!" : "Ujian Berhasil Dibuat!";
                 document.getElementById('modalSuksesGen').classList.remove('hidden');
             } catch (errZip) {
                 alert("Terjadi kesalahan saat membungkus file ujian: " + errZip.message);
-                btn.innerText = "Buat File Ujian (-1 Kredit)";
+                btn.innerText = isEditMode ? "Simpan Revisi & Unduh File Baru (-1 Kredit)" : "Buat File Ujian (-1 Kredit)";
                 btn.disabled = false;
             }
         }
