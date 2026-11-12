@@ -353,8 +353,18 @@
                   <input type="text" id="genPin" placeholder="Misal: 112233" class="mt-1 w-full p-2 border-2 border-red-400 rounded font-black text-red-600 uppercase" oninput="this.value = this.value.replace(/\s/g, '')">
                 </div>
                 
-                <div><label class="block text-sm font-medium">Jadwal Mulai Ujian</label><input type="datetime-local" id="genTanggal" class="mt-1 w-full p-2 border rounded"></div>
-                <div><label class="block text-sm font-medium">Durasi Pengerjaan (Menit)</label><input type="number" id="genWaktu" value="90" class="mt-1 w-full p-2 border rounded"></div>
+                <div class="col-span-2 sm:col-span-1">
+                                    <label class="block text-sm font-medium">Tanggal Ujian (Info & Hitung Mundur)</label>
+                                    <input type="date" id="genTanggal" class="mt-1 w-full p-2 border rounded">
+                                </div>
+                                <div class="col-span-2 sm:col-span-1">
+                                    <label class="block text-sm font-medium">Jam Ujian Dimulai</label>
+                                    <input type="time" id="genJam" class="mt-1 w-full p-2 border rounded">
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="block text-sm font-medium">Durasi Pengerjaan (Menit)</label>
+                                    <input type="number" id="genWaktu" value="90" class="mt-1 w-full p-2 border rounded">
+                                </div>
                 
                 <div class="col-span-2">
                   <label class="block text-sm font-bold text-purple-700">Batas Waktu (Tutup Otomatis / Opsional)</label>
@@ -2914,7 +2924,9 @@
       const file = document.getElementById('genPdf').files[0];
       const token = document.getElementById('genToken').value.trim().toUpperCase().replace(/\s/g, '');
       const pinUjian = document.getElementById('genPin').value.trim().toUpperCase().replace(/\s/g, '');
-      const tgl = document.getElementById('genTanggal').value;
+      const tglInput = document.getElementById('genTanggal').value;
+      const jamInput = document.getElementById('genJam').value;
+      const tgl = (tglInput && jamInput) ? `${tglInput}T${jamInput}` : '';
       const waktu = parseInt(document.getElementById('genWaktu').value);
       const mapel = document.getElementById('genMapel').value.trim();
       const namaUjian = document.getElementById('genNama').value.trim();
