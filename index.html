@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Portal Guru CBT Pro</title>
+  <title>Portal Guru Exam-CBT Pro</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -26,7 +26,7 @@
   <div id="authModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
     <div class="bg-white p-8 rounded-lg shadow-xl w-96 relative">
       <div id="formLogin">
-        <h2 class="text-2xl font-bold mb-6 text-center text-blue-600">Portal Guru CBT - EXAMIFY PDF</h2>
+        <h2 class="text-2xl font-bold mb-6 text-center text-blue-600">Portal Guru - EXAM-CBT</h2>
         <input type="email" id="logEmail" placeholder="Email Guru" class="w-full p-3 border rounded mb-3">
         <input type="password" id="logPass" placeholder="Password" class="w-full p-3 border rounded mb-4">
         <button onclick="login()" class="w-full bg-blue-600 text-white p-3 rounded font-bold hover:bg-blue-700">Masuk</button>
@@ -194,7 +194,7 @@
   <div id="modalDetailSoal" class="fixed inset-0 bg-black bg-opacity-75 hidden flex justify-center items-center z-50">
     <div class="bg-white p-6 rounded-lg shadow-2xl w-11/12 max-w-4xl relative max-h-[90vh] flex flex-col">
       <button onclick="document.getElementById('modalDetailSoal').classList.add('hidden')" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 font-bold text-2xl">✕</button>
-      <h3 class="text-xl font-bold text-blue-800 mb-1">Detail Kunci Jawaban</h3>
+      <h3 class="text-xl font-bold text-blue-800 mb-1">Detail Kunci Jawaban & Metode Skor</h3>
       <p id="dsTotalSoal" class="text-sm text-gray-600 mb-4 border-b pb-2">Total Soal: 0</p>
       <div class="overflow-y-auto flex-1">
         <table class="min-w-full text-left border">
@@ -202,7 +202,7 @@
             <tr>
               <th class="p-3 border text-center w-12">No</th>
               <th class="p-3 border text-center">Hal / Mode</th>
-              <th class="p-3 border">Tipe Soal</th>
+              <th class="p-3 border">Tipe Soal & Metode Skor</th>
               <th class="p-3 border">Kunci Jawaban</th>
               <th class="p-3 border text-center text-green-600">Benar (+)</th>
               <th class="p-3 border text-center text-red-600">Salah (-)</th>
@@ -226,12 +226,12 @@
       <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-left mb-5 shadow-inner">
         <h3 class="font-bold text-blue-800 mb-2 text-sm">💡 Panduan Distribusi (Sistem Cloud Sync):</h3>
         <ol class="list-decimal ml-5 space-y-2 text-sm text-blue-900">
-          <li>Unggah file <b>.enc</b> terbaru yang baru saja terunduh ke akun <b>Google Drive</b> Anda.</li>
+          <li>Unggah file <b>.enc</b> terbaru yang baru saja terunduh ke akun <b>Google Drive / Cloud Storage</b> Anda.</li>
           <li>Ubah hak akses tautan file tersebut menjadi <b>"Siapa saja yang memiliki link"</b> (<i>Anyone with the link</i>).</li>
-          <li>Salin tautan terbaru tersebut, lalu tempel (<i>paste</i>) menggantikan link lama pada kolom <b>Link Google Drive</b> di Kartu Ujian Beranda, kemudian klik <b>Simpan Link</b>.</li>
+          <li>Salin tautan terbaru tersebut, lalu tempel (<i>paste</i>) menggantikan link lama pada kolom <b>Link Soal (.enc)</b> di Kartu Ujian Beranda, kemudian klik <b>Simpan Link</b>.</li>
         </ol>
         <div class="mt-4 p-3 bg-red-50 border-l-4 border-red-500 rounded text-xs text-red-800 leading-relaxed">
-          <b>Saran & Uji Coba:</b> Sebelum ujian sesungguhnya dimulai, sangat disarankan bagi Guru untuk melakukan uji coba mandiri di aplikasi CBT Siswa. Masukkan Kode Sinkronisasi (Token) dan PIN Pengawas untuk memastikan fitur Sinkronisasi berjalan lancar, halaman soal terbuka dengan sempurna, dan kunci jawaban telah sesuai.
+          <b>Saran & Uji Coba:</b> Sebelum ujian sesungguhnya dimulai, sangat disarankan bagi Guru untuk melakukan uji coba mandiri di aplikasi Exam-CBT Siswa. Masukkan Kode Sinkronisasi (Token) dan PIN Pengawas untuk memastikan fitur Sinkronisasi berjalan lancar, halaman soal terbuka dengan sempurna, dan kunci jawaban telah sesuai.
         </div>
       </div>
       
@@ -242,7 +242,7 @@
   <div id="mainApp" class="hidden">
     <nav class="bg-white shadow relative z-10">
       <div class="max-w-7xl mx-auto px-4 flex justify-between h-16">
-        <div class="flex items-center font-bold text-xl text-blue-600">Dashboard Examify PDF & CBT</div>
+        <div class="flex items-center font-bold text-xl text-blue-600">Dashboard Portal Guru Exam-CBT</div>
         <div class="flex space-x-8" id="navTabs">
           <button onclick="bukaBeranda()" id="btn-beranda" class="tab-active px-3 py-4 text-blue-600">Beranda Ujian</button>
           <button onclick="bukaPanduan()" id="btn-panduan" class="px-3 py-4 text-gray-500">Panduan</button>
@@ -282,7 +282,7 @@
             <h1 id="profKredit" class="text-6xl font-black my-2">0</h1>
             <p class="text-xs opacity-70 mb-3">1 Kredit = 1 File Ujian / Revisi (.enc)</p>
             
-            <a href="https://wa.me/6285189603539?text=Halo%20Admin%20Examify%20PDF,%20saya%20ingin%20menambah%20kredit%20ujian." target="_blank" class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-bold text-xs px-3 py-2 rounded-full shadow transition duration-150">
+            <a href="https://wa.me/6285189603539?text=Halo%20Admin%20Exam-CBT,%20saya%20ingin%20menambah%20kredit%20ujian." target="_blank" class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-bold text-xs px-3 py-2 rounded-full shadow transition duration-150">
               <img src="https://www.svgrepo.com/show/475692/whatsapp-color.svg" class="w-4 h-4 mr-1.5" alt="WA"> Hubungi Admin (+Kredit)
             </a>
           </div>
@@ -321,7 +321,7 @@
                 ✏️ MODE EDIT / REVISI UJIAN AKTIF (-1 KREDIT SAAT DISIMPAN)
               </h3>
               <p id="infoLimitasiEdit" class="text-xs text-amber-800 mt-1 leading-relaxed">
-                Anda sedang mengedit ujian yang sudah dibuat. Setelah klik <b>Simpan Revisi & Unduh File</b>, unggah file <b>.enc</b> baru ke Google Drive dan ganti link lama pada Kartu Ujian di Beranda.
+                Anda sedang mengedit ujian yang sudah dibuat. Setelah klik <b>Simpan Revisi & Unduh File</b>, unggah file <b>.enc</b> baru ke Google Drive / Cloud dan ganti link lama pada Kartu Ujian di Beranda.
                 <br><b>Catatan Limitasi Media:</b> File fisik PDF dan Gambar tidak disimpan di database server. Untuk ujian PDF, silakan pilih ulang file PDF Anda. Untuk ujian Native CBT yang memiliki gambar, silakan unggah/paste ulang gambarnya (atau gunakan tombol pemulihan otomatis di samping jika Anda masih menyimpan file <code>.enc</code> lama).
               </p>
             </div>
@@ -354,17 +354,17 @@
                 </div>
                 
                 <div class="col-span-2 sm:col-span-1">
-                                    <label class="block text-sm font-medium">Tanggal Ujian (Info & Hitung Mundur)</label>
-                                    <input type="date" id="genTanggal" class="mt-1 w-full p-2 border rounded">
-                                </div>
-                                <div class="col-span-2 sm:col-span-1">
-                                    <label class="block text-sm font-medium">Jam Ujian Dimulai</label>
-                                    <input type="time" id="genJam" class="mt-1 w-full p-2 border rounded">
-                                </div>
-                                <div class="col-span-2">
-                                    <label class="block text-sm font-medium">Durasi Pengerjaan (Menit)</label>
-                                    <input type="number" id="genWaktu" value="90" class="mt-1 w-full p-2 border rounded">
-                                </div>
+                  <label class="block text-sm font-medium">Tanggal Ujian (Info & Hitung Mundur)</label>
+                  <input type="date" id="genTanggal" class="mt-1 w-full p-2 border rounded">
+                </div>
+                <div class="col-span-2 sm:col-span-1">
+                  <label class="block text-sm font-medium">Jam Ujian Dimulai</label>
+                  <input type="time" id="genJam" class="mt-1 w-full p-2 border rounded">
+                </div>
+                <div class="col-span-2">
+                  <label class="block text-sm font-medium">Durasi Pengerjaan (Menit)</label>
+                  <input type="number" id="genWaktu" value="90" class="mt-1 w-full p-2 border rounded">
+                </div>
                 
                 <div class="col-span-2">
                   <label class="block text-sm font-bold text-purple-700">Batas Waktu (Tutup Otomatis / Opsional)</label>
@@ -434,29 +434,42 @@
                 </div>
               </div>
 
-              <!-- Bar Statistik Poin & Pengaturan Poin Cepat -->
-              <div class="flex flex-col md:flex-row justify-around bg-blue-50 border border-blue-200 p-4 rounded-lg mb-4 shadow-sm items-center gap-3">
-                <div class="text-center">
-                  <p class="text-[10px] text-blue-500 font-bold uppercase tracking-wider">Total Soal</p>
-                  <p id="infoTotalSoal" class="text-xl font-black text-blue-700 mt-1">0</p>
-                </div>
-                <div class="text-center">
-                  <p class="text-[10px] text-green-600 font-bold uppercase tracking-wider">Total Skor Maksimal (+)</p>
-                  <p id="infoTotalPoinBenar" class="text-xl font-black text-green-600 mt-1">0</p>
-                </div>
-                <div class="text-center">
-                  <p class="text-[10px] text-red-500 font-bold uppercase tracking-wider">Poin Salah (-)</p>
-                  <p id="infoTotalPoinSalah" class="text-xl font-black text-red-600 mt-1">0</p>
-                </div>
-                <div id="boxQuickPoinCBT" class="hidden border-l border-blue-200 pl-4 flex space-x-2 text-xs">
-                  <div>
-                    <label class="block text-[10px] font-bold text-green-700">Set Semua Poin+</label>
-                    <input type="number" class="w-16 text-center border rounded p-1 text-green-600 font-bold bg-white" value="1" min="0" oninput="setSemuaPoinBenar(this.value)">
+              <!-- Bar Statistik Poin, Pengaturan Poin Cepat & Toggle Skor Parsial (Berlaku untuk PDF & Native CBT) -->
+              <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-4 shadow-sm space-y-3">
+                <div class="flex flex-wrap justify-around items-center gap-3">
+                  <div class="text-center">
+                    <p class="text-[10px] text-blue-500 font-bold uppercase tracking-wider">Total Soal</p>
+                    <p id="infoTotalSoal" class="text-xl font-black text-blue-700 mt-1">0</p>
                   </div>
-                  <div>
-                    <label class="block text-[10px] font-bold text-red-600">Set Semua Poin-</label>
-                    <input type="number" class="w-16 text-center border rounded p-1 text-red-600 font-bold bg-white" value="0" max="0" oninput="setSemuaPoinSalah(this.value)">
+                  <div class="text-center">
+                    <p class="text-[10px] text-green-600 font-bold uppercase tracking-wider">Total Skor Maksimal (+)</p>
+                    <p id="infoTotalPoinBenar" class="text-xl font-black text-green-600 mt-1">0</p>
                   </div>
+                  <div class="text-center">
+                    <p class="text-[10px] text-red-500 font-bold uppercase tracking-wider">Poin Salah (-)</p>
+                    <p id="infoTotalPoinSalah" class="text-xl font-black text-red-600 mt-1">0</p>
+                  </div>
+                  <div id="boxQuickPoinCBT" class="hidden border-l border-blue-200 pl-4 flex space-x-2 text-xs">
+                    <div>
+                      <label class="block text-[10px] font-bold text-green-700">Set Semua Poin+</label>
+                      <input type="number" class="w-16 text-center border rounded p-1 text-green-600 font-bold bg-white" value="1" min="0" oninput="setSemuaPoinBenar(this.value)">
+                    </div>
+                    <div>
+                      <label class="block text-[10px] font-bold text-red-600">Set Semua Poin-</label>
+                      <input type="number" class="w-16 text-center border rounded p-1 text-red-600 font-bold bg-white" value="0" max="0" oninput="setSemuaPoinSalah(this.value)">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- TOGGLE GLOBAL SKOR PARSIAL (AKTIF DI MODE PDF MAUPUN NATIVE CBT) -->
+                <div class="border-t border-blue-200 pt-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <label class="inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="chkGlobalSkorParsial" class="w-4 h-4 mr-2 accent-indigo-600 cursor-pointer" checked onchange="setSemuaSkorParsial(this.checked)">
+                    <span class="text-xs font-extrabold text-indigo-900">⚖️ Aktifkan Skor Parsial (Proporsional) untuk Soal Kompleks</span>
+                  </label>
+                  <span class="text-[10px] text-indigo-700 bg-indigo-100/80 px-2 py-0.5 rounded font-semibold">
+                    Berlaku pada PG Kompleks, B/S Kompleks & Menjodohkan (Bisa diatur per nomor soal di bawah)
+                  </span>
                 </div>
               </div>
 
@@ -468,7 +481,7 @@
                       <th class="p-2 border text-center w-8">No</th>
                       <th class="p-2 border w-14 text-center">Hal PDF</th>
                       <th class="p-2 border w-36">Tipe Soal</th>
-                      <th class="p-2 border">Kunci Jawaban</th>
+                      <th class="p-2 border">Kunci Jawaban & Mode Skor</th>
                       <th class="p-2 border text-center w-14" title="Poin Benar">Poin+<br><input type="number" id="quickPoinBenar" class="w-full text-center border rounded mt-1 text-green-600 font-bold" value="1" min="0" oninput="setSemuaPoinBenar(this.value)"></th>
                       <th class="p-2 border text-center w-14" title="Poin Salah">Poin-<br><input type="number" id="quickPoinSalah" class="w-full text-center border rounded mt-1 text-red-600 font-bold" value="0" max="0" oninput="setSemuaPoinSalah(this.value)"></th>
                       <th class="p-2 border text-center w-8">❌</th>
@@ -605,14 +618,14 @@
               <thead class="bg-blue-100 shadow-sm" id="headDetailJawabanSiswa"></thead>
               <tbody id="bodyDetailJawabanSiswa" class="divide-y bg-white"></tbody>
             </table>
-            <p class="p-3 text-xs text-gray-500 bg-gray-100 border-t"><b>Keterangan:</b> Warna <span class="text-green-600 font-bold">Hijau</span> = Sesuai Kunci | Warna <span class="text-red-600 font-bold">Merah</span> = Salah | Warna Abu-abu = Dikosongkan.</p>
+            <p class="p-3 text-xs text-gray-500 bg-gray-100 border-t"><b>Keterangan:</b> Warna <span class="text-green-600 font-bold">Hijau</span> = Benar Penuh | Warna <span class="text-amber-600 font-bold">Kuning</span> = Benar Parsial (Sebagian) | Warna <span class="text-red-600 font-bold">Merah</span> = Salah | Warna Abu-abu = Dikosongkan.</p>
           </div>
         </div>
       </div>
 
       <div id="page-panduan" class="hidden">
         <div class="bg-white shadow rounded-lg p-8">
-          <h2 class="text-3xl font-black text-blue-800 mb-6 border-b-2 border-blue-200 pb-4">Buku Panduan Penggunaan Examify PDF & Native CBT</h2>
+          <h2 class="text-3xl font-black text-blue-800 mb-6 border-b-2 border-blue-200 pb-4">Buku Panduan Penggunaan Exam-CBT (PDF & Native CBT)</h2>
           <div class="bg-red-50 border-l-4 border-red-600 p-4 mb-8 rounded">
             <h3 class="font-bold text-red-800 text-lg">⚠️ KEBIJAKAN PENGHAPUSAN DATA 7 HARI</h3>
             <p class="text-gray-700 mt-2">Untuk menjaga agar aplikasi tetap ringan dan stabil, <b>sistem akan menghapus data nilai siswa secara otomatis dalam waktu 7 hari</b> sejak jawaban dikirim. <br>Peringatan: <b>Data yang sudah terhapus tidak dapat di-Undo (dikembalikan)</b>. Oleh karena itu, <b>sangat diwajibkan</b> bagi Guru untuk segera menekan tombol <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-bold">⬇ Unduh Excel</span> setelah ujian selesai dilaksanakan.</p>
@@ -620,16 +633,13 @@
 
           <div class="space-y-6 text-gray-700">
             <div>
-              <h3 class="text-xl font-bold text-blue-700 mb-2">1. Format Pembuatan SOAL, Rumus Matematika (Equation), Paste Snipping Tool & Kunci Jawaban</h3>
-              <p class="mb-2">Anda dapat memilih <b>Mode Soal PDF</b> (mengunggah dokumen PDF) atau <b>Mode Native CBT</b> (menyusun soal interaktif satu per satu ala Google Form lengkap dengan Equation Matematika, Gambar WebP, Wacana Soal Beranak, Acak Soal, dan Impor Excel).</p>
+              <h3 class="text-xl font-bold text-blue-700 mb-2">1. Format Pembuatan SOAL, Skor Parsial, Rumus Matematika & Paste Snipping Tool</h3>
+              <p class="mb-2">Anda dapat memilih <b>Mode Soal PDF</b> (mengunggah dokumen PDF) atau <b>Mode Native CBT</b> (menyusun soal interaktif satu per satu lengkap dengan Equation Matematika, Gambar WebP, Wacana Soal Beranak, Acak Soal, dan Impor Excel).</p>
               <ul class="list-disc ml-6 space-y-2 bg-blue-50 p-4 rounded border border-blue-200">
-                <li><b>Menyisipkan Gambar Cepat dari Snipping Tool (Tanpa Simpan File):</b> Ambil tangkapan layar gambar soal/opsi menggunakan <i>Snipping Tool</i> (<code>Win + Shift + S</code>), lalu klik langsung di dalam kotak teks <b>Wacana</b>, <b>Pertanyaan Soal</b>, atau <b>Opsi Jawaban</b> dan tekan <b><code>Ctrl + V</code></b> (atau klik tombol <span class="bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded text-xs font-bold">📋</span>). Jendela pemotong & pengompres gambar WebP akan langsung terbuka otomatis!</li>
-                <li><b>Menyisipkan Rumus Matematika (Equation):</b> Klik tombol <span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-xs font-bold">∑</span> yang tersedia di setiap kotak Pertanyaan Soal, Wacana, maupun Opsi Pilihan Jawaban. Pilih simbol matematika yang diinginkan lalu klik <b>Sisipkan Rumus</b>.</li>
-                <li><b>Pilihan Ganda Biasa:</b> Cukup klik opsi yang benar pada tombol yang disediakan.</li>
-                <li><b>Benar/Salah (1 Pernyataan) & B/S Kompleks (2 s.d 5 Pernyataan - Model TKA/AKM):</b> Pada Mode Native CBT, ketikkan teks pernyataan pada baris yang tersedia lalu klik kunci <code>B</code> (Benar) atau <code>S</code> (Salah) di sampingnya. Di layar siswa akan tampil tabel pernyataan dengan kolom Benar dan Salah di sampingnya.</li>
-                <li><b>Pilihan Ganda Kompleks:</b> Klik 2 atau lebih opsi jawaban yang benar.</li>
-                <li><b>Menjodohkan:</b> Pada Mode Native CBT, isi pernyataan di kolom kiri (1 s.d 5) dan pilihan jawaban di kolom kanan (A s.d E) sesuai kebutuhan (misal 3 pernyataan kiri dan 4 opsi kanan). Pilih kunci pasangan melalui dropdown yang tersedia atau ketikkan pasangan seperti <code>1A, 2B, 3C</code>. Sistem akan otomatis merapikannya menjadi format <code>1A2B3C</code>.</li>
-                <li><b>Isian Singkat:</b> Ketik <b>jawaban pasti (Sama Persis/Exact Match)</b> tanpa embel-embel satuan. Misal jika jawaban adalah 50 cm, maka tulis kuncinya: <code>50</code>. Berikan instruksi di naskah ujian agar siswa cukup menjawab angkanya saja tanpa mengetik satuan.</li>
+                <li><b>Fitur Skor Parsial vs Eksak (Berlaku di Mode PDF & Native CBT):</b> Untuk soal kompleks (<b>PG Kompleks</b>, <b>B/S Kompleks</b>, dan <b>Menjodohkan</b>), Anda dapat mencentang <code>⚖️ Skor Parsial</code> agar siswa tetap mendapat nilai proporsional sesuai jumlah pernyataan/pasangan yang dijawab benar (dilengkapi penalti anti-tebak semua untuk PG Kompleks). Jika tidak dicentang (Mode Eksak), siswa wajib menjawab benar seluruh komponen untuk mendapatkan poin.</li>
+                <li><b>Menyisipkan Gambar Cepat dari Snipping Tool (Tanpa Simpan File):</b> Ambil tangkapan layar gambar soal/opsi menggunakan <i>Snipping Tool</i> (<code>Win + Shift + S</code>), lalu klik langsung di dalam kotak teks <b>Wacana</b>, <b>Pertanyaan Soal</b>, atau <b>Opsi Jawaban</b> dan tekan <b><code>Ctrl + V</code></b> (atau klik tombol <span class="bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded text-xs font-bold">📋</span>).</li>
+                <li><b>Menyisipkan Rumus Matematika (Equation):</b> Klik tombol <span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-xs font-bold">∑</span> yang tersedia di setiap kotak Pertanyaan Soal, Wacana, maupun Opsi Pilihan Jawaban.</li>
+                <li><b>Isian Singkat:</b> Ketik <b>jawaban pasti (Sama Persis/Exact Match)</b> tanpa embel-embel satuan. Misal jika jawaban adalah 50 cm, maka tulis kuncinya: <code>50</code>.</li>
                 <li><b>Uraian:</b> Kosongkan saja. Sistem <b>TIDAK</b> menilai soal uraian secara otomatis. Anda wajib mengunduh rekap file Excel di akhir ujian untuk membaca hasil uraian dan memberi nilai manual.</li>
               </ul>
             </div>
@@ -637,10 +647,9 @@
             <div>
               <h3 class="text-xl font-bold text-blue-700 mb-2">2. Fitur Edit / Revisi Ujian & Limitasi Media</h3>
               <ul class="list-disc ml-6 space-y-2">
-                <li>Jika terdapat kesalahan kunci jawaban, nomor halaman PDF, atau teks soal, klik tombol <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs font-bold">✏️ Edit</span> pada Kartu Ujian di Beranda.</li>
+                <li>Jika terdapat kesalahan kunci jawaban, mode skor parsial, nomor halaman PDF, atau teks soal, klik tombol <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs font-bold">✏️ Edit</span> pada Kartu Ujian di Beranda.</li>
                 <li>Setiap penyimpanan revisi ujian akan mengunduh file <b>.enc</b> baru dan memotong <b>1 Kredit</b>.</li>
-                <li>Unggah file <b>.enc</b> hasil revisi tersebut ke Google Drive Anda, salin link barunya, lalu tempelkan menggantikan link lama pada Kartu Ujian di Beranda.</li>
-                <li><b>Catatan Gambar & PDF saat Edit:</b> Karena server hanya menyimpan teks soal dan kunci, saat mengedit ujian PDF Anda wajib memilih ulang file PDF-nya. Untuk ujian Native CBT yang memiliki gambar, Anda dapat melakukan <i>crop</i>/<i>paste</i> ulang gambar atau menekan tombol <b>⚡ Pulihkan Gambar/PDF dari File .enc Lama</b> jika file <code>.enc</code> sebelumnya masih tersimpan di perangkat Anda.</li>
+                <li>Unggah file <b>.enc</b> hasil revisi tersebut ke Google Drive / Cloud Anda, salin link barunya, lalu tempelkan menggantikan link lama pada Kartu Ujian di Beranda.</li>
               </ul>
             </div>
 
@@ -655,36 +664,12 @@
 
             <div>
               <h3 class="text-xl font-bold text-blue-700 mb-2">4. Distribusi Otomatis via Cloud Sync (Disarankan)</h3>
-              <p class="mb-2">Agar siswa tidak repot mencari file di memori HP mereka, gunakan fitur Sinkronisasi Cloud. Berikut langkahnya:</p>
               <ol class="list-decimal ml-6 space-y-2 bg-blue-50 p-4 rounded border border-blue-200">
-                <li>Buka Google Drive Anda, lalu klik <b>Baru (New) -> Upload File</b>. Pilih file <b>.enc</b> yang baru saja Anda buat.</li>
-                <li>Setelah ter-upload, klik kanan pada file tersebut dan pilih <b>Bagikan (Share)</b>.</li>
-                <li>Pada bagian <b>Akses Umum (General Access)</b>, ubah status menjadi <b>"Siapa saja yang memiliki link" (Anyone with the link)</b>. Pastikan perannya adalah <b>Pelihat (Viewer)</b>.</li>
-                <li>Salin link tersebut, lalu kembali ke Beranda Portal Guru.</li>
-                <li>Pada Kartu Ujian yang bersangkutan, tempel (<i>paste</i>) link tersebut ke kolom <b>Link Google Drive</b> dan klik Simpan.</li>
-                <li>Selesai! Saat ujian, siswa cukup membuka tab "Sinkron Cloud", mengetikkan <b>Kode Sinkronisasi (Token)</b>, dan soal akan otomatis terunduh ke HP mereka.</li>
+                <li>Unggah file <b>.enc</b> yang baru saja Anda buat ke Google Drive, GitHub, atau Supabase Storage.</li>
+                <li>Pastikan akses file diatur menjadi publik / <b>"Siapa saja yang memiliki link" (Anyone with the link)</b>.</li>
+                <li>Pada Kartu Ujian di Beranda Portal Guru, tempel (<i>paste</i>) link tersebut dan klik <b>Simpan Link</b>.</li>
+                <li>Saat ujian, siswa cukup membuka tab "Sinkron Cloud", mengetikkan <b>Kode Sinkronisasi (Token)</b>, dan soal akan otomatis terunduh.</li>
               </ol>
-            </div>
-            
-            <div>
-              <h3 class="text-xl font-bold text-blue-700 mb-2">5. Distribusi Manual (Jika Cloud Sync Gagal)</h3>
-              <p class="mb-2">Jika koneksi internet sekolah sangat buruk atau link Google Drive bermasalah, Anda tetap bisa mengirimkan file langsung (Offline-First):</p>
-              <ol class="list-decimal ml-6 space-y-2 bg-blue-50 p-4 rounded border border-blue-200">
-                <li>Kirimkan file <b>.enc</b> yang Anda unduh dari Portal Guru ke grup WhatsApp kelas atau via Flashdisk.</li>
-                <li>Siswa mengunduh/menyimpan file tersebut ke HP mereka.</li>
-                <li>Di aplikasi CBT Siswa, siswa membuka tab <b>File Manual</b>.</li>
-                <li>Siswa menekan tombol <b>Cari File di HP</b> dan memilih file .enc tersebut.</li>
-                <li>Siswa memasukkan <b>Kode Sinkronisasi (Token)</b> dan <b>PIN Pengawas</b> seperti biasa untuk memulai ujian.</li>
-              </ol>
-            </div>
-
-            <div>
-              <h3 class="text-xl font-bold text-blue-700 mb-2">6. Pengumpulan Ujian (Server)</h3>
-              <ul class="list-disc ml-6 space-y-2 bg-yellow-50 p-4 rounded border border-yellow-200">
-                <li>Aplikasi siswa telah dilengkapi fitur <b>Kirim Ulang Otomatis (Auto-Retry)</b>. Jika sinyal putus atau server penuh saat mengumpulkan, aplikasi akan mencoba mengirim ulang secara otomatis di latar belakang sebanyak 3x.</li>
-                <li><b>TIPS PENGAWAS:</b> Hindari memberikan instruksi pengumpulan serentak dengan aba-aba hitung mundur (Misal: <i>"Semuanya klik Selesai dalam 3, 2, 1!"</i>). Hal ini dapat menyebabkan antrean data yang terlalu menumpuk. Biarkan siswa menekan tombol "Selesai" secara natural saat mereka sudah yakin.</li>
-                <li><b>Tidak ada jaminan</b> aplikasi dan server selalu dalam keadaan lancar.</li>
-              </ul>
             </div>
           </div>
         </div>
@@ -703,6 +688,7 @@
 
     let defaultPoinBenar = 1;
     let defaultPoinSalah = 0;
+    let defaultSkorParsial = true;
     let modeTabelDetail = false;
 
     // --- STATE TAMBAHAN UNTUK NATIVE CBT, CROPPER WEBP, EQUATION, & EDIT MODE ---
@@ -719,6 +705,27 @@
     let isEditMode = false;
     let editingUjianId = null;
     let restoredPdfDataUrl = null;
+
+    function apakahTipeMendukungParsial(tipe) {
+      if (!tipe) return false;
+      return tipe.startsWith('pg_kompleks_') || tipe.startsWith('tf_kompleks_') || tipe === 'jodoh';
+    }
+
+    function setSemuaSkorParsial(isChecked) {
+      defaultSkorParsial = !!isChecked;
+      // Terapkan ke semua baris soal Mode PDF
+      document.querySelectorAll('#soalTableBody .val-is-parsial').forEach(chk => {
+        chk.checked = defaultSkorParsial;
+      });
+      // Terapkan ke semua objek soal Mode Native CBT
+      daftarSoalCBT.forEach(s => {
+        s.is_parsial = defaultSkorParsial;
+      });
+      if (modeGenerator === 'CBT') {
+        renderDaftarKartuCBT();
+        renderPreviewCBT();
+      }
+    }
 
     // --- PDF PREVIEW LISTENER ---
     document.getElementById('genPdf').addEventListener('change', function(e) {
@@ -1006,7 +1013,6 @@
       }
     }
 
-    // 1. Handler Paste langsung via Ctrl+V di dalam kotak input Wacana, Soal, atau Opsi
     function handlePasteGambarLangsung(event, targetType, idx, opsiIdx = null) {
       const clipboardData = event.clipboardData || window.clipboardData;
       if (!clipboardData || !clipboardData.items) return;
@@ -1024,7 +1030,6 @@
       }
     }
 
-    // 2. Handler Paste melalui klik tombol 📋 (Menggunakan Clipboard API)
     async function pasteGambarDariTombol(targetType, idx, opsiIdx = null) {
       if (!navigator.clipboard || !navigator.clipboard.read) {
         return alert("Browser Anda membatasi tombol Paste langsung. Silakan klik di dalam kotak teks lalu tekan Ctrl + V pada keyboard untuk menempelkan gambar dari Snipping Tool.");
@@ -1233,7 +1238,8 @@
         jodoh_kanan: mergedJodohKanan,
         kunci: customData.kunci || '',
         bobot: customData.bobot !== undefined ? customData.bobot : defaultPoinBenar,
-        bobot_salah: customData.bobot_salah !== undefined ? customData.bobot_salah : defaultPoinSalah
+        bobot_salah: customData.bobot_salah !== undefined ? customData.bobot_salah : defaultPoinSalah,
+        is_parsial: customData.is_parsial !== undefined ? !!customData.is_parsial : defaultSkorParsial
       };
     }
 
@@ -1350,6 +1356,8 @@
       daftarSoalCBT.forEach((s, idx) => {
         const imgSoalData = s.img_soal && mediaWebPStore[s.img_soal] ? mediaWebPStore[s.img_soal] : null;
         const isMissingImgSoal = s.img_soal && !imgSoalData;
+        const dukungParsial = apakahTipeMendukungParsial(s.type);
+
         let opsiWacanaHtml = `<option value="">-- Tanpa Bacaan (Berdiri Sendiri) --</option>`;
         daftarWacanaCBT.forEach(w => {
           opsiWacanaHtml += `<option value="${w.id_wacana}" ${s.id_wacana === w.id_wacana ? 'selected' : ''}>📚 Ikat ke Bacaan ${w.id_wacana}</option>`;
@@ -1359,7 +1367,7 @@
         <div id="kartu_cbt_${idx}" class="border-2 ${previewIndexCBT === idx ? 'border-blue-500 bg-blue-50/20' : 'border-gray-200 bg-white'} rounded-xl p-4 shadow-sm transition" onclick="if(previewIndexCBT !== ${idx}) { previewIndexCBT = ${idx}; renderPreviewCBT(); }">
           <!-- Header Kartu Soal -->
           <div class="flex flex-wrap justify-between items-center gap-2 border-b pb-2 mb-3">
-            <div class="flex items-center space-x-2">
+            <div class="flex flex-wrap items-center gap-2">
               <span class="bg-blue-600 text-white font-black text-xs px-3 py-1 rounded-full">Soal #${idx + 1}</span>
               <select class="border rounded p-1 text-xs bg-gray-50 font-bold" onchange="ubahTipeSoalCBT(${idx}, this.value)">
                 <option value="pg_3" ${s.type === 'pg_3' ? 'selected' : ''}>PG (3 Opsi: A, B, C)</option>
@@ -1377,6 +1385,12 @@
                 <option value="isian" ${s.type === 'isian' ? 'selected' : ''}>Isian Singkat</option>
                 <option value="uraian" ${s.type === 'uraian' ? 'selected' : ''}>Uraian</option>
               </select>
+              ${dukungParsial ? `
+                <label class="inline-flex items-center bg-indigo-50 border border-indigo-200 px-2 py-1 rounded text-[11px] font-bold text-indigo-800 cursor-pointer" title="Jika dicentang, nilai dihitung proporsional per pernyataan/opsi yang benar">
+                  <input type="checkbox" class="w-3.5 h-3.5 mr-1 accent-indigo-600" ${s.is_parsial ? 'checked' : ''} onchange="daftarSoalCBT[${idx}].is_parsial = this.checked; renderPreviewCBT()">
+                  ⚖️ Skor Parsial
+                </label>
+              ` : ''}
             </div>
 
             <div class="flex items-center space-x-2 text-xs">
@@ -1434,7 +1448,7 @@
     function renderOpsiDanKunciKartuCBT(s, idx) {
       const tipe = s.type;
 
-      // 1. PILIHAN GANDA BIASA & PG KOMPLEKS (Tombol Sigma Ringkas ∑ & Paste Snipping Tool 📋)
+      // 1. PILIHAN GANDA BIASA & PG KOMPLEKS
       if (tipe.startsWith('pg_')) {
         const isKompleks = tipe.includes('kompleks');
         const count = parseInt(tipe.split('_').pop());
@@ -1612,11 +1626,15 @@
       if (previewIndexCBT >= daftarSoalCBT.length) previewIndexCBT = 0;
       const s = daftarSoalCBT[previewIndexCBT];
       const wacanaObj = s.id_wacana ? daftarWacanaCBT.find(w => w.id_wacana === s.id_wacana) : null;
+      const dukungParsial = apakahTipeMendukungParsial(s.type);
+      const labelMetodeSkor = dukungParsial
+        ? (s.is_parsial ? ' | ⚖️ Skor Parsial' : ' | 🎯 Eksak (All-or-Nothing)')
+        : '';
 
       let html = `
         <div class="flex justify-between items-center bg-blue-900 text-white px-4 py-2.5 rounded-lg shadow-sm">
           <span class="font-black text-sm">SOAL NO. ${previewIndexCBT + 1} / ${daftarSoalCBT.length}</span>
-          <span class="text-[11px] bg-blue-700 px-2.5 py-0.5 rounded font-semibold uppercase">${s.type.replace(/_/g, ' ')} | Poin: +${s.bobot} / ${s.bobot_salah}</span>
+          <span class="text-[11px] bg-blue-700 px-2.5 py-0.5 rounded font-semibold uppercase">${s.type.replace(/_/g, ' ')} | Poin: +${s.bobot} / ${s.bobot_salah}${labelMetodeSkor}</span>
         </div>
       `;
 
@@ -1754,7 +1772,7 @@
     }
 
     // =========================================================================
-    // FITUR UNDUH TEMPLATE EXCEL (LENGKAP SEMUA TIPE SOAL) & IMPOR SOAL EXCEL
+    // FITUR UNDUH TEMPLATE EXCEL (LENGKAP SEMUA TIPE SOAL + SKOR PARSIAL)
     // =========================================================================
     function unduhTemplateExcelCBT() {
       const contohData = [
@@ -1775,8 +1793,9 @@
           "Jodoh_Kanan_D": "",
           "Jodoh_Kanan_E": "",
           "Kunci_Jawaban": "B",
-          "Poin_Benar": 2,
-          "Poin_Salah": 0
+          "Poin_Benar": 1,
+          "Poin_Salah": 0,
+          "Skor_Parsial": "TIDAK"
         },
         {
           "No": 2,
@@ -1795,8 +1814,9 @@
           "Jodoh_Kanan_D": "",
           "Jodoh_Kanan_E": "",
           "Kunci_Jawaban": "A,C",
-          "Poin_Benar": 3,
-          "Poin_Salah": 0
+          "Poin_Benar": 2,
+          "Poin_Salah": 0,
+          "Skor_Parsial": "YA"
         },
         {
           "No": 3,
@@ -1815,8 +1835,9 @@
           "Jodoh_Kanan_D": "",
           "Jodoh_Kanan_E": "",
           "Kunci_Jawaban": "B",
-          "Poin_Benar": 2,
-          "Poin_Salah": 0
+          "Poin_Benar": 1,
+          "Poin_Salah": 0,
+          "Skor_Parsial": "TIDAK"
         },
         {
           "No": 4,
@@ -1836,7 +1857,8 @@
           "Jodoh_Kanan_E": "",
           "Kunci_Jawaban": "B,B,S",
           "Poin_Benar": 3,
-          "Poin_Salah": 0
+          "Poin_Salah": 0,
+          "Skor_Parsial": "YA"
         },
         {
           "No": 5,
@@ -1855,8 +1877,9 @@
           "Jodoh_Kanan_D": "$15$",
           "Jodoh_Kanan_E": "",
           "Kunci_Jawaban": "1B, 2A, 3C",
-          "Poin_Benar": 4,
-          "Poin_Salah": 0
+          "Poin_Benar": 3,
+          "Poin_Salah": 0,
+          "Skor_Parsial": "YA"
         },
         {
           "No": 6,
@@ -1875,8 +1898,9 @@
           "Jodoh_Kanan_D": "",
           "Jodoh_Kanan_E": "",
           "Kunci_Jawaban": "5",
-          "Poin_Benar": 4,
-          "Poin_Salah": 0
+          "Poin_Benar": 2,
+          "Poin_Salah": 0,
+          "Skor_Parsial": "TIDAK"
         },
         {
           "No": 7,
@@ -1895,17 +1919,18 @@
           "Jodoh_Kanan_D": "",
           "Jodoh_Kanan_E": "",
           "Kunci_Jawaban": "",
-          "Poin_Benar": 10,
-          "Poin_Salah": 0
+          "Poin_Benar": 4,
+          "Poin_Salah": 0,
+          "Skor_Parsial": "TIDAK"
         }
       ];
 
       const panduanKode = [
         { "Kode Tipe_Soal": "pg_3 / pg_4 / pg_5", "Nama Tipe Soal": "Pilihan Ganda Biasa (3, 4, atau 5 Opsi)", "Cara Mengisi Kolom Opsi / Pernyataan": "Isi Opsi A s.d E sesuai jumlah opsi", "Contoh Kunci_Jawaban": "A" },
-        { "Kode Tipe_Soal": "pg_kompleks_3 / pg_kompleks_4 / pg_kompleks_5", "Nama Tipe Soal": "Pilihan Ganda Kompleks (Lebih dari 1 jawaban benar)", "Cara Mengisi Kolom Opsi / Pernyataan": "Isi Opsi A s.d E sesuai jumlah opsi", "Contoh Kunci_Jawaban": "A,C" },
+        { "Kode Tipe_Soal": "pg_kompleks_3 / pg_kompleks_4 / pg_kompleks_5", "Nama Tipe Soal": "Pilihan Ganda Kompleks (Lebih dari 1 jawaban benar)", "Cara Mengisi Kolom Opsi / Pernyataan": "Isi Opsi A s.d E sesuai jumlah opsi (Mendukung Skor_Parsial: YA / TIDAK)", "Contoh Kunci_Jawaban": "A,C" },
         { "Kode Tipe_Soal": "tf", "Nama Tipe Soal": "Benar / Salah (1 Pernyataan)", "Cara Mengisi Kolom Opsi / Pernyataan": "Isi teks pernyataan pada kolom Opsi_A_Atau_Pernyataan_1", "Contoh Kunci_Jawaban": "B atau S" },
-        { "Kode Tipe_Soal": "tf_kompleks_2 s.d tf_kompleks_5", "Nama Tipe Soal": "Benar / Salah Kompleks (2 s.d 5 Pernyataan)", "Cara Mengisi Kolom Opsi / Pernyataan": "Isi pernyataan 1 s.d 5 pada kolom Opsi_A s.d Opsi_E", "Contoh Kunci_Jawaban": "B,S,B" },
-        { "Kode Tipe_Soal": "jodoh", "Nama Tipe Soal": "Menjodohkan (Kiri 1-5 & Kanan A-E)", "Cara Mengisi Kolom Opsi / Pernyataan": "Isi pernyataan kiri di Opsi_A s.d E, dan pilihan kanan di Jodoh_Kanan_A s.d E", "Contoh Kunci_Jawaban": "1B, 2A, 3C" },
+        { "Kode Tipe_Soal": "tf_kompleks_2 s.d tf_kompleks_5", "Nama Tipe Soal": "Benar / Salah Kompleks (2 s.d 5 Pernyataan)", "Cara Mengisi Kolom Opsi / Pernyataan": "Isi pernyataan 1 s.d 5 pada kolom Opsi_A s.d Opsi_E (Mendukung Skor_Parsial: YA / TIDAK)", "Contoh Kunci_Jawaban": "B,S,B" },
+        { "Kode Tipe_Soal": "jodoh", "Nama Tipe Soal": "Menjodohkan (Kiri 1-5 & Kanan A-E)", "Cara Mengisi Kolom Opsi / Pernyataan": "Isi pernyataan kiri di Opsi_A s.d E, dan pilihan kanan di Jodoh_Kanan_A s.d E (Mendukung Skor_Parsial: YA / TIDAK)", "Contoh Kunci_Jawaban": "1B, 2A, 3C" },
         { "Kode Tipe_Soal": "isian", "Nama Tipe Soal": "Isian Singkat (Exact Match)", "Cara Mengisi Kolom Opsi / Pernyataan": "Kosongkan semua kolom opsi", "Contoh Kunci_Jawaban": "50" },
         { "Kode Tipe_Soal": "uraian", "Nama Tipe Soal": "Uraian / Essay (Koreksi Manual)", "Cara Mengisi Kolom Opsi / Pernyataan": "Kosongkan semua kolom opsi & kosongkan Kunci_Jawaban", "Contoh Kunci_Jawaban": "(Kosongkan)" }
       ];
@@ -1915,7 +1940,7 @@
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Template_Soal_CBT");
       XLSX.utils.book_append_sheet(wb, wsPanduan, "Panduan_Kode_Tipe");
-      XLSX.writeFile(wb, "Template_Impor_Soal_ExamifyCBT.xlsx");
+      XLSX.writeFile(wb, "Template_Impor_Soal_ExamCBT.xlsx");
     }
 
     function imporExcelCBT(event) {
@@ -1976,6 +2001,9 @@
               String(r.Jodoh_Kanan_E || '')
             ];
 
+            const rawParsial = String(r.Skor_Parsial || '').trim().toUpperCase();
+            const isParsialRow = rawParsial === '' ? defaultSkorParsial : (rawParsial === 'YA' || rawParsial === 'TRUE' || rawParsial === '1');
+
             daftarSoalCBT.push(buatObjekSoalCBTDefault({
               type: tipe,
               id_wacana: kodeW,
@@ -1986,7 +2014,8 @@
               jodoh_kanan: jodohKanan,
               kunci: tipe === 'uraian' ? '' : String(r.Kunci_Jawaban || '').trim().toUpperCase(),
               bobot: parseInt(r.Poin_Benar) || defaultPoinBenar,
-              bobot_salah: parseInt(r.Poin_Salah) || defaultPoinSalah
+              bobot_salah: parseInt(r.Poin_Salah) || defaultPoinSalah,
+              is_parsial: isParsialRow
             }));
           });
 
@@ -2096,9 +2125,9 @@
       const newVal = document.getElementById(`link_${id}`).value.trim();
       let updateVal = newVal ? newVal : null;
       
-     if (updateVal && !updateVal.includes('drive.google.com') && !updateVal.includes('supabase.co') && !updateVal.includes('github')) {
-                if(!confirm("Tautan tampaknya bukan dari Google Drive / Supabase / GitHub. Apakah Anda yakin ingin menyimpannya?")) return;
-            }
+      if (updateVal && !updateVal.includes('drive.google.com') && !updateVal.includes('supabase.co') && !updateVal.includes('github')) {
+        if (!confirm("Tautan tampaknya bukan dari Google Drive / Supabase / GitHub. Apakah Anda yakin ingin menyimpannya?")) return;
+      }
 
       const originalText = btn.innerText;
       btn.innerText = "Menyimpan...";
@@ -2157,9 +2186,9 @@
             </div>
 
             <div class="bg-blue-50 p-2 rounded border border-blue-100 mb-3 mt-2">
-              <label class="text-xs font-bold text-blue-800 block mb-1">🔗 Link Google Drive (Soal .enc):</label>
+              <label class="text-xs font-bold text-blue-800 block mb-1">🔗 Link Cloud Soal (.enc):</label>
               <div class="flex items-center">
-                <input type="url" id="link_${u.id}" value="${u.link_soal || ''}" placeholder="Paste link Google Drive di sini..." class="border border-blue-300 rounded p-1 text-xs flex-1 bg-white outline-none">
+                <input type="url" id="link_${u.id}" value="${u.link_soal || ''}" placeholder="Paste link Google Drive / Cloud di sini..." class="border border-blue-300 rounded p-1 text-xs flex-1 bg-white outline-none">
                 <button onclick="simpanLinkSoal('${u.id}', this)" class="ml-2 bg-blue-600 text-white text-xs px-3 py-1.5 rounded font-bold hover:bg-blue-700 transition shadow">Simpan Link</button>
               </div>
               <p class="text-[10px] text-gray-500 mt-1 italic">Siswa otomatis mengunduh soal dari link ini menggunakan Kode Sinkronisasi.</p>
@@ -2203,10 +2232,14 @@
       u.detail_soal.forEach((soal, i) => {
         let tr = document.createElement('tr');
         let infoHal = soal.teks_soal !== undefined ? `<span class="text-xs bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded font-bold">CBT</span>` : (soal.page_number || 1);
+        let dukungParsial = apakahTipeMendukungParsial(soal.type);
+        let badgeSkor = dukungParsial
+          ? (soal.is_parsial ? `<span class="ml-1.5 text-[10px] bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded font-bold">⚖️ Parsial</span>` : `<span class="ml-1.5 text-[10px] bg-gray-200 text-gray-700 px-2 py-0.5 rounded font-bold">🎯 Eksak</span>`)
+          : '';
         tr.innerHTML = `
           <td class="p-3 border text-center font-bold">${i + 1}</td>
           <td class="p-3 border text-center">${infoHal}</td>
-          <td class="p-3 border text-sm uppercase">${soal.type.replace(/_/g, ' ')}</td>
+          <td class="p-3 border text-sm uppercase">${soal.type.replace(/_/g, ' ')}${badgeSkor}</td>
           <td class="p-3 border font-black text-blue-700">${soal.kunci || '<span class="text-gray-400 font-normal italic">Kosong/Uraian</span>'}</td>
           <td class="p-3 border text-center font-bold text-green-600">${soal.bobot}</td>
           <td class="p-3 border text-center font-bold text-red-600">${soal.bobot_salah}</td>
@@ -2223,7 +2256,7 @@
       const sisaKredit = parseInt(document.getElementById('profKredit').innerText) || 0;
       if (sisaKredit <= 0) {
         if (confirm("Kredit Anda telah habis! Menyimpan revisi ujian membutuhkan 1 Kredit. Apakah Anda ingin menghubungi Admin via WhatsApp untuk top-up kredit?")) {
-          window.open("https://wa.me/6285189603539?text=Halo%20Admin%20Examify%20PDF,%20saya%20ingin%20top%20up%20kredit%20ujian.", "_blank");
+          window.open("https://wa.me/6285189603539?text=Halo%20Admin%20Exam-CBT,%20saya%20ingin%20top%20up%20kredit%20ujian.", "_blank");
         }
         return;
       }
@@ -2245,7 +2278,16 @@
       document.getElementById('genMapel').value = u.mapel || '';
       document.getElementById('genToken').value = u.token || '';
       document.getElementById('genPin').value = u.pin || '';
-      document.getElementById('genTanggal').value = u.tanggal ? u.tanggal.slice(0, 16) : '';
+
+      if (u.tanggal) {
+        const partsTgl = u.tanggal.split('T');
+        document.getElementById('genTanggal').value = partsTgl[0] || '';
+        document.getElementById('genJam').value = (partsTgl[1] || '07:30').slice(0, 5);
+      } else {
+        document.getElementById('genTanggal').value = '';
+        document.getElementById('genJam').value = '';
+      }
+
       document.getElementById('genBatasWaktu').value = u.batas_waktu ? u.batas_waktu.slice(0, 16) : '';
 
       const isModeCBT = (u.mode_ujian === 'CBT') || (u.detail_soal.length > 0 && u.detail_soal[0].teks_soal !== undefined);
@@ -2300,7 +2342,8 @@
             jodoh_kanan: item.jodoh_kanan || [],
             kunci: item.kunci || '',
             bobot: item.bobot !== undefined ? item.bobot : 1,
-            bobot_salah: item.bobot_salah !== undefined ? item.bobot_salah : 0
+            bobot_salah: item.bobot_salah !== undefined ? item.bobot_salah : 0,
+            is_parsial: item.is_parsial !== undefined ? !!item.is_parsial : true
           }));
         });
 
@@ -2335,6 +2378,11 @@
       const tipe = soalData.type || 'pg_4';
       const kunci = soalData.kunci || '';
       row.querySelector('.val-kunci-final').value = kunci;
+
+      const chkParsial = row.querySelector('.val-is-parsial');
+      if (chkParsial) {
+        chkParsial.checked = soalData.is_parsial !== undefined ? !!soalData.is_parsial : defaultSkorParsial;
+      }
 
       if ((tipe.startsWith('pg_') && !tipe.includes('kompleks')) || tipe === 'tf') {
         row.querySelectorAll(`.btn-opsi-${id}`).forEach(btn => {
@@ -2470,7 +2518,7 @@
       const sisaKredit = parseInt(document.getElementById('profKredit').innerText);
       if (sisaKredit <= 0) {
         if (confirm("Kredit Anda telah habis! Apakah Anda ingin menghubungi Admin via WhatsApp untuk melakukan top-up kredit?")) {
-          window.open("https://wa.me/6285189603539?text=Halo%20Admin%20Examify%20PDF,%20saya%20ingin%20top%20up%20kredit%20ujian.", "_blank");
+          window.open("https://wa.me/6285189603539?text=Halo%20Admin%20Exam-CBT,%20saya%20ingin%20top%20up%20kredit%20ujian.", "_blank");
         }
         return;
       }
@@ -2509,6 +2557,10 @@
       isEditMode = false;
       editingUjianId = null;
       restoredPdfDataUrl = null;
+      defaultSkorParsial = true;
+      const chkGlobalParsial = document.getElementById('chkGlobalSkorParsial');
+      if (chkGlobalParsial) chkGlobalParsial.checked = true;
+
       document.getElementById('bannerEditMode').classList.add('hidden');
       document.getElementById('judulFormIdentitas').innerText = "1. Identitas Ujian Baru";
       document.getElementById('labelPilihPdf').innerHTML = `Pilih File PDF Soal <span class="text-red-500 font-bold">*Wajib</span>`;
@@ -2518,6 +2570,7 @@
       document.getElementById('genToken').value = '';
       document.getElementById('genPin').value = ''; 
       document.getElementById('genTanggal').value = ''; 
+      document.getElementById('genJam').value = '';
       document.getElementById('genWaktu').value = '90';
       document.getElementById('genPdf').value = '';
       document.getElementById('genBatasWaktu').value = '';
@@ -2595,6 +2648,7 @@
     function renderInputKunci(id) {
       const tipe = document.querySelector(`#baris_soal_${id} .val-tipe`).value;
       const wadah = document.getElementById(`wadah_kunci_${id}`);
+      const dukungParsial = apakahTipeMendukungParsial(tipe);
       let html = `<input type="hidden" class="val-kunci-final" value="">`;
 
       if (tipe.startsWith('pg_') && !tipe.includes('kompleks')) {
@@ -2630,6 +2684,16 @@
       } else {
         html += `<span class="text-[10px] text-gray-500 italic">Manual</span>`;
       }
+
+      if (dukungParsial) {
+        html += `
+          <label class="inline-flex items-center mt-1.5 bg-indigo-50 border border-indigo-200 px-1.5 py-0.5 rounded text-[10px] font-bold text-indigo-800 cursor-pointer" title="Nilai dihitung proporsional per pernyataan/opsi yang benar">
+            <input type="checkbox" class="val-is-parsial w-3 h-3 mr-1 accent-indigo-600" ${defaultSkorParsial ? 'checked' : ''}>
+            ⚖️ Skor Parsial
+          </label>
+        `;
+      }
+
       wadah.innerHTML = html;
     }
 
@@ -2762,13 +2826,15 @@
       const mapel = document.getElementById('genMapel').value.trim();
       const token = document.getElementById('genToken').value.trim().toUpperCase();
       const pinUjian = document.getElementById('genPin').value.trim().toUpperCase();
-      const tgl = document.getElementById('genTanggal').value;
+      const tglInput = document.getElementById('genTanggal').value;
+      const jamInput = document.getElementById('genJam').value;
 
       if (!namaUjian) { alert("Validasi Gagal: Nama Ujian wajib diisi!"); return false; }
       if (!mapel) { alert("Validasi Gagal: Mata Pelajaran wajib diisi!"); return false; }
       if (!token) { alert("Validasi Gagal: Kode Sinkronisasi (Token) wajib diisi!"); return false; }
       if (!pinUjian) { alert("Validasi Gagal: PIN Pengawas (Mulai Ujian) wajib diisi!"); return false; }
-      if (!tgl) { alert("Validasi Gagal: Jadwal Mulai Ujian wajib diisi!"); return false; }
+      if (!tglInput) { alert("Validasi Gagal: Tanggal Ujian wajib diisi!"); return false; }
+      if (!jamInput) { alert("Validasi Gagal: Jam Ujian Dimulai wajib diisi!"); return false; }
 
       if (modeGenerator === 'PDF') {
         const file = document.getElementById('genPdf').files[0];
@@ -2926,19 +2992,20 @@
       const pinUjian = document.getElementById('genPin').value.trim().toUpperCase().replace(/\s/g, '');
       const tglInput = document.getElementById('genTanggal').value;
       const jamInput = document.getElementById('genJam').value;
-      const tgl = (tglInput && jamInput) ? `${tglInput}T${jamInput}` : '';
+      const tgl = (tglInput && jamInput) ? `${tglInput}T${jamInput}` : tglInput;
       const waktu = parseInt(document.getElementById('genWaktu').value);
       const mapel = document.getElementById('genMapel').value.trim();
       const namaUjian = document.getElementById('genNama').value.trim();
       const batasWaktu = document.getElementById('genBatasWaktu').value;
+      const skorParsialGlobal = document.getElementById('chkGlobalSkorParsial').checked;
 
       // =====================================================================
-      // CABANG 1: MODE SOAL PDF
+      // CABANG 1: MODE SOAL PDF (MENDUKUNG SKOR PARSIAL)
       // =====================================================================
       if (modeGenerator === 'PDF') {
         const arraySoal = [];
 
-        document.querySelectorAll('#soalTableBody tr').forEach((row) => {
+        document.querySelectorAll('#soalTableBody tr').forEach((row, idx) => {
           const tipe = row.querySelector('.val-tipe').value;
           let kunci = tipe === 'uraian' ? '' : row.querySelector('.val-kunci-final').value;
           
@@ -2949,12 +3016,21 @@
           }
 
           const bobot = parseInt(row.querySelector('.val-bobot').value) || 0; 
-          const bobot_salah = parseInt(row.querySelector('.val-bobot-salah').value) || 0; 
+          const bobot_salah = parseInt(row.querySelector('.val-bobot-salah').value) || 0;
+          const chkParsialEl = row.querySelector('.val-is-parsial');
+          const isParsialSoal = apakahTipeMendukungParsial(tipe)
+            ? (chkParsialEl ? chkParsialEl.checked : skorParsialGlobal)
+            : false;
 
           arraySoal.push({
+            id_asli: idx + 1,
             page_number: parseInt(row.querySelector('.val-hal').value),
             x_percent: 0.0, y_percent: 0.0, width_percent: 100.0, height_percent: 100.0, 
-            type: tipe, kunci: kunci, bobot: bobot, bobot_salah: bobot_salah
+            type: tipe,
+            kunci: kunci,
+            bobot: bobot,
+            bobot_salah: bobot_salah,
+            is_parsial: isParsialSoal
           });
         });
 
@@ -2973,7 +3049,12 @@
         }
 
         const prosesEnkripsiPDF = (pdfDataUrl) => {
-          const innerPayload = { pdf: pdfDataUrl, soal: arraySoal };
+          const innerPayload = {
+            mode_ujian: 'PDF',
+            skor_parsial: skorParsialGlobal,
+            pdf: pdfDataUrl,
+            soal: arraySoal
+          };
           const encryptedInnerData = CryptoJS.AES.encrypt(JSON.stringify(innerPayload), pinUjian).toString();
           const tampilSkor = document.getElementById('genTampilSkor').checked;
           const outerPayload = { 
@@ -2983,6 +3064,7 @@
             tampilkan_skor: tampilSkor,  
             tanggal: tgl, 
             waktu: waktu, 
+            mode_ujian: 'PDF',
             secure_data: encryptedInnerData 
           };
           const finalEncryptedText = CryptoJS.AES.encrypt(JSON.stringify(outerPayload), token).toString();
@@ -3030,6 +3112,7 @@
         const countOpsi = s.type.startsWith('pg_') ? parseInt(s.type.split('_').pop()) : 0;
         const countTF = (s.type === 'tf') ? 1 : (s.type.startsWith('tf_kompleks_') ? parseInt(s.type.split('_')[2]) : 0);
         const wacanaObj = s.id_wacana ? daftarWacanaCBT.find(w => w.id_wacana === s.id_wacana) : null;
+        const isParsialCBT = apakahTipeMendukungParsial(s.type) ? !!s.is_parsial : false;
 
         arraySoalCBTFinal.push({
           id_asli: idx + 1,
@@ -3049,7 +3132,8 @@
           jodoh_kanan: s.type === 'jodoh' ? s.jodoh_kanan : [],
           kunci: kunci,
           bobot: parseInt(s.bobot) || 0,
-          bobot_salah: parseInt(s.bobot_salah) || 0
+          bobot_salah: parseInt(s.bobot_salah) || 0,
+          is_parsial: isParsialCBT
         });
       });
 
@@ -3077,6 +3161,7 @@
           mode_ujian: 'CBT',
           acak_soal: acakSoal,
           acak_opsi: acakOpsi,
+          skor_parsial: skorParsialGlobal,
           daftar_wacana: daftarWacanaCBT,
           soal: arraySoalCBTFinal
         };
@@ -3237,12 +3322,14 @@
           siswa.data_jawaban.forEach(jwb => {
             jawabanSiswaMap[jwb.nomor] = jwb;
             const bersih = (jwb.jawaban || '').replace(/,/g, '').trim();
+            const poinItem = Number(jwb.poin !== undefined ? jwb.poin : (jwb.is_benar ? 1 : 0));
             if (!bersih) jmlK++;
-            else if (jwb.is_benar) jmlB++;
+            else if (jwb.is_benar || poinItem > 0) jmlB++;
             else jmlS++;
-            totalPoin += (jwb.poin !== undefined ? jwb.poin : (jwb.is_benar ? 1 : 0));
+            totalPoin += poinItem;
           });
         }
+        const totalPoinRapi = Math.round((totalPoin + Number.EPSILON) * 100) / 100;
 
         tbody += `<tr class="hover:bg-blue-50">
           <td class="p-2 border text-center bg-white sticky left-0 z-10">${index + 1}</td>
@@ -3254,7 +3341,7 @@
           <td class="p-2 border text-center font-bold text-green-700">${jmlB}</td>
           <td class="p-2 border text-center font-bold text-red-600">${jmlS}</td>
           <td class="p-2 border text-center text-gray-500">${jmlK}</td>
-          <td class="p-2 border text-center font-bold text-indigo-700">${totalPoin}</td>
+          <td class="p-2 border text-center font-bold text-indigo-700">${totalPoinRapi}</td>
           <td class="p-2 border text-center font-black text-blue-600">${siswa.skor}</td>`;
 
         for (let i = 1; i <= maxSoal; i++) {
@@ -3266,10 +3353,17 @@
             }
             if (!textJwb.trim()) textJwb = '-';
             
-            let colorClass = jwb.is_benar ? 'text-green-600 font-bold bg-green-50' : 'text-red-600 font-bold bg-red-50';
-            if (!jwb.jawaban || jwb.jawaban.replace(/,/g, '').trim() === '') colorClass = 'text-gray-400 bg-gray-50'; 
+            const poinItem = Number(jwb.poin !== undefined ? jwb.poin : (jwb.is_benar ? 1 : 0));
+            let colorClass = 'text-red-600 font-bold bg-red-50';
+            if (!jwb.jawaban || jwb.jawaban.replace(/,/g, '').trim() === '') {
+              colorClass = 'text-gray-400 bg-gray-50';
+            } else if (jwb.is_benar) {
+              colorClass = 'text-green-600 font-bold bg-green-50';
+            } else if (poinItem > 0) {
+              colorClass = 'text-amber-600 font-bold bg-amber-50';
+            }
             
-            tbody += `<td class="p-2 border text-center ${colorClass}">${textJwb}</td>`;
+            tbody += `<td class="p-2 border text-center ${colorClass}" title="Poin: ${poinItem}">${textJwb}</td>`;
           } else {
             tbody += `<td class="p-2 border text-center text-gray-300">-</td>`;
           }
@@ -3363,7 +3457,8 @@
             }
             
             let isKosong = !jwb.jawaban || jwb.jawaban.replace(/,/g, '').trim() === '';
-            let isBenar = jwb.is_benar === true;
+            let poinItem = Number(jwb.poin !== undefined ? jwb.poin : (jwb.is_benar ? 1 : 0));
+            let isBenar = jwb.is_benar === true || poinItem > 0;
 
             if (isKosong) {
               analisis[no].kosong++;
@@ -3412,12 +3507,14 @@
         if (d.data_jawaban && Array.isArray(d.data_jawaban)) {
           d.data_jawaban.forEach(jwb => {
             const bersih = (jwb.jawaban || '').replace(/,/g, '').trim();
+            const poinItem = Number(jwb.poin !== undefined ? jwb.poin : (jwb.is_benar ? 1 : 0));
             if (!bersih) jmlK++;
-            else if (jwb.is_benar) jmlB++;
+            else if (jwb.is_benar || poinItem > 0) jmlB++;
             else jmlS++;
-            skorTotal += (jwb.poin !== undefined ? jwb.poin : (jwb.is_benar ? 1 : 0));
+            skorTotal += poinItem;
           });
         }
+        const skorTotalRapi = Math.round((skorTotal + Number.EPSILON) * 100) / 100;
 
         let rowData = {
           "Peringkat": d.rank,
@@ -3430,7 +3527,7 @@
           "Jml Benar": jmlB,
           "Jml Salah": jmlS,
           "Tidak Dijawab": jmlK,
-          "Skor Total (Poin)": skorTotal,
+          "Skor Total (Poin)": skorTotalRapi,
           "Nilai Akhir": d.skor,
           "Durasi Pengerjaan": `${mnt} Menit ${dtk} Detik`,
           "Waktu Kumpul": new Date(d.created_at).toLocaleString('id-ID'),
@@ -3445,8 +3542,9 @@
               jawabanSiswa = jawabanSiswa.replace(/,/g, '');
             }
             if (!jawabanSiswa.trim()) jawabanSiswa = '-';
+            const poinItem = Number(jwb.poin !== undefined ? jwb.poin : (jwb.is_benar ? 1 : 0));
             rowData[`Jwb Soal ${jwb.nomor}`] = jawabanSiswa;
-            rowData[`Poin Soal ${jwb.nomor}`] = jwb.poin !== undefined ? jwb.poin : (jwb.is_benar ? 1 : 0);
+            rowData[`Poin Soal ${jwb.nomor}`] = Math.round((poinItem + Number.EPSILON) * 100) / 100;
           });
         }
         return rowData;
@@ -3467,7 +3565,7 @@
       });
       ws['!cols'] = colWidths;
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Rekap Nilai CBT - Examify PDF");
+      XLSX.utils.book_append_sheet(wb, ws, "Rekap Nilai Exam-CBT");
       XLSX.writeFile(wb, "Nilai_" + tokenUjianAktif + ".xlsx");
     }
   </script>
