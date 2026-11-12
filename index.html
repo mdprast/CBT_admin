@@ -2086,9 +2086,9 @@
       const newVal = document.getElementById(`link_${id}`).value.trim();
       let updateVal = newVal ? newVal : null;
       
-      if (updateVal && !updateVal.includes('drive.google.com')) {
-        if (!confirm("Tautan tampaknya bukan dari Google Drive. Apakah Anda yakin ingin menyimpannya?")) return;
-      }
+     if (updateVal && !updateVal.includes('drive.google.com') && !updateVal.includes('supabase.co') && !updateVal.includes('github')) {
+                if(!confirm("Tautan tampaknya bukan dari Google Drive / Supabase / GitHub. Apakah Anda yakin ingin menyimpannya?")) return;
+            }
 
       const originalText = btn.innerText;
       btn.innerText = "Menyimpan...";
