@@ -3190,9 +3190,23 @@
           }
         });
 
-        const zipBlob = await zip.generateAsync({ type: "blob", compression: "DEFLATE" });
+       // 1. Generate ZIP sebagai ArrayBuffer agar bisa diedit byte-nya
+        const zipBuffer = await zip.generateAsync({ type: "arraybuffer", compression: "DEFLATE" });
+        const uint8Array = new Uint8Array(zipBuffer);
+
+        // 2. Manipulasi Zip Signature (Merusak 4 Byte Pertama)
+        // Standar ZIP adalah 50 4B 03 04. Kita ubah menjadi kode unik, misal: 4D 44 45 44 (MDED)
+        if (uint8Array.length > 4) {
+            uint8Array[0] = 0x4D; 
+            uint8Array[1] = 0x44;
+            uint8Array[2] = 0x45;
+            uint8Array[3] = 0x44;
+        }
+
+        // 3. Bungkus kembali menjadi Blob untuk diunduh
+        const finalBlob = new Blob([uint8Array], { type: "application/octet-stream" });
         const link = document.createElement("a");
-        link.href = URL.createObjectURL(zipBlob);
+        link.href = URL.createObjectURL(finalBlob);
 
         const namaUjianBersih = namaUjian.replace(/\s+/g, '_');
         const namaMapelBersih = mapel.replace(/\s+/g, '_');
