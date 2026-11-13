@@ -3194,13 +3194,9 @@
         const zipBuffer = await zip.generateAsync({ type: "arraybuffer", compression: "DEFLATE" });
         const uint8Array = new Uint8Array(zipBuffer);
 
-        // 2. Manipulasi Zip Signature (Merusak 4 Byte Pertama)
-        // Standar ZIP adalah 50 4B 03 04. Kita ubah menjadi kode unik, misal: 4D 44 45 44 (MDED)
-        if (uint8Array.length > 4) {
-            uint8Array[0] = 0x4D; 
-            uint8Array[1] = 0x44;
-            uint8Array[2] = 0x45;
-            uint8Array[3] = 0x44;
+        // 2. Manipulasi Zip Signature
+        for (let i = 0; i < uint8Array.length; i++) {
+            uint8Array[i] = uint8Array[i] ^ 0xA5;
         }
 
         // 3. Bungkus kembali menjadi Blob untuk diunduh
