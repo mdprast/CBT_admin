@@ -635,12 +635,32 @@
             <div>
               <h3 class="text-xl font-bold text-blue-700 mb-2">1. Format Pembuatan SOAL, Skor Parsial, Rumus Matematika & Paste Snipping Tool</h3>
               <p class="mb-2">Anda dapat memilih <b>Mode Soal PDF</b> (mengunggah dokumen PDF) atau <b>Mode Native CBT</b> (menyusun soal interaktif satu per satu lengkap dengan Equation Matematika, Gambar WebP, Wacana Soal Beranak, Acak Soal, dan Impor Excel).</p>
-              <ul class="list-disc ml-6 space-y-2 bg-blue-50 p-4 rounded border border-blue-200">
-                <li><b>Fitur Skor Parsial vs Eksak (Berlaku di Mode PDF & Native CBT):</b> Untuk soal kompleks (<b>PG Kompleks</b>, <b>B/S Kompleks</b>, dan <b>Menjodohkan</b>), Anda dapat mencentang <code>⚖️ Skor Parsial</code> agar siswa tetap mendapat nilai proporsional sesuai jumlah pernyataan/pasangan yang dijawab benar (dilengkapi penalti anti-tebak semua untuk PG Kompleks). Jika tidak dicentang (Mode Eksak), siswa wajib menjawab benar seluruh komponen untuk mendapatkan poin.</li>
-                <li><b>Menyisipkan Gambar Cepat dari Snipping Tool (Tanpa Simpan File):</b> Ambil tangkapan layar gambar soal/opsi menggunakan <i>Snipping Tool</i> (<code>Win + Shift + S</code>), lalu klik langsung di dalam kotak teks <b>Wacana</b>, <b>Pertanyaan Soal</b>, atau <b>Opsi Jawaban</b> dan tekan <b><code>Ctrl + V</code></b> (atau klik tombol <span class="bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded text-xs font-bold">📋</span>).</li>
-                <li><b>Menyisipkan Rumus Matematika (Equation):</b> Klik tombol <span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-xs font-bold">∑</span> yang tersedia di setiap kotak Pertanyaan Soal, Wacana, maupun Opsi Pilihan Jawaban.</li>
-                <li><b>Isian Singkat:</b> Ketik <b>jawaban pasti (Sama Persis/Exact Match)</b> tanpa embel-embel satuan. Misal jika jawaban adalah 50 cm, maka tulis kuncinya: <code>50</code>.</li>
-                <li><b>Uraian:</b> Kosongkan saja. Sistem <b>TIDAK</b> menilai soal uraian secara otomatis. Anda wajib mengunduh rekap file Excel di akhir ujian untuk membaca hasil uraian dan memberi nilai manual.</li>
+             <ul class="list-disc ml-6 space-y-3 bg-blue-50 p-5 rounded-lg border border-blue-200">
+                <li>
+                  <b>Fitur Skor Parsial vs Eksak (Berlaku di Mode PDF & Native CBT):</b> 
+                  Untuk soal kompleks (<b>PG Kompleks</b>, <b>B/S Kompleks</b>, dan <b>Menjodohkan</b>), Anda dapat memilih metode penilaian:
+                  <div class="mt-2 space-y-1.5 text-sm">
+                    <p>⚖️ <b>Skor Parsial (Proporsional):</b> Siswa akan mendapatkan poin sebagian berdasarkan persentase jawaban/pernyataan yang benar. <i>Contoh: Jika bobot maksimal soal 4 poin dan ada 4 pasangan menjodohkan, siswa yang hanya menjawab 2 dengan benar akan mendapat 2 poin. Khusus pada <b>PG Kompleks</b>, sistem dilengkapi penalti pengurangan poin pada opsi salah agar siswa tidak bisa curang dengan mencentang seluruh opsi.</i></p>
+                    <p>🎯 <b>Skor Eksak (All-or-Nothing):</b> Siswa <b>wajib</b> menjawab seluruh komponen pada nomor tersebut dengan benar sempurna. Jika ada 1 saja yang salah/terlewat, maka poin = 0 (atau mendapat poin minus jika Anda mengatur Poin-).</p>
+                  </div>
+                </li>
+                <li>
+                  <b>Menyisipkan Gambar Cepat dari Snipping Tool (Tanpa Simpan File):</b> 
+                  Ambil tangkapan layar gambar soal/opsi menggunakan <i>Snipping Tool</i> (<code>Win + Shift + S</code>), lalu klik langsung di dalam kotak teks <b>Wacana</b>, <b>Pertanyaan Soal</b>, atau <b>Opsi Jawaban</b> dan tekan <b><code>Ctrl + V</code></b> (atau klik tombol <span class="bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded text-xs font-bold">📋</span>).
+                </li>
+                <li>
+                  <b>Menyisipkan Rumus Matematika (Equation):</b> 
+                  Klik tombol <span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-xs font-bold">∑</span> yang tersedia di setiap kotak Pertanyaan Soal, Wacana, maupun Opsi Pilihan Jawaban.
+                  <div class="mt-2 p-2.5 bg-yellow-100 border border-yellow-300 text-yellow-900 text-sm rounded-md shadow-sm">
+                    <b>⚠️ Tips Ekstra untuk Rumus Bersarang (Nested):</b> Sistem aplikasi ini sangat optimal dan ringan untuk membaca rumus standar kurikulum sekolah (pecahan, akar memanjang, pangkat, limit, trigonometri). Namun, untuk rumus tingkat lanjut/olimpiade yang <b>sangat bersarang</b> (contoh: pecahan bertingkat yang berada di dalam akar panjang bersarang), render di aplikasi Android mungkin kurang sempurna. Untuk kasus rumus yang terlalu ekstrem, <b>sangat disarankan untuk mengambil gambarnya menggunakan Snipping Tool lalu menempelkannya (Paste)</b>.
+                  </div>
+                </li>
+                <li>
+                  <b>Isian Singkat:</b> Ketik <b>jawaban pasti (Sama Persis/Exact Match)</b> tanpa embel-embel satuan. Misal jika jawaban adalah 50 cm, maka tulis kuncinya: <code>50</code>.
+                </li>
+                <li>
+                  <b>Uraian:</b> Kosongkan saja. Sistem <b>TIDAK</b> menilai soal uraian secara otomatis. Anda wajib mengunduh rekap file Excel di akhir ujian untuk membaca hasil uraian dan memberi nilai manual.
+                </li>
               </ul>
             </div>
 
