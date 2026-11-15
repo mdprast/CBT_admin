@@ -276,7 +276,8 @@
               <th class="p-3 border-b text-center text-xs font-bold text-indigo-900 w-12">No</th>
               <th class="p-3 border-b text-xs font-bold text-indigo-900">Nama Siswa</th>
               <th class="p-3 border-b text-center text-xs font-bold text-indigo-900">Kelas</th>
-              <th class="p-3 border-b text-center text-xs font-bold text-indigo-900">NIS (Username)</th>
+              <th class="p-3 border-b text-center text-xs font-bold text-indigo-900">NIS</th>
+              <th class="p-3 border-b text-center text-xs font-bold text-indigo-900">Username</th>
               <th class="p-3 border-b text-center text-xs font-bold text-indigo-900">Password</th>
               <th class="p-3 border-b text-center text-xs font-bold text-indigo-900">Status Live 📡</th>
               <th class="p-3 border-b text-center text-xs font-bold text-indigo-900 w-16">Aksi</th>
@@ -3693,7 +3694,7 @@
       renderTabelPeserta();
     }
 
-    function renderTabelPeserta() {
+   function renderTabelPeserta() {
       const tbody = document.getElementById('bodyTabelPeserta');
       const badgeMode = document.getElementById('badgeStatusPeserta');
       const btnHapusSemua = document.getElementById('btnHapusSemuaPeserta');
@@ -3705,7 +3706,7 @@
         badgeMode.classList.add('hidden');
         btnHapusSemua.classList.add('hidden');
         btnUnduhKartu.classList.add('hidden');
-        tbody.innerHTML = '<tr><td colspan="7" class="text-center p-8 text-gray-400 font-medium italic">Belum ada peserta terdaftar. Ujian ini menggunakan Mode Token (Terbuka).<br>Silakan impor dari Excel untuk mengaktifkan Mode Login.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="text-center p-8 text-gray-400 font-medium italic">Belum ada peserta terdaftar. Ujian ini menggunakan Mode Token (Terbuka).<br>Silakan impor dari Excel untuk mengaktifkan Mode Login.</td></tr>';
         return;
       }
 
@@ -3729,6 +3730,7 @@
             <td class="p-3 border-b text-center text-gray-500 font-bold">${idx + 1}</td>
             <td class="p-3 border-b font-bold text-gray-800">${p.nama_siswa}</td>
             <td class="p-3 border-b text-center text-gray-600">${p.kelas || '-'}</td>
+            <td class="p-3 border-b text-center text-gray-600">${p.nis || '-'}</td>
             <td class="p-3 border-b text-center font-black text-indigo-700 bg-indigo-50/50">${p.username}</td>
             <td class="p-3 border-b text-center font-mono text-gray-700 bg-gray-50">${p.password}</td>
             <td class="p-3 border-b text-center">${statusBadge}</td>
@@ -3742,9 +3744,11 @@
     }
 
     function unduhTemplateExcelPeserta() {
+      // 💡 Perhatikan kolom NIS dan Username sekarang sudah dipisah!
       const contohData = [
-        { "Nama Siswa": "Ahmad Budi", "NIS (Username)": "1001", "Password": "123", "Kelas": "9A", "Asal Sekolah": "SMPN 1", "No Absen": "1", "Ruang": "R1" },
-        { "Nama Siswa": "Citra Lestari", "NIS (Username)": "1002", "Password": "123", "Kelas": "9A", "Asal Sekolah": "SMPN 1", "No Absen": "2", "Ruang": "R1" }
+        { "Nama Siswa": "Ahmad Budi", "NIS": "1001", "Username": "user1001", "Password": "123", "Kelas": "9A", "Asal Sekolah": "SMPN 1", "No Absen": "1", "Ruang": "R1", "No Peserta": "05-001" },
+        { "Nama Siswa": "Citra Lestari", "NIS": "1002", "Username": "user1002", "Password": "123", "Kelas": "9A", "Asal Sekolah": "SMPN 1", "No Absen": "2", "Ruang": "R1", "No Peserta": "05-002" },
+        { "Nama Siswa": "Siswa C (Tanpa Username)", "NIS": "1003", "Username": "", "Password": "", "Kelas": "9A", "Asal Sekolah": "SMPN 1", "No Absen": "3", "Ruang": "R1", "No Peserta": "05-003" }
       ];
       const ws = XLSX.utils.json_to_sheet(contohData);
       const wb = XLSX.utils.book_new();
@@ -3767,26 +3771,38 @@
           if (rows.length === 0) return alert("File Excel kosong!");
 
           const tbody = document.getElementById('bodyTabelPeserta');
-          tbody.innerHTML = `<tr><td colspan="7" class="text-center p-6 text-indigo-600 font-bold">Sedang mengimpor ${rows.length} siswa ke database. Mohon tunggu... ⏳</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="8" class="text-center p-6 text-indigo-600 font-bold">Sedang mengimpor ${rows.length} siswa ke database. Mohon tunggu... ⏳</td></tr>`;
 
-          const payloadArray = rows.map(r => ({
-            id_ujian: currentKelolaUjianId,
-            id_guru: currentUser.id,
-            nama_siswa: String(r["Nama Siswa"] || r["nama_siswa"] || r["Nama"] || 'Tanpa Nama').trim(),
-            username: String(r["NIS (Username)"] || r["NIS"] || r["username"] || Math.floor(Math.random() * 90000) + 10000).trim(),
-            password: String(r["Password"] || r["password"] || '123456').trim(),
-            nis: String(r["NIS (Username)"] || r["NIS"] || '').trim(),
-            kelas: String(r["Kelas"] || r["kelas"] || '').trim(),
-            asal_sekolah: String(r["Asal Sekolah"] || r["asal_sekolah"] || '').trim(),
-            no_absen: String(r["No Absen"] || r["no_absen"] || '').trim(),
-            ruang: String(r["Ruang"] || r["ruang"] || '').trim()
-          }));
+          const payloadArray = rows.map(r => {
+            const namaSiswa = String(r["Nama Siswa"] || r["nama_siswa"] || r["Nama"] || 'Tanpa Nama').trim();
+            const nisInput = String(r["NIS"] || r["nis"] || '').trim();
+            
+            // LOGIKA SMART GENERATOR (Jika Username kosong di Excel, gunakan NIS. Jika NIS kosong, buat angka acak)
+            let usernameInput = String(r["Username"] || r["username"] || '').trim();
+            if (!usernameInput) {
+                usernameInput = nisInput ? nisInput : `user${Math.floor(Math.random() * 90000) + 10000}`;
+            }
+
+            return {
+              id_ujian: currentKelolaUjianId,
+              id_guru: currentUser.id,
+              nama_siswa: namaSiswa,
+              nis: nisInput,
+              username: usernameInput,
+              password: String(r["Password"] || r["password"] || '123456').trim(), // Default password jika kosong
+              kelas: String(r["Kelas"] || r["kelas"] || '').trim(),
+              asal_sekolah: String(r["Asal Sekolah"] || r["asal_sekolah"] || '').trim(),
+              no_absen: String(r["No Absen"] || r["no_absen"] || '').trim(),
+              ruang: String(r["Ruang"] || r["ruang"] || '').trim(),
+              no_ujian: String(r["No Peserta"] || r["no_peserta"] || r["No Ujian"] || '').trim()
+            };
+          });
 
           const { error } = await supabaseClient.from('peserta_ujian').insert(payloadArray);
 
           if (error) {
             if (error.code === '23505') {
-              alert("GAGAL: Terdapat duplikasi Username (NIS) dalam file Excel Anda atau NIS tersebut sudah terdaftar di ujian ini. Username harus unik per ujian.");
+              alert("GAGAL: Terdapat duplikasi Username dalam file Excel Anda, atau Username tersebut sudah terdaftar di ujian ini. Username harus unik per ujian.");
             } else {
               alert("Gagal mengimpor peserta: " + error.message);
             }
@@ -3803,34 +3819,27 @@
       reader.readAsArrayBuffer(file);
     }
 
-    async function hapusSatuPeserta(idPeserta) {
-      if (!confirm("Yakin ingin menghapus peserta ini?")) return;
-      await supabaseClient.from('peserta_ujian').delete().eq('id', idPeserta);
-      tarikDataPeserta();
-    }
-
-    async function hapusSemuaPeserta() {
-      if (!confirm("PERINGATAN: Yakin ingin menghapus SELURUH peserta ujian ini? \nJika dihapus, ujian akan kembali ke Mode Token biasa (Siswa bisa mengetik nama bebas).")) return;
-      
-      document.getElementById('bodyTabelPeserta').innerHTML = '<tr><td colspan="7" class="text-center p-6 text-red-600 font-bold">Sedang menghapus semua peserta... ⏳</td></tr>';
-      
-      const { error } = await supabaseClient.from('peserta_ujian').delete().eq('id_ujian', currentKelolaUjianId);
-      if (error) alert("Gagal menghapus: " + error.message);
-      tarikDataPeserta();
-    }
-
     function unduhKartuLoginPeserta() {
       if (cacheDataPeserta.length === 0) return alert("Belum ada data.");
       
       const exportData = cacheDataPeserta.map(p => ({
         "Nama Siswa": p.nama_siswa,
-        "NIS (Username)": p.username,
-        "Password": p.password,
         "Kelas": p.kelas || '-',
+        "No Peserta": p.no_ujian || '-',
+        "NIS": p.nis || '-',
+        "Username Login": p.username,
+        "Password Login": p.password,
         "Ruang": p.ruang || '-'
       }));
 
       const ws = XLSX.utils.json_to_sheet(exportData);
+      
+      // Auto-size kolom agar rapi
+      const colWidths = [
+          { wch: 25 }, { wch: 10 }, { wch: 15 }, { wch: 15 }, { wch: 20 }, { wch: 15 }, { wch: 10 }
+      ];
+      ws['!cols'] = colWidths;
+
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Kartu_Login");
       XLSX.writeFile(wb, "Kartu_Login_Peserta_CBT.xlsx");
