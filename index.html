@@ -239,6 +239,62 @@
     </div>
   </div>
 
+<!-- Modal Kelola Peserta (Mode Login & Pantau Live) -->
+  <div id="modalKelolaPeserta" class="fixed inset-0 bg-black bg-opacity-75 hidden flex justify-center items-center z-[110]">
+    <div class="bg-white p-6 rounded-lg shadow-2xl w-11/12 max-w-5xl relative max-h-[90vh] flex flex-col">
+      <button onclick="document.getElementById('modalKelolaPeserta').classList.add('hidden')" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 font-bold text-2xl">✕</button>
+      
+      <div class="flex justify-between items-end border-b pb-3 mb-4">
+        <div>
+          <h3 class="text-xl font-black text-indigo-800 flex items-center">👥 Kelola Peserta Ujian <span id="badgeStatusPeserta" class="ml-3 text-[10px] bg-green-100 text-green-800 px-2 py-1 rounded-full uppercase border border-green-300 shadow-sm hidden">Mode Login Aktif</span></h3>
+          <p id="kpNamaUjian" class="text-sm text-gray-600 font-bold mt-1">Nama Ujian: -</p>
+        </div>
+        <div class="flex space-x-2">
+          <button onclick="unduhTemplateExcelPeserta()" class="bg-emerald-100 text-emerald-800 border border-emerald-300 px-3 py-1.5 text-xs rounded font-bold hover:bg-emerald-200 transition shadow-sm">⬇ Template Excel Peserta</button>
+          <label class="bg-indigo-600 text-white px-3 py-1.5 text-xs rounded font-bold hover:bg-indigo-700 shadow-sm cursor-pointer transition">
+            📂 Impor Excel Siswa
+            <input type="file" id="inputExcelPeserta" accept=".xlsx,.xls" class="hidden" onchange="imporExcelPeserta(event)">
+          </label>
+        </div>
+      </div>
+
+      <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4 mb-4 flex justify-between items-center shadow-sm">
+        <div>
+          <h4 class="font-bold text-indigo-900 text-sm">Status: <span id="statJumlahPeserta" class="text-indigo-600">0 Siswa Terdaftar</span></h4>
+          <p class="text-xs text-indigo-700 mt-1">Dengan mendaftarkan peserta, ujian ini otomatis berubah menjadi <b>Mode Login Ketat</b>. Siswa harus memasukkan Username dan Password untuk mengakses soal.</p>
+        </div>
+        <div class="flex flex-col space-y-2">
+          <button onclick="tarikDataPeserta()" class="bg-white border border-indigo-300 text-indigo-700 px-3 py-1.5 text-xs rounded font-bold hover:bg-indigo-100 shadow-sm transition flex items-center justify-center">🔄 Segarkan Status Live</button>
+          <button onclick="hapusSemuaPeserta()" id="btnHapusSemuaPeserta" class="hidden bg-red-100 border border-red-300 text-red-700 px-3 py-1.5 text-xs rounded font-bold hover:bg-red-200 shadow-sm transition">🗑️ Hapus Semua (Kembali ke Mode Token)</button>
+        </div>
+      </div>
+
+      <div class="overflow-y-auto flex-1 border rounded-lg shadow-inner bg-gray-50">
+        <table class="min-w-full text-left whitespace-nowrap">
+          <thead class="bg-indigo-100 sticky top-0 z-10 shadow-sm">
+            <tr>
+              <th class="p-3 border-b text-center text-xs font-bold text-indigo-900 w-12">No</th>
+              <th class="p-3 border-b text-xs font-bold text-indigo-900">Nama Siswa</th>
+              <th class="p-3 border-b text-center text-xs font-bold text-indigo-900">Kelas</th>
+              <th class="p-3 border-b text-center text-xs font-bold text-indigo-900">NIS (Username)</th>
+              <th class="p-3 border-b text-center text-xs font-bold text-indigo-900">Password</th>
+              <th class="p-3 border-b text-center text-xs font-bold text-indigo-900">Status Live 📡</th>
+              <th class="p-3 border-b text-center text-xs font-bold text-indigo-900 w-16">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="bodyTabelPeserta" class="divide-y text-sm bg-white">
+            <tr><td colspan="7" class="text-center p-8 text-gray-400 font-medium italic">Belum ada peserta terdaftar. Silakan impor dari Excel.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="mt-4 flex justify-between items-center border-t pt-3">
+        <p class="text-xs text-gray-500">Gunakan fitur ini untuk ujian resmi (SAS/STS/TryOut Sekolah).</p>
+        <button onclick="unduhKartuLoginPeserta()" id="btnUnduhKartuLogin" class="hidden bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-bold text-sm shadow transition">⬇ Unduh Kartu Login (Excel)</button>
+      </div>
+    </div>
+  </div>
+
   <div id="mainApp" class="hidden">
     <nav class="bg-white shadow relative z-10">
       <div class="max-w-7xl mx-auto px-4 flex justify-between h-16">
@@ -564,7 +620,10 @@
 
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-xl font-bold">Rekapitulasi Nilai Siswa</h2>
-          <button onclick="loadDataNilaiSpesifik()" class="bg-blue-100 text-blue-700 px-4 py-2 rounded font-bold hover:bg-blue-200 shadow">🔄 Segarkan Data</button>
+          <div class="space-x-2">
+            <button onclick="bukaKelolaPeserta('${tokenUjianAktif}', document.getElementById('infoNamaUjian').innerText)" class="bg-indigo-100 text-indigo-700 px-4 py-2 rounded font-bold hover:bg-indigo-200 shadow transition border border-indigo-300">📡 Pantau Status Live</button>
+            <button onclick="loadDataNilaiSpesifik()" class="bg-blue-100 text-blue-700 px-4 py-2 rounded font-bold hover:bg-blue-200 shadow">🔄 Segarkan Data</button>
+          </div>
         </div>
 
         <div class="grid grid-cols-3 gap-6 mb-8">
@@ -2227,11 +2286,12 @@
               <p class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded font-bold border border-red-200 flex-1 text-center truncate" title="PIN Pengawas">🔒 PIN: ${u.pin || '-'}</p>
             </div>
 
-            <div class="flex space-x-1.5">
-              <button onclick="lihatDetailDanNilai(${index})" class="flex-1 bg-blue-600 text-white text-xs px-2 py-2 rounded font-bold hover:bg-blue-700 shadow-sm transition">🏆 Nilai</button>
-              <button onclick="bukaModalDetailSoal(${index})" class="bg-indigo-100 text-indigo-800 text-xs px-2.5 py-2 rounded font-bold hover:bg-indigo-200 shadow-sm transition" title="Lihat Kunci Jawaban">🔍 Kunci</button>
-              <button onclick="bukaEditUjian(${index})" class="bg-amber-100 text-amber-800 border border-amber-300 text-xs px-2.5 py-2 rounded font-bold hover:bg-amber-200 shadow-sm transition" title="Edit / Revisi Soal & Kunci (-1 Kredit)">✏️ Edit</button>
-              <button onclick="hapusUjian('${u.id}')" class="bg-red-100 text-red-700 text-xs px-2.5 py-2 rounded font-bold hover:bg-red-200 shadow-sm transition" title="Hapus Ujian Permanen">🗑️</button>
+            <div class="flex space-x-1.5 mt-2">
+              <button onclick="bukaKelolaPeserta('${u.id}', '${u.nama_ujian}')" class="flex-1 bg-indigo-600 text-white text-[11px] px-2 py-2 rounded font-bold hover:bg-indigo-700 shadow-sm transition" title="Pendaftaran Akun Login Peserta">👥 Peserta</button>
+              <button onclick="lihatDetailDanNilai(${index})" class="flex-1 bg-blue-600 text-white text-[11px] px-2 py-2 rounded font-bold hover:bg-blue-700 shadow-sm transition">🏆 Nilai</button>
+              <button onclick="bukaModalDetailSoal(${index})" class="bg-teal-100 text-teal-800 text-[11px] px-2 py-2 rounded font-bold hover:bg-teal-200 shadow-sm transition" title="Lihat Kunci Jawaban">🔍 Kunci</button>
+              <button onclick="bukaEditUjian(${index})" class="bg-amber-100 text-amber-800 border border-amber-300 text-[11px] px-2 py-2 rounded font-bold hover:bg-amber-200 shadow-sm transition" title="Edit / Revisi Soal & Kunci (-1 Kredit)">✏️ Edit</button>
+              <button onclick="hapusUjian('${u.id}')" class="bg-red-100 text-red-700 text-[11px] px-2 py-2 rounded font-bold hover:bg-red-200 shadow-sm transition" title="Hapus Ujian Permanen">🗑️</button>
             </div>
           </div>
         `;
@@ -2557,6 +2617,7 @@
       document.getElementById('infoPinUjian').innerText = `PIN Pengawas: ${u.pin || '-'}`;
 
       tokenUjianAktif = u.token;
+	  currentKelolaUjianId = u.id;
       setTabAktif(false, false, true, false);
       loadDataNilaiSpesifik();
     }
@@ -3597,6 +3658,182 @@
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Rekap Nilai Exam-CBT");
       XLSX.writeFile(wb, "Nilai_" + tokenUjianAktif + ".xlsx");
+    }
+	
+	// =========================================================================
+    // FITUR KELOLA PESERTA (MODE LOGIN & PANTAU LIVE)
+    // =========================================================================
+    let currentKelolaUjianId = null;
+    let cacheDataPeserta = [];
+
+    function bukaKelolaPeserta(idUjian, namaUjian) {
+      currentKelolaUjianId = idUjian;
+      document.getElementById('kpNamaUjian').innerText = `Nama Ujian: ${namaUjian}`;
+      document.getElementById('modalKelolaPeserta').classList.remove('hidden');
+      tarikDataPeserta();
+    }
+
+    async function tarikDataPeserta() {
+      if (!currentKelolaUjianId) return;
+      const tbody = document.getElementById('bodyTabelPeserta');
+      tbody.innerHTML = '<tr><td colspan="7" class="text-center p-6 text-indigo-600 font-bold">Sedang menarik data peserta... ⏳</td></tr>';
+
+      const { data, error } = await supabaseClient
+        .from('peserta_ujian')
+        .select('*')
+        .eq('id_ujian', currentKelolaUjianId)
+        .order('nama_siswa', { ascending: true });
+
+      if (error) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center p-6 text-red-500 font-bold">Gagal memuat data: ${error.message}</td></tr>`;
+        return;
+      }
+
+      cacheDataPeserta = data || [];
+      renderTabelPeserta();
+    }
+
+    function renderTabelPeserta() {
+      const tbody = document.getElementById('bodyTabelPeserta');
+      const badgeMode = document.getElementById('badgeStatusPeserta');
+      const btnHapusSemua = document.getElementById('btnHapusSemuaPeserta');
+      const btnUnduhKartu = document.getElementById('btnUnduhKartuLogin');
+      
+      document.getElementById('statJumlahPeserta').innerText = `${cacheDataPeserta.length} Siswa Terdaftar`;
+
+      if (cacheDataPeserta.length === 0) {
+        badgeMode.classList.add('hidden');
+        btnHapusSemua.classList.add('hidden');
+        btnUnduhKartu.classList.add('hidden');
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center p-8 text-gray-400 font-medium italic">Belum ada peserta terdaftar. Ujian ini menggunakan Mode Token (Terbuka).<br>Silakan impor dari Excel untuk mengaktifkan Mode Login.</td></tr>';
+        return;
+      }
+
+      badgeMode.classList.remove('hidden');
+      btnHapusSemua.classList.remove('hidden');
+      btnUnduhKartu.classList.remove('hidden');
+
+      let html = '';
+      cacheDataPeserta.forEach((p, idx) => {
+        let statusBadge = '';
+        if (p.status_mengerjakan === 'Sedang Ujian') {
+          statusBadge = `<span class="bg-amber-100 text-amber-800 border border-amber-300 px-2 py-0.5 rounded text-[10px] font-bold animate-pulse">⏳ Sedang Ujian</span>`;
+        } else if (p.status_mengerjakan === 'Selesai') {
+          statusBadge = `<span class="bg-green-100 text-green-800 border border-green-300 px-2 py-0.5 rounded text-[10px] font-bold">✅ Selesai</span>`;
+        } else {
+          statusBadge = `<span class="bg-gray-100 text-gray-500 border border-gray-300 px-2 py-0.5 rounded text-[10px] font-bold">Belum Mulai</span>`;
+        }
+
+        html += `
+          <tr class="hover:bg-indigo-50">
+            <td class="p-3 border-b text-center text-gray-500 font-bold">${idx + 1}</td>
+            <td class="p-3 border-b font-bold text-gray-800">${p.nama_siswa}</td>
+            <td class="p-3 border-b text-center text-gray-600">${p.kelas || '-'}</td>
+            <td class="p-3 border-b text-center font-black text-indigo-700 bg-indigo-50/50">${p.username}</td>
+            <td class="p-3 border-b text-center font-mono text-gray-700 bg-gray-50">${p.password}</td>
+            <td class="p-3 border-b text-center">${statusBadge}</td>
+            <td class="p-3 border-b text-center">
+              <button onclick="hapusSatuPeserta('${p.id}')" class="text-red-500 hover:bg-red-100 px-2 py-1 rounded text-xs font-bold" title="Hapus Peserta">X</button>
+            </td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+    }
+
+    function unduhTemplateExcelPeserta() {
+      const contohData = [
+        { "Nama Siswa": "Ahmad Budi", "NIS (Username)": "1001", "Password": "123", "Kelas": "9A", "Asal Sekolah": "SMPN 1", "No Absen": "1", "Ruang": "R1" },
+        { "Nama Siswa": "Citra Lestari", "NIS (Username)": "1002", "Password": "123", "Kelas": "9A", "Asal Sekolah": "SMPN 1", "No Absen": "2", "Ruang": "R1" }
+      ];
+      const ws = XLSX.utils.json_to_sheet(contohData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Format_Impor_Peserta");
+      XLSX.writeFile(wb, "Template_Impor_Peserta_Login.xlsx");
+    }
+
+    function imporExcelPeserta(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(firstSheet, { defval: "" });
+
+          if (rows.length === 0) return alert("File Excel kosong!");
+
+          const tbody = document.getElementById('bodyTabelPeserta');
+          tbody.innerHTML = `<tr><td colspan="7" class="text-center p-6 text-indigo-600 font-bold">Sedang mengimpor ${rows.length} siswa ke database. Mohon tunggu... ⏳</td></tr>`;
+
+          const payloadArray = rows.map(r => ({
+            id_ujian: currentKelolaUjianId,
+            id_guru: currentUser.id,
+            nama_siswa: String(r["Nama Siswa"] || r["nama_siswa"] || r["Nama"] || 'Tanpa Nama').trim(),
+            username: String(r["NIS (Username)"] || r["NIS"] || r["username"] || Math.floor(Math.random() * 90000) + 10000).trim(),
+            password: String(r["Password"] || r["password"] || '123456').trim(),
+            nis: String(r["NIS (Username)"] || r["NIS"] || '').trim(),
+            kelas: String(r["Kelas"] || r["kelas"] || '').trim(),
+            asal_sekolah: String(r["Asal Sekolah"] || r["asal_sekolah"] || '').trim(),
+            no_absen: String(r["No Absen"] || r["no_absen"] || '').trim(),
+            ruang: String(r["Ruang"] || r["ruang"] || '').trim()
+          }));
+
+          const { error } = await supabaseClient.from('peserta_ujian').insert(payloadArray);
+
+          if (error) {
+            if (error.code === '23505') {
+              alert("GAGAL: Terdapat duplikasi Username (NIS) dalam file Excel Anda atau NIS tersebut sudah terdaftar di ujian ini. Username harus unik per ujian.");
+            } else {
+              alert("Gagal mengimpor peserta: " + error.message);
+            }
+          } else {
+            alert(`Berhasil mendaftarkan ${rows.length} siswa! Ujian ini sekarang otomatis masuk ke Mode Login.`);
+          }
+          tarikDataPeserta();
+        } catch (err) {
+          alert("Gagal membaca file Excel: " + err.message);
+          tarikDataPeserta();
+        }
+        event.target.value = '';
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    async function hapusSatuPeserta(idPeserta) {
+      if (!confirm("Yakin ingin menghapus peserta ini?")) return;
+      await supabaseClient.from('peserta_ujian').delete().eq('id', idPeserta);
+      tarikDataPeserta();
+    }
+
+    async function hapusSemuaPeserta() {
+      if (!confirm("PERINGATAN: Yakin ingin menghapus SELURUH peserta ujian ini? \nJika dihapus, ujian akan kembali ke Mode Token biasa (Siswa bisa mengetik nama bebas).")) return;
+      
+      document.getElementById('bodyTabelPeserta').innerHTML = '<tr><td colspan="7" class="text-center p-6 text-red-600 font-bold">Sedang menghapus semua peserta... ⏳</td></tr>';
+      
+      const { error } = await supabaseClient.from('peserta_ujian').delete().eq('id_ujian', currentKelolaUjianId);
+      if (error) alert("Gagal menghapus: " + error.message);
+      tarikDataPeserta();
+    }
+
+    function unduhKartuLoginPeserta() {
+      if (cacheDataPeserta.length === 0) return alert("Belum ada data.");
+      
+      const exportData = cacheDataPeserta.map(p => ({
+        "Nama Siswa": p.nama_siswa,
+        "NIS (Username)": p.username,
+        "Password": p.password,
+        "Kelas": p.kelas || '-',
+        "Ruang": p.ruang || '-'
+      }));
+
+      const ws = XLSX.utils.json_to_sheet(exportData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Kartu_Login");
+      XLSX.writeFile(wb, "Kartu_Login_Peserta_CBT.xlsx");
     }
   </script>
 </body>
