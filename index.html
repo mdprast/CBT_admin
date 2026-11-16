@@ -3871,14 +3871,14 @@
       
       const exportData = cacheDataPeserta.map(p => ({
         "Nama Siswa": p.nama_siswa,
-        "Asal Sekolah": p.asal_sekolah || '-',
+		"Asal Sekolah": p.asal_sekolah || '-',
         "Kelas": p.kelas || '-',
+	    "No Absen": p.no_absen || '-',
         "No Peserta": p.no_ujian || '-',
         "NIS": p.nis || '-',
         "Username Login": p.username,
         "Password Login": p.password,
-        "Ruang": p.ruang || '-',
-        "No Absen": p.no_absen || '-'
+        "Ruang": p.ruang || '-'
       }));
 
       const ws = XLSX.utils.json_to_sheet(exportData);
