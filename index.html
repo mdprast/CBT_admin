@@ -656,12 +656,22 @@
         </div>
 
         <div class="bg-white shadow rounded-lg overflow-hidden">
-          <div class="p-4 border-b flex justify-between bg-gray-50 items-center">
-            <h3 class="font-bold text-lg text-gray-700" id="judulTabelNilai">Daftar Peringkat Nilai <span class="text-xs font-normal text-gray-500 ml-2">(Klik judul tabel untuk mengurutkan)</span></h3>
+          <div class="p-4 border-b flex flex-col md:flex-row justify-between bg-gray-50 items-start md:items-center gap-3">
             <div>
-              <button id="btnToggleTabel" onclick="toggleTabelNilai()" class="bg-purple-600 text-white px-4 py-2 rounded font-bold hover:bg-purple-700 shadow mr-2 transition">📋 Detail Jawaban</button>
-              <button onclick="bukaAnalisisSoal()" class="bg-blue-600 text-white px-4 py-2 rounded font-bold hover:bg-blue-700 shadow mr-2">📊 Analisis Soal</button>
-              <button onclick="exportExcel()" class="bg-green-600 text-white px-4 py-2 rounded font-bold hover:bg-green-700 shadow">⬇ Unduh Excel</button>
+              <h3 class="font-bold text-lg text-gray-700" id="judulTabelNilai">Daftar Peringkat Nilai</h3>
+              <p class="text-xs font-normal text-gray-500">(Klik judul tabel untuk mengurutkan)</p>
+            </div>
+            
+            <div class="flex items-center gap-2 flex-wrap">
+              <!-- Toggle Mode Hapus Jawaban -->
+              <label class="inline-flex items-center cursor-pointer bg-red-50 border border-red-200 px-2 py-1.5 rounded-lg shadow-sm mr-2">
+                <input type="checkbox" id="toggleHapusJawaban" class="w-4 h-4 mr-1.5 accent-red-600" onchange="terapkanKkm()">
+                <span class="text-[11px] font-bold text-red-700 leading-none mt-0.5">Mode Hapus Jawaban</span>
+              </label>
+
+              <button id="btnToggleTabel" onclick="toggleTabelNilai()" class="bg-purple-600 text-white px-3 py-1.5 text-xs rounded font-bold hover:bg-purple-700 shadow transition">📋 Detail</button>
+              <button onclick="bukaAnalisisSoal()" class="bg-blue-600 text-white px-3 py-1.5 text-xs rounded font-bold hover:bg-blue-700 shadow">📊 Analisis</button>
+              <button onclick="exportExcel()" class="bg-green-600 text-white px-3 py-1.5 text-xs rounded font-bold hover:bg-green-700 shadow">⬇ Excel</button>
             </div>
           </div>
           
@@ -3485,10 +3495,15 @@
 
       let totalSkor = 0, lulus = 0, gagal = 0;
 
-      if (dataNilaiGlobal.length === 0) {
+     if (dataNilaiGlobal.length === 0) {
         tbody.innerHTML = '<tr><td colspan="9" class="text-center p-6 text-gray-500 font-bold italic">Belum ada nilai yang masuk. Menunggu siswa mengirimkan ujian...</td></tr>';
       } else {
         let htmlStr = '';
+        
+        // Cek apakah toggle hapus aktif
+        const chkHapusJawaban = document.getElementById('toggleHapusJawaban');
+        const isModeHapusJwb = chkHapusJawaban ? chkHapusJawaban.checked : false;
+
         dataNilaiGlobal.forEach((row) => {
           totalSkor += row.skor;
           if (row.skor >= kkm) lulus++; else gagal++; 
@@ -3497,11 +3512,16 @@
           const mnt = Math.floor(durasiTotal / 60);
           const dtk = durasiTotal % 60;
           const teksDurasi = durasiTotal > 0 ? `${mnt}m ${dtk}s` : '-';
+          
+          let actionHapus = '';
+          if (isModeHapusJwb) {
+            actionHapus = `<br><button onclick="hapusJawabanSatuSiswa('${row.id}', this)" class="mt-1 bg-red-100 hover:bg-red-200 text-red-600 border border-red-300 rounded px-2 py-0.5 text-[10px] font-black shadow-sm">HAPUS JAWABAN</button>`;
+          }
 
           htmlStr += `
             <tr class="hover:bg-blue-50">
               <td class="p-4 text-center font-bold text-gray-400">#${row.rank}</td>
-              <td class="p-4 font-bold text-blue-900">${row.nama_siswa}</td>
+              <td class="p-4 font-bold text-blue-900">${row.nama_siswa} ${actionHapus}</td>
               <td class="p-4 text-gray-600">${row.asal_sekolah || '-'}</td>
               <td class="p-4 font-semibold text-gray-600">${row.kelas || '-'}</td>
               <td class="p-4 text-center">${row.no_absen || '-'}</td>
@@ -3520,6 +3540,32 @@
       renderChart(lulus, gagal, kkm);
 
       if (modeTabelDetail) renderTabelDetailJawaban();
+	  
+	  async function hapusJawabanSatuSiswa(idJawaban, btnEl) {
+      if (!confirm("PERINGATAN: Yakin ingin MENGHAPUS PERMANEN seluruh jawaban dan skor siswa ini? Data tidak dapat dikembalikan!")) return;
+      
+      const teksAsli = btnEl.innerText;
+      btnEl.innerText = "⏳ Menghapus...";
+      btnEl.disabled = true;
+
+      try {
+        const { error } = await supabaseClient
+          .from('jawaban_siswa')
+          .delete()
+          .eq('id', idJawaban)
+          .eq('id_guru', currentUser.id) // RLS
+          .select();
+
+        if (error) throw error;
+        
+        // Segarkan data nilai setelah berhasil menghapus
+        loadDataNilaiSpesifik();
+      } catch (err) {
+        alert("Terjadi kesalahan saat menghapus jawaban: " + err.message);
+        btnEl.innerText = teksAsli;
+        btnEl.disabled = false;
+      }
+    }
     }
 
     function renderChart(lulus, gagal, kkm) {
@@ -3957,12 +4003,12 @@
         "Nama Siswa": p.nama_siswa,
         "Asal Sekolah": p.asal_sekolah || '-',
         "Kelas": p.kelas || '-',
+		"No Absen": p.no_absen || '-',
         "No Peserta": p.no_ujian || '-',
         "NIS": p.nis || '-',
         "Username Login": p.username,
         "Password Login": p.password,
-        "Ruang": p.ruang || '-',
-        "No Absen": p.no_absen || '-'
+        "Ruang": p.ruang || '-'
       }));
 
       const ws = XLSX.utils.json_to_sheet(exportData);
