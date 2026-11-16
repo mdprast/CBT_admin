@@ -3541,7 +3541,7 @@
 
       if (modeTabelDetail) renderTabelDetailJawaban();
 	}
- async function hapusJawabanSatuSiswa(idJawaban, btnEl) {
+async function hapusJawabanSatuSiswa(idJawaban, btnEl) {
       if (!confirm("PERINGATAN: Yakin ingin MENGHAPUS PERMANEN seluruh jawaban dan skor siswa ini? Data tidak dapat dikembalikan!")) return;
       
       const teksAsli = btnEl.innerText;
@@ -3549,19 +3549,26 @@
       btnEl.disabled = true;
 
       try {
-        const { error } = await supabaseClient
+        const { data, error } = await supabaseClient
           .from('jawaban_siswa')
           .delete()
           .eq('id', idJawaban)
-          .eq('id_guru', currentUser.id) // RLS
           .select();
 
         if (error) throw error;
         
-        // Segarkan data nilai setelah berhasil menghapus
+        // PENDETEKSI SILENT ERROR (Jika server menolak menghapus karena RLS)
+        if (data && data.length === 0) {
+          alert("GAGAL MENGHAPUS: Database memblokir aksi ini. Anda belum menjalankan perintah izin RLS 'DELETE' untuk tabel jawaban_siswa di SQL Editor Supabase.");
+          btnEl.innerText = teksAsli;
+          btnEl.disabled = false;
+          return;
+        }
+        
+        // Segarkan tabel nilai setelah baris benar-benar terhapus
         loadDataNilaiSpesifik();
       } catch (err) {
-        alert("Terjadi kesalahan saat menghapus jawaban: " + err.message);
+        alert("Terjadi kesalahan sistem saat menghapus jawaban: " + err.message);
         btnEl.innerText = teksAsli;
         btnEl.disabled = false;
       }
