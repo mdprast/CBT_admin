@@ -3540,8 +3540,8 @@
       renderChart(lulus, gagal, kkm);
 
       if (modeTabelDetail) renderTabelDetailJawaban();
-	  
-	  async function hapusJawabanSatuSiswa(idJawaban, btnEl) {
+	}
+ async function hapusJawabanSatuSiswa(idJawaban, btnEl) {
       if (!confirm("PERINGATAN: Yakin ingin MENGHAPUS PERMANEN seluruh jawaban dan skor siswa ini? Data tidak dapat dikembalikan!")) return;
       
       const teksAsli = btnEl.innerText;
@@ -3566,8 +3566,7 @@
         btnEl.disabled = false;
       }
     }
-    }
-
+	  
     function renderChart(lulus, gagal, kkm) {
       const ctx = document.getElementById('pieChart').getContext('2d');
       if (myPieChart) myPieChart.destroy();
