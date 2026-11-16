@@ -3677,7 +3677,7 @@
     async function tarikDataPeserta() {
       if (!currentKelolaUjianId) return;
       const tbody = document.getElementById('bodyTabelPeserta');
-      tbody.innerHTML = '<tr><td colspan="7" class="text-center p-6 text-indigo-600 font-bold">Sedang menarik data peserta... ⏳</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="8" class="text-center p-6 text-indigo-600 font-bold">Sedang menarik data peserta... ⏳</td></tr>';
 
       const { data, error } = await supabaseClient
         .from('peserta_ujian')
@@ -3686,7 +3686,7 @@
         .order('nama_siswa', { ascending: true });
 
       if (error) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center p-6 text-red-500 font-bold">Gagal memuat data: ${error.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center p-6 text-red-500 font-bold">Gagal memuat data: ${error.message}</td></tr>`;
         return;
       }
 
@@ -3735,7 +3735,7 @@
             <td class="p-3 border-b text-center font-mono text-gray-700 bg-gray-50">${p.password}</td>
             <td class="p-3 border-b text-center">${statusBadge}</td>
             <td class="p-3 border-b text-center">
-              <button onclick="hapusSatuPeserta('${p.id}')" class="text-red-500 hover:bg-red-100 px-2 py-1 rounded text-xs font-bold" title="Hapus Peserta">X</button>
+              <button onclick="hapusSatuPeserta('${p.id}', this)" class="text-red-500 hover:bg-red-100 px-2 py-1 rounded text-xs font-bold" title="Hapus Peserta">X</button>
             </td>
           </tr>
         `;
@@ -3743,8 +3743,54 @@
       tbody.innerHTML = html;
     }
 
+    async function hapusSatuPeserta(idPeserta, btnEl) {
+      if (!confirm("Yakin ingin menghapus peserta ini?")) return;
+      
+      const teksAsli = btnEl.innerText;
+      btnEl.innerText = "⏳";
+      btnEl.disabled = true;
+
+      try {
+        const { data, error } = await supabaseClient
+          .from('peserta_ujian')
+          .delete()
+          .eq('id', idPeserta)
+          .select(); 
+
+        if (error) throw error;
+        
+        if (data && data.length === 0) {
+          alert("Aksi ditolak oleh server. Anda mungkin tidak memiliki izin RLS untuk menghapus baris ini.");
+        }
+      } catch (err) {
+        alert("Terjadi kesalahan saat menghapus: " + err.message);
+      }
+      
+      tarikDataPeserta();
+    }
+
+    async function hapusSemuaPeserta() {
+      if (!confirm("PERINGATAN: Yakin ingin menghapus SELURUH peserta ujian ini? \nJika dihapus, ujian akan kembali ke Mode Token biasa (Siswa bisa mengetik nama bebas).")) return;
+      
+      const tbody = document.getElementById('bodyTabelPeserta');
+      tbody.innerHTML = '<tr><td colspan="8" class="text-center p-6 text-red-600 font-bold">Sedang menghapus semua peserta dari server... ⏳</td></tr>';
+      
+      try {
+        const { data, error } = await supabaseClient
+          .from('peserta_ujian')
+          .delete()
+          .eq('id_ujian', currentKelolaUjianId)
+          .select(); 
+
+        if (error) throw error;
+      } catch (err) {
+        alert("Terjadi kesalahan saat menghapus semua data: " + err.message);
+      }
+
+      tarikDataPeserta();
+    }
+
     function unduhTemplateExcelPeserta() {
-      // 💡 Perhatikan kolom NIS dan Username sekarang sudah dipisah!
       const contohData = [
         { "Nama Siswa": "Ahmad Budi", "NIS": "1001", "Username": "user1001", "Password": "123", "Kelas": "9A", "Asal Sekolah": "SMPN 1", "No Absen": "1", "Ruang": "R1", "No Peserta": "05-001" },
         { "Nama Siswa": "Citra Lestari", "NIS": "1002", "Username": "user1002", "Password": "123", "Kelas": "9A", "Asal Sekolah": "SMPN 1", "No Absen": "2", "Ruang": "R1", "No Peserta": "05-002" },
@@ -3777,7 +3823,6 @@
             const namaSiswa = String(r["Nama Siswa"] || r["nama_siswa"] || r["Nama"] || 'Tanpa Nama').trim();
             const nisInput = String(r["NIS"] || r["nis"] || '').trim();
             
-            // LOGIKA SMART GENERATOR (Jika Username kosong di Excel, gunakan NIS. Jika NIS kosong, buat angka acak)
             let usernameInput = String(r["Username"] || r["username"] || '').trim();
             if (!usernameInput) {
                 usernameInput = nisInput ? nisInput : `user${Math.floor(Math.random() * 90000) + 10000}`;
@@ -3789,7 +3834,7 @@
               nama_siswa: namaSiswa,
               nis: nisInput,
               username: usernameInput,
-              password: String(r["Password"] || r["password"] || '123456').trim(), // Default password jika kosong
+              password: String(r["Password"] || r["password"] || '123456').trim(), 
               kelas: String(r["Kelas"] || r["kelas"] || '').trim(),
               asal_sekolah: String(r["Asal Sekolah"] || r["asal_sekolah"] || '').trim(),
               no_absen: String(r["No Absen"] || r["no_absen"] || '').trim(),
@@ -3834,7 +3879,6 @@
 
       const ws = XLSX.utils.json_to_sheet(exportData);
       
-      // Auto-size kolom agar rapi
       const colWidths = [
           { wch: 25 }, { wch: 10 }, { wch: 15 }, { wch: 15 }, { wch: 20 }, { wch: 15 }, { wch: 10 }
       ];
