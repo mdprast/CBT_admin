@@ -275,6 +275,7 @@
             <tr>
               <th class="p-3 border-b text-center text-xs font-bold text-indigo-900 w-12">No</th>
               <th class="p-3 border-b text-xs font-bold text-indigo-900">Nama Siswa</th>
+              <th class="p-3 border-b text-center text-xs font-bold text-indigo-900">Sekolah</th>
               <th class="p-3 border-b text-center text-xs font-bold text-indigo-900">Kelas</th>
               <th class="p-3 border-b text-center text-xs font-bold text-indigo-900">NIS</th>
               <th class="p-3 border-b text-center text-xs font-bold text-indigo-900">Username</th>
@@ -3706,7 +3707,7 @@
         badgeMode.classList.add('hidden');
         btnHapusSemua.classList.add('hidden');
         btnUnduhKartu.classList.add('hidden');
-        tbody.innerHTML = '<tr><td colspan="8" class="text-center p-8 text-gray-400 font-medium italic">Belum ada peserta terdaftar. Ujian ini menggunakan Mode Token (Terbuka).<br>Silakan impor dari Excel untuk mengaktifkan Mode Login.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" class="text-center p-8 text-gray-400 font-medium italic">Belum ada peserta terdaftar. Ujian ini menggunakan Mode Token (Terbuka).<br>Silakan impor dari Excel untuk mengaktifkan Mode Login.</td></tr>';
         return;
       }
 
@@ -3729,6 +3730,7 @@
           <tr class="hover:bg-indigo-50">
             <td class="p-3 border-b text-center text-gray-500 font-bold">${idx + 1}</td>
             <td class="p-3 border-b font-bold text-gray-800">${p.nama_siswa}</td>
+            <td class="p-3 border-b text-center text-gray-600">${p.asal_sekolah || '-'}</td>
             <td class="p-3 border-b text-center text-gray-600">${p.kelas || '-'}</td>
             <td class="p-3 border-b text-center text-gray-600">${p.nis || '-'}</td>
             <td class="p-3 border-b text-center font-black text-indigo-700 bg-indigo-50/50">${p.username}</td>
@@ -3869,6 +3871,7 @@
       
       const exportData = cacheDataPeserta.map(p => ({
         "Nama Siswa": p.nama_siswa,
+        "Asal Sekolah": p.asal_sekolah || '-',
         "Kelas": p.kelas || '-',
         "No Peserta": p.no_ujian || '-',
         "NIS": p.nis || '-',
@@ -3876,6 +3879,18 @@
         "Password Login": p.password,
         "Ruang": p.ruang || '-'
       }));
+
+      const ws = XLSX.utils.json_to_sheet(exportData);
+      
+      const colWidths = [
+          { wch: 25 }, { wch: 20 }, { wch: 10 }, { wch: 15 }, { wch: 15 }, { wch: 20 }, { wch: 15 }, { wch: 10 }
+      ];
+      ws['!cols'] = colWidths;
+
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Kartu_Login");
+      XLSX.writeFile(wb, "Kartu_Login_Peserta_CBT.xlsx");
+    }
 
       const ws = XLSX.utils.json_to_sheet(exportData);
       
