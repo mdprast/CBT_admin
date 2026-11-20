@@ -2148,7 +2148,14 @@
       else memuatDashboard(data.user);
     }
 
-    async function loginGoogle() { await supabaseClient.auth.signInWithOAuth({ provider: 'google' }); }
+   async function loginGoogle() {
+  await supabaseClient.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: window.location.origin + window.location.pathname
+    }
+  });
+}
 
     async function register() {
       const nama = document.getElementById('regNama').value;
